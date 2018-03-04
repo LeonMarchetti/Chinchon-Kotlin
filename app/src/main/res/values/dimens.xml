@@ -1,0 +1,13 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="rj_fontsize">16sp</dimen>
+
+    <dimen name="main_titulo">24sp</dimen>
+
+    <dimen name="mj_fontsize">16sp</dimen>
+
+    <dimen name="g_normal_fontsize">16sp</dimen>
+    <dimen name="g_winner_fontsize">16sp</dimen>
+
+</resources>
