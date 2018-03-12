@@ -24,7 +24,16 @@
 
     <string name="ct_turno_de">Turno de %1$s</string>
 
-    <string name="g_Finalizar">Finalizar</string>
+    <string name="g_chinchon">con %1$d puntos y haciendo CHINCHÓN</string>
+    <string name="g_contra">Contra: %1$s</string>
+    <string name="g_empate">¡Empate! Felicitaciones a ambos.</string>
+    <string name="g_error">¡Error!</string>
+    <string name="g_errorinfo">No se encontró información de los jugadores.</string>
+    <string name="g_felicitaciones">¡Felicitaciones!</string>
+    <string name="g_finalizar">Finalizar</string>
+    <string name="g_ganador">Ganó: %1$s</string>
+    <string name="g_jugador">Jugador: %1$s</string>
+    <string name="g_puntos">con %1$d puntos</string>
 
     <string name="main_titulo">Chinchon Android</string>
     <string name="main_comenzar">Comenzar partida</string>

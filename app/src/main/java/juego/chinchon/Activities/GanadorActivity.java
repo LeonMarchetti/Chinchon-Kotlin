@@ -23,6 +23,7 @@ public class GanadorActivity extends AppCompatActivity {
      * Called when the activity is first created.
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.ganador);
@@ -31,13 +32,13 @@ public class GanadorActivity extends AppCompatActivity {
         int ganador = getIntent().getIntExtra(Constantes.INTENT_GANADOR, Constantes.EMPATE);
         boolean hizoChinchon = getIntent().getBooleanExtra(Constantes.INTENT_CHINCHON, false);
 
-        final TextView tv1 = (TextView) findViewById(R.id.g_tv_1);
-        final TextView tv2 = (TextView) findViewById(R.id.g_tv_2);
-        final TextView tv3 = (TextView) findViewById(R.id.g_tv_3);
-        final TextView tv4 = (TextView) findViewById(R.id.g_tv_4);
-        final TextView tv5 = (TextView) findViewById(R.id.g_tv_5);
+        final TextView tv1 = findViewById(R.id.g_tv_1);
+        final TextView tv2 = findViewById(R.id.g_tv_2);
+        final TextView tv3 = findViewById(R.id.g_tv_3);
+        final TextView tv4 = findViewById(R.id.g_tv_4);
+        final TextView tv5 = findViewById(R.id.g_tv_5);
 
-        final Button btn = (Button) findViewById(R.id.g_btn);
+        final Button btn = findViewById(R.id.g_btn);
         btn.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -48,53 +49,37 @@ public class GanadorActivity extends AppCompatActivity {
 
         if (jugadores == null) {
             //error
-            tv1.setText("¡Error!");
-            if (jugadores == null) {
-                tv2.setText("No se encontró información de los jugadores.");
-            }
+            tv1.setText(R.string.g_error);
+            tv2.setText(R.string.g_errorinfo);
         } else {
-            switch(ganador) {
-                case Constantes.EMPATE:
-                    tv1.setText("¡Empate! ¡Felicitaciones a ambos!");
-                    tv2.setText("Jugador: " + jugadores.get(0).getNombre());
-                    tv3.setText("con " + jugadores.get(0).getPuntos() + " puntos.");
-                    tv4.setText("Jugador: " + jugadores.get(1).getNombre());
-                    tv5.setText("con " + jugadores.get(1).getPuntos() + " puntos.");
-                    break;
-                case Constantes.GANADOR_1:
-                    tv1.setText("¡Felicitaciones!");
+            String text1, text2, text3, text4, text5;
 
-                    tv2.setText("Ganó: " + jugadores.get(0).getNombre());
-                    tv2.setTextSize(getResources().getDimension(R.dimen.g_winner_fontsize));
+            if (ganador == Constantes.EMPATE) {
+                text1 = getString(R.string.g_empate);
+                text2 = getString(R.string.g_jugador,jugadores.get(0).getNombre());
+                text3 = getString(R.string.g_puntos, jugadores.get(0).getPuntos());
+                text4 = getString(R.string.g_jugador,jugadores.get(1).getNombre());
+                text5 = getString(R.string.g_puntos, jugadores.get(1).getPuntos());
+            } else {
+                int perdedor = 1 - ganador;
+                text1 = getString(R.string.g_felicitaciones);
+                text2 = getString(R.string.g_ganador, jugadores.get(ganador).getNombre());
+                if (hizoChinchon) {
+                    text3 = getString(R.string.g_chinchon, jugadores.get(ganador).getPuntos());
+                } else {
+                    text3 = getString(R.string.g_puntos, jugadores.get(ganador).getPuntos());
+                }
+                text4 = getString(R.string.g_contra, jugadores.get(perdedor).getNombre());
+                text5 = getString(R.string.g_puntos, jugadores.get(perdedor).getPuntos());
 
-                    if (hizoChinchon) {
-                        tv3.setText("con " + jugadores.get(0).getPuntos() + " puntos y haciendo CHINCHÓN");
-                    } else {
-                        tv3.setText("con " + jugadores.get(0).getPuntos() + " puntos.");
-                    }
-                    tv3.setTextSize(getResources().getDimension(R.dimen.g_winner_fontsize));
-
-                    tv4.setText("Contra: " + jugadores.get(1).getNombre());
-                    tv5.setText("con " + jugadores.get(1).getPuntos() + " puntos.");
-                    break;
-                case Constantes.GANADOR_2:
-                    tv1.setText("¡Felicitaciones!");
-
-                    tv2.setText("Ganó: " + jugadores.get(1).getNombre());
-                    tv2.setTextSize(getResources().getDimension(R.dimen.g_winner_fontsize));
-
-                    if (hizoChinchon) {
-                        tv3.setText("con " + jugadores.get(1).getPuntos() + " puntos y haciendo CHINCHÓN");
-                    } else {
-                        tv3.setText("con " + jugadores.get(1).getPuntos() + " puntos.");
-                    }
-                    tv3.setTextSize(getResources().getDimension(R.dimen.g_winner_fontsize));
-
-                    tv4.setText("Contra: " + jugadores.get(0).getNombre());
-                    tv5.setText("con " + jugadores.get(0).getPuntos() + " puntos.");
-                    break;
-                default:
+                tv2.setTextSize(getResources().getDimension(R.dimen.g_winner_fontsize));
+                tv3.setTextSize(getResources().getDimension(R.dimen.g_winner_fontsize));
             }
+            tv1.setText(text1);
+            tv2.setText(text2);
+            tv3.setText(text3);
+            tv4.setText(text4);
+            tv5.setText(text5);
         }
     }
 }

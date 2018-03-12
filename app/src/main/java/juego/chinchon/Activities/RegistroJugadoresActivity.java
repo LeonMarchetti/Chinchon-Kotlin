@@ -41,7 +41,7 @@ public class RegistroJugadoresActivity extends AppCompatActivity {
 
                 // Introduzco al Jugador 1:
                 j = setJugador( (EditText) findViewById(R.id.rj_jugador1),
-                        (EditText) findViewById(R.id.rj_puntos1)
+                                (EditText) findViewById(R.id.rj_puntos1)
                 );
 
                 if (j != null) {
@@ -52,7 +52,7 @@ public class RegistroJugadoresActivity extends AppCompatActivity {
 
                 // Introduzco al Jugador 2:
                 j = setJugador( (EditText) findViewById(R.id.rj_jugador2),
-                        (EditText) findViewById(R.id.rj_puntos2)
+                                (EditText) findViewById(R.id.rj_puntos2)
                 );
 
                 if (j != null) {
@@ -84,8 +84,8 @@ public class RegistroJugadoresActivity extends AppCompatActivity {
      */
     private Jugador setJugador(EditText et_jugadores, EditText et_puntos) {
 
-        String str_nombre = et_jugadores.getText().toString(),
-                str_puntos = et_puntos.getText().toString();
+        String str_nombre = et_jugadores.getText().toString();
+        String str_puntos = et_puntos.getText().toString();
         int puntos = 0; // Valor por defecto para el puntaje inicial de cada jugador.
         Resources res = getResources();
 

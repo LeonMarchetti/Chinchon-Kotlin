@@ -16,10 +16,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
 
         // Botón "Comenzar Partida"
-        //final Button bt_partida = (Button) findViewById(R.id.main_btn_1);
         final Button bt_partida = findViewById(R.id.main_btn_1);
         // Botón "Salir"
-        // final Button bt_salir = (Button) findViewById(R.id.main_btn_2);
         final Button bt_salir = findViewById(R.id.main_btn_2);
 
         bt_partida.setOnClickListener(new View.OnClickListener() {

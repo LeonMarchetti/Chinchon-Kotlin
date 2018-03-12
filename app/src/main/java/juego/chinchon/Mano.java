@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -271,41 +272,42 @@ public class Mano implements Serializable {
      * mano.
      */
     public void toTableLayout(TableLayout tabla, boolean octavaCarta) {
-
         Resources res = tabla.getResources();
-        TableRow tr;
-        View v;
-        Carta c;
+        String defPackage = tabla.getContext().getPackageName();
+        String defType = "drawable";
 
         if (tabla.getChildCount() != 2) {
             return;
         }
 
         // Armo la primera fila de la tabla (las cuatro primeras cartas):
-        tr = (TableRow) tabla.getChildAt(0);
-        if (tr.getChildCount() != 4 ) {
+        TableRow tr1 = (TableRow) tabla.getChildAt(0);
+        if (tr1.getChildCount() != 4 ) {
             return;
         }
+
         for (int i = 0; i < 4; i++) {
-            c = cartas.get(i);
-            v = tr.getChildAt(i);
+            Carta c = cartas.get(i);
+            View v = tr1.getChildAt(i);
             if (v instanceof ImageView) {
-                ((ImageView)v).setImageResource(res.getIdentifier(c.getImagePath(), "drawable", "juego.chinchon"));
+                int imageId = res.getIdentifier(c.getImagePath(), defType, defPackage);
+                ((ImageView)v).setImageResource(imageId);
             } else {
                 return;
             }
         }
 
         // Armo la segunda fila de la tabla (las tres o cuatro últimas cartas):
-        tr = (TableRow) tabla.getChildAt(1);
-        if (tr.getChildCount() != 4 ) {
+        TableRow tr2 = (TableRow) tabla.getChildAt(1);
+        if (tr2.getChildCount() != 4 ) {
             return;
         }
         for (int i = 0; i < 3; i++) {
-            c = cartas.get(i + 4);
-            v = tr.getChildAt(i);
+            Carta c = cartas.get(i + 4);
+            View v = tr2.getChildAt(i);
             if (v instanceof ImageView) {
-                ((ImageView)v).setImageResource(res.getIdentifier(c.getImagePath(), "drawable", "juego.chinchon"));
+                int imageId = res.getIdentifier(c.getImagePath(), defType, defPackage);
+                ((ImageView)v).setImageResource(imageId);
             } else {
                 return;
             }
@@ -314,16 +316,18 @@ public class Mano implements Serializable {
         /* Muestro la última carta de la mano. Al principio del turno, el
            jugador solo tiene 7 cartas, por lo tanto no se muestra. Cuando roba
            una carta, se muestran las 8 cartas. */
-        v = tr.getChildAt(3);
+        View v = tr2.getChildAt(3);
         if (v instanceof ImageView) {
+            int imageId;
             if (octavaCarta) {
                 // Se muestra la octava carta:
-                ((ImageView)v).setImageResource(res.getIdentifier(cartaExtra.getImagePath(), "drawable", "juego.chinchon"));
+                imageId = res.getIdentifier(cartaExtra.getImagePath(), defType, defPackage);
             }
             else {
                 // No se muestra la octava carta:
-                ((ImageView)v).setImageResource(0); //Dejo vacía la imágen.
+                imageId = 0;
             }
+            ((ImageView)v).setImageResource(imageId);
         }
     }
 

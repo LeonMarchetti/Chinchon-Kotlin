@@ -59,7 +59,7 @@ public class PartidaActivity extends AppCompatActivity {
     // Componentes en pantalla:
     private final ArrayList<TableLayout> tablas; // Lista de tablas en pantalla.
     private ImageView iv_mazo, iv_pila;
-    private TextView    tv_puntos_1;
+    private TextView tv_puntos_1;
     private TextView tv_puntos_2;
     private TextView tv_carta;
     private TextView tv_turno;
@@ -236,7 +236,6 @@ public class PartidaActivity extends AppCompatActivity {
         TextView tv_nombre_1 = findViewById(R.id.mj_nombrejugador_1);
         tv_nombre_1.setText(jugadores.get(0).getNombre());
         tv_puntos_1 = findViewById(R.id.mj_puntos_1);
-        // tv_puntos_1.setText(Integer.toString(jugadores.get(0).getPuntos()) + " puntos.");
         tv_puntos_1.setText(getString(R.string.mj_puntos, jugadores.get(0).getPuntos()));
 
         TextView tv_nombre_2 = findViewById(R.id.mj_nombrejugador_2);
@@ -266,11 +265,9 @@ public class PartidaActivity extends AppCompatActivity {
     }
 
     private void setClickListeners(TableLayout tabla) {
-        TableRow tr;
         for (int i = 0; i < 2; i++) {
-            /* En este ciclo obtengo la referencia a cada fila "TableRow" de la
-               tabla. */
-            tr = (TableRow) tabla.getChildAt(i);
+            // En este ciclo obtengo la referencia a cada fila "TableRow" de la tabla.
+            TableRow tr = (TableRow) tabla.getChildAt(i);
             for (int j = 0; j < 4; j++) {
                 /* En el ciclo interno coloco como ClickListener de las imagenes
                    a "cartaClickListener", definido más arriba. */
@@ -288,10 +285,10 @@ public class PartidaActivity extends AppCompatActivity {
 
         // Inicio la actividad para cambiar de turno:
         // Se inicia antes de actualizar la mesa de juego.
-        Intent i = new Intent(PartidaActivity.this, CambioTurnoActivity.class);
-        i.putExtra(Constantes.INTENT_CARTA, pila.tope());
-        i.putExtra(Constantes.INTENT_JUGADOR, jugadores.get(numJugador));
-        startActivity(i);
+        Intent intent = new Intent(PartidaActivity.this, CambioTurnoActivity.class);
+        intent.putExtra(Constantes.INTENT_CARTA, pila.tope());
+        intent.putExtra(Constantes.INTENT_JUGADOR, jugadores.get(numJugador));
+        startActivity(intent);
 
         // Cambio de la mano en pantalla:
         if (numJugador == 0) {
@@ -386,12 +383,12 @@ public class PartidaActivity extends AppCompatActivity {
                         }
 
                         // Paso a la actividad que muestra al ganador:
-                        Intent i = new Intent(PartidaActivity.this, GanadorActivity.class);
-                        i.putExtra(Constantes.INTENT_JUGADORES, jugadores);
-                        i.putExtra(Constantes.INTENT_GANADOR, ganador);
-                        i.putExtra(Constantes.INTENT_CHINCHON, false);
+                        Intent intent = new Intent(PartidaActivity.this, GanadorActivity.class);
+                        intent.putExtra(Constantes.INTENT_JUGADORES, jugadores);
+                        intent.putExtra(Constantes.INTENT_GANADOR, ganador);
+                        intent.putExtra(Constantes.INTENT_CHINCHON, false);
                         finish();
-                        startActivity(i);
+                        startActivity(intent);
                     }
 
                     // Cambio de ronda:

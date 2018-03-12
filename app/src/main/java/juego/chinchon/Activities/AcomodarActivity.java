@@ -1,7 +1,6 @@
 package juego.chinchon.Activities;
 
 import android.content.Intent;
-//import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -70,7 +69,6 @@ public class AcomodarActivity extends AppCompatActivity {
                 }
             }
         };
-
         estados = new int[7];
     }
 
@@ -83,7 +81,6 @@ public class AcomodarActivity extends AppCompatActivity {
         jugadores = (ArrayList<Jugador>) getIntent().getSerializableExtra(Constantes.INTENT_JUGADORES);
         cortador = getIntent().getIntExtra(Constantes.INTENT_CORTE, 0);
 
-        //tablaMano = (TableLayout) findViewById(R.id.ac_mano);
         tablaMano = findViewById(R.id.ac_mano);
         TableRow fila;
         for (int f = 0; f < tablaMano.getChildCount(); f++) {
@@ -93,30 +90,17 @@ public class AcomodarActivity extends AppCompatActivity {
             }
         }
 
-        // filaBotones = (LinearLayout) findViewById(R.id.ac_buttonrow);
         filaBotones = findViewById(R.id.ac_buttonrow);
-
-        // final Button emparejar = (Button) findViewById(R.id.ac_emparejar_btn);
-        // final Button desarmar = (Button) findViewById(R.id.ac_desarmar_btn);
-        // final Button finalizar = (Button) findViewById(R.id.ac_finalizar_btn);
 
         final Button emparejar = findViewById(R.id.ac_emparejar_btn);
         final Button desarmar = findViewById(R.id.ac_desarmar_btn);
         final Button finalizar = findViewById(R.id.ac_finalizar_btn);
-
-        // nombreTV = (TextView) findViewById(R.id.ac_tv_nombre);
-        // errorTV = (TextView) findViewById(R.id.ac_errortext);
-        // corteTV = (TextView) findViewById(R.id.ac_tv_corte);
 
         nombreTV = findViewById(R.id.ac_tv_nombre);
         errorTV = findViewById(R.id.ac_errortext);
         corteTV = findViewById(R.id.ac_tv_corte);
 
         // Obtengo de R los colores para los indicadores:
-        // Resources res = getResources();
-        // clr_des = res.getColor(R.color.ac_deseleccionado);
-        // clr_sel = res.getColor(R.color.ac_seleccionado);
-        // clr_emp = res.getColor(R.color.ac_emparejado);
 
         clr_des = ContextCompat.getColor(this, R.color.ac_deseleccionado);
         clr_sel = ContextCompat.getColor(this, R.color.ac_seleccionado);
@@ -186,9 +170,8 @@ public class AcomodarActivity extends AppCompatActivity {
                         /* Si el jugador corta y se quedó con más de 5 puntos en
                            la mano entonces se cancela el corte y se regresa al
                            mismo juego. */
-
-                        Intent i = new Intent();
-                        setResult(2, i);
+                        Intent intent = new Intent();
+                        setResult(2, intent);
                         finish();
                     } else {
                         jugador.addPuntos(puntos);
@@ -202,9 +185,9 @@ public class AcomodarActivity extends AppCompatActivity {
                     // Cambio de jugador:
                     setJugadorEnPantalla();
                 } else {
-                    Intent i = new Intent();
-                    i.putExtra(Constantes.INTENT_JUGADORES, jugadores);
-                    setResult(1, i);
+                    Intent intent = new Intent();
+                    intent.putExtra(Constantes.INTENT_JUGADORES, jugadores);
+                    setResult(1, intent);
                     finish();
                 }
             }
@@ -213,8 +196,8 @@ public class AcomodarActivity extends AppCompatActivity {
         // Empiezo la acomodación desde el primer jugador:
         jugadorActual = 0;
 
-        // Empiezo a configurar los views en pantalla, de acuerdo al jugador:
-        // También compruebo si el jugador hizo chinchón:
+        /* Empiezo a configurar los views en pantalla, de acuerdo al jugador:
+        También compruebo si el jugador hizo chinchón: */
         setJugadorEnPantalla();
     }
 
@@ -222,7 +205,6 @@ public class AcomodarActivity extends AppCompatActivity {
 
         Jugador jugador = jugadores.get(jugadorActual);
         // Cambio el cuadro del nombre:
-        // nombreTV.setText("Jugador: " + jugador.getNombre() + ": " + jugador.getPuntos() + " puntos.");
         nombreTV.setText(getString(R.string.ac_nombre, jugador.getNombre(), jugador.getPuntos()));
 
         //Indico que éste jugador fue el que cortó:
@@ -234,11 +216,11 @@ public class AcomodarActivity extends AppCompatActivity {
 
         if (jugador.getMano().esChinchon() && (jugadorActual == cortador)) {
             // Si el jugador tiene chinchón entonces termina el juego:
-            Intent i = new Intent(AcomodarActivity.this, GanadorActivity.class);
-            i.putExtra(Constantes.INTENT_JUGADORES, jugadores);
-            i.putExtra(Constantes.INTENT_GANADOR, jugadorActual + 1);
-            i.putExtra(Constantes.INTENT_CHINCHON, true);
-            startActivity(i);
+            Intent intent = new Intent(AcomodarActivity.this, GanadorActivity.class);
+            intent.putExtra(Constantes.INTENT_JUGADORES, jugadores);
+            intent.putExtra(Constantes.INTENT_GANADOR, jugadorActual + 1);
+            intent.putExtra(Constantes.INTENT_CHINCHON, true);
+            startActivity(intent);
         } else {
             // Muestro la mano en pantalla:
             jugador.getMano().toTableLayout(tablaMano, false);

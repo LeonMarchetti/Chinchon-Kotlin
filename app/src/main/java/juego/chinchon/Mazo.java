@@ -159,15 +159,17 @@ public class Mazo {
      */
     public void setImagenTope(ImageView iv, boolean oculto) {
         Resources res = iv.getResources();
+        String defPackage = iv.getContext().getPackageName();
+        String defType = "drawable";
+
         if (cartas.isEmpty()) {
-            /* Si el mazo o la pila están vacíos, entonces dejó vacío el espacio
-            para la imagen. */
-            iv.setImageResource(res.getIdentifier("vacio", "drawable", "juego.chinchon"));
+            // Si el mazo o la pila están vacíos, entonces dejó vacío el espacio para la imagen.
+            iv.setImageResource(res.getIdentifier("vacio", defType, defPackage));
         } else
         if (oculto) {
-            iv.setImageResource(res.getIdentifier("dorso", "drawable", "juego.chinchon"));
+            iv.setImageResource(res.getIdentifier("dorso", defType, defPackage));
         } else {
-            iv.setImageResource(res.getIdentifier(cartas.get(0).getImagePath(), "drawable", "juego.chinchon"));
+            iv.setImageResource(res.getIdentifier(cartas.get(0).getImagePath(), defType, defPackage));
         }
     }
 

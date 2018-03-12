@@ -56,7 +56,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/g_Finalizar"
+        android:text="@string/g_finalizar"
         />
 
 </RelativeLayout>
