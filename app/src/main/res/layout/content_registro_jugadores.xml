@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="juego.chinchon.Activities.RegistroJugadoresActivity"
+    tools:context="juego.chinchon.activities.RegistroJugadoresActivity"
     tools:showIn="@layout/registrojugadores">
 
 </android.support.constraint.ConstraintLayout>

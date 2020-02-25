@@ -11,33 +11,34 @@
         android:theme="@style/AppTheme"
         >
         <activity
-            android:name="juego.chinchon.Activities.MainActivity"
-            android:label="@string/title_activity_main"
+            android:name="juego.chinchon.activities.MainActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="juego.chinchon.Activities.AcomodarActivity"
+            android:name="juego.chinchon.activities.AcomodarActivity"
             android:label="@string/title_activity_acomodar"
             android:theme="@style/AppTheme.NoActionBar"
             android:noHistory="true" />
         <activity
-            android:name="juego.chinchon.Activities.CambioTurnoActivity"
+            android:name="juego.chinchon.activities.CambioTurnoActivity"
             android:label="@string/title_activity_cambio_turno"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="juego.chinchon.Activities.GanadorActivity"
+            android:name="juego.chinchon.activities.GanadorActivity"
             android:label="@string/title_activity_ganador"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="juego.chinchon.Activities.PartidaActivity"
+            android:name="juego.chinchon.activities.PartidaActivity"
             android:label="@string/title_activity_partida"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="juego.chinchon.Activities.RegistroJugadoresActivity"
+            android:name="juego.chinchon.activities.RegistroJugadoresActivity"
             android:label="@string/title_activity_registro_jugadores"
             android:theme="@style/AppTheme.NoActionBar"
             android:noHistory="true" />

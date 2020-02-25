@@ -1,4 +1,4 @@
-package juego.chinchon.Activities;
+package juego.chinchon.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
