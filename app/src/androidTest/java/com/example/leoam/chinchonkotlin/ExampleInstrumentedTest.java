@@ -1,4 +1,4 @@
-package com.example.leoam.chinchonandroid;
+package com.example.leoam.chinchonkotlin;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.leoam.chinchonandroid", appContext.getPackageName());
+        assertEquals("com.example.leoam.chinchonkotlin", appContext.getPackageName());
     }
 }

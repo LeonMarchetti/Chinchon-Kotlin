@@ -1,4 +1,4 @@
-package com.example.leoam.chinchonandroid;
+package com.example.leoam.chinchonkotlin;
 
 import org.junit.Test;
 

@@ -145,25 +145,13 @@
             android:layout_alignParentStart="true"
             />
 
-        <TextView
-            android:id="@+id/mj_numturno"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="@dimen/mj_fontsize"
-            android:text=""
-            android:layout_centerInParent="true"
-            android:layout_above="@+id/mj_cortar_btn"
-            android:textColor="@color/mj_cartanombre"
-            />
-
         <Button
             android:id="@+id/mj_cortar_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_cortar"
             android:layout_centerInParent="true"
-            />
+            android:text="@string/btn_cortar"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/mj_nombrecarta"

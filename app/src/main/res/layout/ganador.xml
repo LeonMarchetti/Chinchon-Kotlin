@@ -6,45 +6,52 @@
     android:background="@color/bg_mesajuego"
     >
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+
         <TextView
             android:id="@+id/g_tv_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/g_normal_fontsize"
-            />
+            android:text="@string/g_felicitaciones"
+            android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
             android:id="@+id/g_tv_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/g_normal_fontsize"
-            />
+            android:text="@string/g_ganador"
+            android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
             android:id="@+id/g_tv_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/g_normal_fontsize"
-            />
+            android:text="@string/g_puntos"
+            android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
             android:id="@+id/g_tv_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/g_normal_fontsize"
-            />
+            android:text="@string/g_contra"
+            android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
             android:id="@+id/g_tv_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/g_normal_fontsize"
-            />
+            android:text="@string/g_puntos"
+            android:textSize="@dimen/g_normal_fontsize" />
+
+        <TextView
+            android:id="@+id/g_tv_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/g_turnos"
+            android:textSize="@dimen/g_normal_fontsize" />
 
     </LinearLayout>
 
