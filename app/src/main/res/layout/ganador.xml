@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_mesajuego"
-    >
+    android:background="@color/fondo">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/g_tv_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_felicitaciones"
+            android:textColor="@color/texto"
             android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
@@ -23,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_ganador"
+            android:textColor="@color/texto"
             android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
@@ -30,6 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_puntos"
+            android:textColor="@color/texto"
             android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
@@ -37,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_contra"
+            android:textColor="@color/texto"
             android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
@@ -44,6 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_puntos"
+            android:textColor="@color/texto"
             android:textSize="@dimen/g_normal_fontsize" />
 
         <TextView
@@ -51,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_rondas"
+            android:textColor="@color/texto"
             android:textSize="@dimen/g_normal_fontsize" />
 
     </LinearLayout>
@@ -59,11 +63,10 @@
         android:id="@+id/g_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:text="@string/g_finalizar"
-        />
+        android:text="@string/g_finalizar" />
 
 </RelativeLayout>

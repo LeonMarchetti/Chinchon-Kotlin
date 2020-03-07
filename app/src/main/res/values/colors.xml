@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bg_mesajuego">#2D7E2F</color>
+    <color name="fondo">#2D7E2F</color>
+    <color name="texto">#FFFFFF</color>
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="mj_cartanombre">#000000</color>
-    <color name="ac_nombre">#000000</color>
+
     <color name="ac_deseleccionado">#A9A9A9</color>
     <color name="ac_seleccionado">#FFFF00</color>
     <color name="ac_emparejado">#00FF00</color>

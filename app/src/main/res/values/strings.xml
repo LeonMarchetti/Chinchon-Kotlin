@@ -7,6 +7,9 @@
     <string name="title_activity_partida">PartidaActivity</string>
     <string name="title_activity_registro_jugadores">RegistroJugadoresActivity</string>
 
+    <string name="nombre_jugador_1">Jugador 1</string>
+    <string name="nombre_jugador_2">Jugador 2</string>
+
     <string name="ac_acomodado">¡Juego formado!</string>
     <string name="ac_carta1">1</string>
     <string name="ac_carta2">2</string>

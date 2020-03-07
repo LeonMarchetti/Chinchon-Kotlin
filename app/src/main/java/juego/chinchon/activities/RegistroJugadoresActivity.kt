@@ -23,8 +23,15 @@ class RegistroJugadoresActivity : AppCompatActivity() {
         setContentView(R.layout.registrojugadores)
 
         rj_boton_1.setOnClickListener {
-            val nombreJugador1: String = if (rj_jugador1.text.toString() == "") "Jugador 1" else rj_jugador1.text.toString()
-            val nombreJugador2: String = if (rj_jugador2.text.toString() == "") "Jugador 2" else rj_jugador2.text.toString()
+            val nombreJugador1: String = if (rj_jugador1.text.toString() == "")
+                getString(R.string.nombre_jugador_1)
+            else
+                rj_jugador1.text.toString()
+
+            val nombreJugador2: String = if (rj_jugador2.text.toString() == "")
+                getString(R.string.nombre_jugador_2)
+            else
+                rj_jugador2.text.toString()
 
             if ((nombreJugador1 == "") or (nombreJugador2 == "")) {
                 rj_textview_1.visibility = TextView.VISIBLE

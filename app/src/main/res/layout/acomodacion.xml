@@ -1,124 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/bg_mesajuego"
-    >
+    android:background="@color/fondo"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/ac_tv_nombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/ac_nombre"
-        />
+        android:text="@string/nombre_jugador_1"
+        android:textColor="@color/texto" />
 
     <TextView
         android:id="@+id/ac_tv_corte"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/ac_nombre"
-        />
+        android:textColor="@color/texto" />
 
     <TableLayout
         android:id="@+id/ac_mano"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        >
+        android:layout_weight="1">
 
         <!-- ac_mano_1 tablerow1 -->
-        <TableRow
-            android:layout_weight="1"
-            >
+        <TableRow android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/ac_imgcarta_1_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/carta"
                 android:layout_weight="1"
-                android:tag="1"
-                />
+                android:contentDescription="@string/carta"
+                android:tag="1" />
 
             <ImageView
                 android:id="@+id/ac_imgcarta_1_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/carta"
                 android:layout_weight="1"
-                android:tag="2"
-                />
+                android:contentDescription="@string/carta"
+                android:tag="2" />
 
             <ImageView
                 android:id="@+id/ac_imgcarta_1_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/carta"
                 android:layout_weight="1"
-                android:tag="3"
-                />
+                android:contentDescription="@string/carta"
+                android:tag="3" />
 
             <ImageView
                 android:id="@+id/ac_imgcarta_1_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/carta"
                 android:layout_weight="1"
-                android:tag="4"
-                />
+                android:contentDescription="@string/carta"
+                android:tag="4" />
 
         </TableRow>
 
         <!-- ac_mano_1 tablerow2 -->
-        <TableRow
-            android:layout_weight="1"
-            >
+        <TableRow android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/ac_imgcarta_1_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/carta"
                 android:layout_weight="1"
-                android:tag="5"
-                />
+                android:contentDescription="@string/carta"
+                android:tag="5" />
 
             <ImageView
                 android:id="@+id/ac_imgcarta_1_6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/carta"
                 android:layout_weight="1"
-                android:tag="6"
-                />
+                android:contentDescription="@string/carta"
+                android:tag="6" />
 
             <ImageView
                 android:id="@+id/ac_imgcarta_1_7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/carta"
                 android:layout_weight="1"
-                android:tag="7"
-                />
+                android:contentDescription="@string/carta"
+                android:tag="7" />
 
             <ImageView
                 android:id="@+id/ac_imgcarta_1_8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/carta"
                 android:layout_weight="1"
-                android:tag="8"
-                />
+                android:contentDescription="@string/carta"
+                android:tag="8" />
 
         </TableRow>
 
@@ -128,64 +112,62 @@
         android:id="@+id/ac_errortext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:textColor="@color/texto" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/ac_buttonrow"
         android:layout_width="match_parent"
         android:layout_height="20dip"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ac_deseleccionado"
             android:layout_weight="1"
-            android:text="@string/ac_carta1"
-            />
+            android:background="@color/ac_deseleccionado"
+            android:text="@string/ac_carta1" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ac_deseleccionado"
             android:layout_weight="1"
-            android:text="@string/ac_carta2"
-            />
+            android:background="@color/ac_deseleccionado"
+            android:text="@string/ac_carta2" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ac_deseleccionado"
             android:layout_weight="1"
-            android:text="@string/ac_carta3"
-            />
+            android:background="@color/ac_deseleccionado"
+            android:text="@string/ac_carta3" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ac_deseleccionado"
             android:layout_weight="1"
-            android:text="@string/ac_carta4"
-            />
+            android:background="@color/ac_deseleccionado"
+            android:text="@string/ac_carta4" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ac_deseleccionado"
             android:layout_weight="1"
-            android:text="@string/ac_carta5"
-            />
+            android:background="@color/ac_deseleccionado"
+            android:text="@string/ac_carta5" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ac_deseleccionado"
             android:layout_weight="1"
-            android:text="@string/ac_carta6"
-            />
+            android:background="@color/ac_deseleccionado"
+            android:text="@string/ac_carta6" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/ac_deseleccionado"
             android:layout_weight="1"
-            android:text="@string/ac_carta7"
-            />
+            android:background="@color/ac_deseleccionado"
+            android:text="@string/ac_carta7" />
     </LinearLayout>
 
     <Button
@@ -193,10 +175,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:text="@string/ac_Emparejar"
-        />
+        android:layout_marginRight="10dp"
+        android:text="@string/ac_Emparejar" />
 
     <Button
         android:id="@+id/ac_desarmar_btn"
@@ -204,8 +185,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="@string/ac_Desarmar"
-        />
+        android:text="@string/ac_Desarmar" />
 
     <Button
         android:id="@+id/ac_finalizar_btn"

@@ -2,40 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_mesajuego"
-    android:orientation="vertical"
-    >
+    android:background="@color/fondo"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/main_titulo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="@dimen/main_titulo"
         android:text="@string/main_titulo"
-        />
+        android:textColor="@color/texto"
+        android:textSize="@dimen/main_titulo" />
 
     <Button
         android:id="@+id/main_btn_1"
-        android:gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:gravity="center"
         android:text="@string/main_comenzar"
-        android:textColor="#000000"
-        />
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/main_btn_2"
-        android:gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:gravity="center"
         android:text="@string/main_salir"
-        android:textColor="#000000"
-        />
+        android:textColor="#000000" />
 
 </LinearLayout>
 

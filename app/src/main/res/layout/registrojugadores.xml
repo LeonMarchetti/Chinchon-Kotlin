@@ -1,66 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_mesajuego"
-    >
+    android:background="@color/fondo"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        >
+        android:layout_marginTop="10dp">
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/rj_linear_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/rj_jugador1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/rj_jugador1"
                 android:layout_marginStart="10dp"
-                android:textSize="@dimen/rj_fontsize"
                 android:layout_weight=".30"
-                />
+                android:hint="@string/rj_jugador1"
+                android:textSize="@dimen/rj_fontsize" />
 
             <EditText
                 android:id="@+id/rj_puntos1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight=".70"
                 android:layout_marginEnd="10dp"
-                android:inputType="number"
+                android:layout_weight=".70"
                 android:hint="@string/rj_hintpuntos"
-                android:textSize="@dimen/rj_fontsize"
-                />
+                android:inputType="number"
+                android:textSize="@dimen/rj_fontsize" />
 
         </LinearLayout>
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_below="@id/rj_linear_1"
-            >
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/rj_jugador2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight=".30"
                 android:layout_marginStart="10dp"
+                android:layout_weight=".30"
                 android:hint="@string/rj_jugador2"
-                android:textSize="@dimen/rj_fontsize"
-                />
+                android:textSize="@dimen/rj_fontsize" />
 
             <EditText
                 android:id="@+id/rj_puntos2"
@@ -68,10 +58,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight=".70"
-                android:inputType="number"
                 android:hint="@string/rj_hintpuntos"
-                android:textSize="@dimen/rj_fontsize"
-                />
+                android:inputType="number"
+                android:textSize="@dimen/rj_fontsize" />
 
         </LinearLayout>
 
@@ -81,10 +70,9 @@
         android:id="@+id/rj_boton_1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/rj_continuar"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        />
+        android:text="@string/rj_continuar" />
 
     <TextView
         android:id="@+id/rj_textview_1"
@@ -92,31 +80,31 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:visibility="gone"
-        />
+        android:textColor="@color/texto"
+        android:visibility="gone" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/rj_hint1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        />
+        android:textColor="@color/texto" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/rj_hint2"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        />
+        android:textColor="@color/texto" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/rj_hint3"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        />
+        android:text="@string/rj_hint3"
+        android:textColor="@color/texto" />
 
 </LinearLayout>
