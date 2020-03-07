@@ -87,10 +87,12 @@ class AcomodarActivity : AppCompatActivity() {
                     // Hacer nada
                 }
             }
-            if (cartasSeleccionadas == 0) {
-                ac_finalizar_btn.setText(R.string.ac_Cancelar)
-            } else {
-                ac_finalizar_btn.setText(R.string.ac_Finalizar)
+            if (acomodaCortador()) {
+                if (cartasSeleccionadas == 0) {
+                    ac_finalizar_btn.setText(R.string.ac_Cancelar)
+                } else {
+                    ac_finalizar_btn.setText(R.string.ac_Finalizar)
+                }
             }
         }
     }
@@ -140,7 +142,7 @@ class AcomodarActivity : AppCompatActivity() {
 
         val puntos = jugador.mano.getPuntos(acomodadas)
 
-        if (jugadorActual == cortador) {
+        if (acomodaCortador()) {
             if (puntos > 5) {
                 val intent = Intent()
                 setResult(2, intent)
@@ -164,6 +166,16 @@ class AcomodarActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Determina si el jugador que está acomodando las cartas es el que cortó
+     * en esta ronda.
+     *
+     * @return Si el jugador cortó esta ronda.
+     */
+    private fun acomodaCortador(): Boolean {
+        return jugadorActual == cortador
+    }
+
     private fun setJugadorEnPantalla() {
         val jugador = jugadores!![jugadorActual]
 
@@ -171,11 +183,12 @@ class AcomodarActivity : AppCompatActivity() {
 
         if (cortador == jugadorActual) {
             ac_tv_corte.setText(R.string.ac_corte)
+            cartasSeleccionadas = 0
 
         } else {
             ac_tv_corte.text = ""
         }
-        if (jugador.mano.esChinchon() && jugadorActual == cortador) {
+        if (jugador.mano.esChinchon() && acomodaCortador()) {
             val intent = Intent(this@AcomodarActivity, GanadorActivity::class.java)
             intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
             intent.putExtra(Constantes.INTENT_GANADOR, jugadorActual + 1)
@@ -190,8 +203,6 @@ class AcomodarActivity : AppCompatActivity() {
                 ac_buttonrow.getChildAt(carta).setBackgroundColor(colorDeseleccionado)
             }
         }
-        cartasSeleccionadas = 0
-        ac_finalizar_btn.setText(R.string.ac_Cancelar)
         ac_errortext.text = ""
     }
 }
