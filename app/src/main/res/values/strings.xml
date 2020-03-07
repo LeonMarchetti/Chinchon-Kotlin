@@ -16,6 +16,7 @@
     <string name="ac_carta6">6</string>
     <string name="ac_carta7">7</string>
     <string name="ac_corte">Este jugador cortó</string>
+    <string name="ac_Cancelar">Cancelar</string>
     <string name="ac_Desarmar">Desarmar</string>
     <string name="ac_Emparejar">Emparejar</string>
     <string name="ac_Finalizar">Finalizar</string>

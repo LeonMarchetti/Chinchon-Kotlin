@@ -4,12 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import android.widget.*
+import android.view.View
+import android.widget.TableRow
 import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Constantes
 import juego.chinchon.Jugador
-import java.util.*
 
 import kotlinx.android.synthetic.main.acomodacion.*
 
@@ -30,6 +29,7 @@ class AcomodarActivity : AppCompatActivity() {
             }
         }
         private const val CANTIDAD_CARTAS: Int = 7
+
         @Suppress("unused")
         private const val TAG = "AcomodarActivity"
     }
@@ -42,6 +42,7 @@ class AcomodarActivity : AppCompatActivity() {
     private var jugadores: ArrayList<Jugador>? = null
     private var jugadorActual = 0
     private var cortador = 0
+    private var cartasSeleccionadas = 0
 
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
@@ -54,102 +55,113 @@ class AcomodarActivity : AppCompatActivity() {
         for (f in 0 until ac_mano.childCount) {
             fila = ac_mano.getChildAt(f) as TableRow
             for (c in 0 until fila.childCount) {
-                fila.getChildAt(c).setOnClickListener {
-                    val estaCarta: Int = it.tag.toString().toInt() - 1
-                    if (estaCarta != 8) {
-                        val estadoCarta = ac_buttonrow.getChildAt(estaCarta)
-                        when (estados[estaCarta]) {
-                            Estado.DESELECCIONADO -> {
-                                estados[estaCarta] = Estado.SELECCIONADO
-                                estadoCarta.setBackgroundColor(colorSeleccionado)
-                            }
-                            Estado.SELECCIONADO -> {
-                                estados[estaCarta] = Estado.DESELECCIONADO
-                                estadoCarta.setBackgroundColor(colorDeseleccionado)
-                            }
-                            Estado.EMPAREJADO -> {
-                                // Hacer nada
-                            }
-                        }
-                    }
-                }
+                fila.getChildAt(c).setOnClickListener(cartaClickListener)
             }
         }
 
-        ac_emparejar_btn.setOnClickListener {
-            val tmpLista = ArrayList<Int>()
-            for (i in 0 until CANTIDAD_CARTAS) {
-                if (estados[i] == Estado.SELECCIONADO) {
-                    tmpLista.add(i)
-                }
-            }
+        ac_emparejar_btn.setOnClickListener(emparejarClickListener)
+        ac_desarmar_btn.setOnClickListener(desarmarClickListener)
+        ac_finalizar_btn.setOnClickListener(finalizarClickListener)
 
-            val indices = IntArray(tmpLista.size)
-            for (i in indices.indices) {
-                indices[i] = tmpLista[i]
-            }
-
-            val mano = jugadores!![jugadorActual].mano
-            if (mano.mismoPalo(indices) || mano.mismoValor(indices)) {
-                for (carta in tmpLista) {
-                    estados[carta] = Estado.EMPAREJADO
-                    ac_buttonrow.getChildAt(carta).setBackgroundColor(colorEmparejado)
-                }
-                ac_errortext.setText(R.string.ac_acomodado)
-
-            } else {
-                ac_errortext.setText(R.string.ac_noacomodado)
-            }
-        }
-
-        ac_desarmar_btn.setOnClickListener {
-            for (i in 0 until CANTIDAD_CARTAS) {
-                estados[i] = Estado.DESELECCIONADO
-                ac_buttonrow.getChildAt(i).setBackgroundColor(colorDeseleccionado)
-            }
-        }
-
-        ac_finalizar_btn.setOnClickListener {
-            val jugador = jugadores!![jugadorActual]
-            val acomodadas = BooleanArray(7)
-            for (carta in 0 until 7) {
-                acomodadas[carta] = estados[carta] == Estado.EMPAREJADO
-            }
-
-            val puntos = jugador.mano.getPuntos(acomodadas)
-
-            if (jugadorActual == cortador) {
-                when {
-                    puntos == 0 -> {
-                        jugador.restar10()
-                    }
-                    puntos > 5 -> {
-                        val intent = Intent()
-                        setResult(2, intent)
-                        finish()
-                    }
-                    else -> {
-                        jugador.addPuntos(puntos)
-                    }
-                }
-            } else {
-                jugador.addPuntos(puntos)
-            }
-            jugadorActual++
-            if (jugadorActual < jugadores!!.size) {
-                setJugadorEnPantalla()
-
-            } else {
-                val intent = Intent()
-                intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
-                setResult(1, intent)
-                finish()
-            }
-        }
-
-        jugadorActual = 0
+        jugadorActual = cortador
 
         setJugadorEnPantalla()
+    }
+
+    private val cartaClickListener: View.OnClickListener = View.OnClickListener {
+        val estaCarta: Int = it.tag.toString().toInt() - 1
+        if (estaCarta != 8) {
+            val estadoCarta = ac_buttonrow.getChildAt(estaCarta)
+            when (estados[estaCarta]) {
+                Estado.DESELECCIONADO -> {
+                    estados[estaCarta] = Estado.SELECCIONADO
+                    estadoCarta.setBackgroundColor(colorSeleccionado)
+                    cartasSeleccionadas++
+                }
+                Estado.SELECCIONADO -> {
+                    estados[estaCarta] = Estado.DESELECCIONADO
+                    estadoCarta.setBackgroundColor(colorDeseleccionado)
+                    cartasSeleccionadas--
+                }
+                Estado.EMPAREJADO -> {
+                    // Hacer nada
+                }
+            }
+            if (cartasSeleccionadas == 0) {
+                ac_finalizar_btn.setText(R.string.ac_Cancelar)
+            } else {
+                ac_finalizar_btn.setText(R.string.ac_Finalizar)
+            }
+        }
+    }
+
+    private val emparejarClickListener: View.OnClickListener = View.OnClickListener {
+        val tmpLista = ArrayList<Int>()
+        for (i in 0 until CANTIDAD_CARTAS) {
+            if (estados[i] == Estado.SELECCIONADO) {
+                tmpLista.add(i)
+            }
+        }
+
+        val indices = IntArray(tmpLista.size)
+        for (i in indices.indices) {
+            indices[i] = tmpLista[i]
+        }
+
+        val mano = jugadores!![jugadorActual].mano
+        if (mano.mismoPalo(indices) || mano.mismoValor(indices)) {
+            for (carta in tmpLista) {
+                estados[carta] = Estado.EMPAREJADO
+                ac_buttonrow.getChildAt(carta).setBackgroundColor(colorEmparejado)
+            }
+            ac_errortext.setText(R.string.ac_acomodado)
+
+        } else {
+            ac_errortext.setText(R.string.ac_noacomodado)
+        }
+    }
+
+    private val desarmarClickListener: View.OnClickListener = View.OnClickListener {
+        for (i in 0 until CANTIDAD_CARTAS) {
+            estados[i] = Estado.DESELECCIONADO
+            ac_buttonrow.getChildAt(i).setBackgroundColor(colorDeseleccionado)
+        }
+    }
+
+    /**
+     * Click listener del botón "Finalizar".
+     */
+    private val finalizarClickListener: View.OnClickListener = View.OnClickListener {
+        val jugador = jugadores!![jugadorActual]
+        val acomodadas = BooleanArray(7)
+        for (carta in 0 until 7) {
+            acomodadas[carta] = estados[carta] == Estado.EMPAREJADO
+        }
+
+        val puntos = jugador.mano.getPuntos(acomodadas)
+
+        if (jugadorActual == cortador) {
+            if (puntos > 5) {
+                val intent = Intent()
+                setResult(2, intent)
+                finish()
+            } else {
+                if (puntos == 0) {
+                    jugador.restar10()
+                } else {
+                    jugador.addPuntos(puntos)
+                }
+                jugadorActual = 1 - jugadorActual
+                setJugadorEnPantalla()
+            }
+        } else {
+            jugador.addPuntos(puntos)
+
+            val intent = Intent()
+            intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
+            setResult(1, intent)
+            finish()
+        }
     }
 
     private fun setJugadorEnPantalla() {
@@ -178,6 +190,8 @@ class AcomodarActivity : AppCompatActivity() {
                 ac_buttonrow.getChildAt(carta).setBackgroundColor(colorDeseleccionado)
             }
         }
+        cartasSeleccionadas = 0
+        ac_finalizar_btn.setText(R.string.ac_Cancelar)
         ac_errortext.text = ""
     }
 }

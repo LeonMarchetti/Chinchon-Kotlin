@@ -8,12 +8,14 @@ import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Constantes
 import juego.chinchon.Jugador
 import kotlinx.android.synthetic.main.registrojugadores.*
-import java.util.*
+
 
 class RegistroJugadoresActivity : AppCompatActivity() {
 
     companion object {
         private const val CANT_JUGADORES = 2
+        @Suppress("unused")
+        private const val TAG = "RegistroJugadoresActivity"
     }
 
     public override fun onCreate(icicle: Bundle?) {

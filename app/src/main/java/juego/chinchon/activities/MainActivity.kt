@@ -8,6 +8,11 @@ import kotlinx.android.synthetic.main.main.*
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        @Suppress("unused")
+        private const val TAG = "MainActivity"
+    }
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)

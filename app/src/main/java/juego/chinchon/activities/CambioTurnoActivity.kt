@@ -16,6 +16,11 @@ import kotlinx.android.synthetic.main.cambioturno.*
  */
 class CambioTurnoActivity : AppCompatActivity() {
 
+    companion object {
+        @Suppress("unused")
+        private const val TAG = "CambioTurnoActivity"
+    }
+
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         this.setContentView(R.layout.cambioturno)

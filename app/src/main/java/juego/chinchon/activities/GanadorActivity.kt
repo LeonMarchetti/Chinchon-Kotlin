@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Constantes
 import juego.chinchon.Jugador
-import java.util.*
 import kotlinx.android.synthetic.main.ganador.*
 
 /**
@@ -14,6 +13,11 @@ import kotlinx.android.synthetic.main.ganador.*
  * @author LeoAM
  */
 class GanadorActivity : AppCompatActivity() {
+
+    companion object {
+        @Suppress("unused")
+        private const val TAG = "GanadorActivity"
+    }
 
     /**
      * Called when the activity is first created.
