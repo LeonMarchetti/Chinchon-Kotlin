@@ -11,7 +11,7 @@ object Constantes {
     const val INTENT_CHINCHON = "3"
     const val INTENT_JUGADOR = "4"
     const val INTENT_CARTA = "5"
-    const val INTENT_NUMEROTURNO = "6"
+    const val INTENT_NUMERORONDA = "6"
     const val GANADOR_1 = 0
     const val GANADOR_2 = 1
     const val EMPATE = 2

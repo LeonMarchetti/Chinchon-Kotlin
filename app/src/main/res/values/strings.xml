@@ -34,7 +34,7 @@
     <string name="g_ganador">Ganó: %1$s</string>
     <string name="g_jugador">Jugador: %1$s</string>
     <string name="g_puntos">con %1$d puntos</string>
-    <string name="g_turnos">en %1$d turnos</string>
+    <string name="g_rondas">en %1$d rondas</string>
 
     <string name="main_titulo">Chinchon Kotlin</string>
     <string name="main_comenzar">Comenzar partida</string>

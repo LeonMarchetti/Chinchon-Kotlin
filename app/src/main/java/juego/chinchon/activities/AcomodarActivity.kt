@@ -38,7 +38,6 @@ class AcomodarActivity : AppCompatActivity() {
     private val colorSeleccionado by lazy { ContextCompat.getColor(this, R.color.ac_seleccionado) }
     private val colorEmparejado by lazy { ContextCompat.getColor(this, R.color.ac_emparejado) }
 
-    //private val estados: ArrayList<Estado> = ArrayList<Estado>(CANTIDAD_CARTAS)
     private val estados: ArrayList<Estado> = arrayListOf(Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO)
     private var jugadores: ArrayList<Jugador>? = null
     private var jugadorActual = 0

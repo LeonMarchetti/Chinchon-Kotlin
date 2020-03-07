@@ -50,7 +50,7 @@
             android:id="@+id/g_tv_6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/g_turnos"
+            android:text="@string/g_rondas"
             android:textSize="@dimen/g_normal_fontsize" />
 
     </LinearLayout>

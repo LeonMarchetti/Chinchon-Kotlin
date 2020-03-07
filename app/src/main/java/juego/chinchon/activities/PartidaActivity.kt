@@ -40,6 +40,7 @@ class PartidaActivity : AppCompatActivity() {
     private var numJugador = 0
     private var jugadorInicial = 0
     private var numTurno = TURNO_INICIAL
+    private var numRonda = 1
     private var jugadores: ArrayList<Jugador>
     private var mazo: Mazo? = null
     private var pila: Mazo? = null
@@ -237,6 +238,7 @@ class PartidaActivity : AppCompatActivity() {
 
         fase = Fase.ROBAR_CARTA
         numTurno = TURNO_INICIAL
+        numRonda++
 
         carta = CARTA_NOSELECT
 
@@ -262,7 +264,7 @@ class PartidaActivity : AppCompatActivity() {
                         intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
                         intent.putExtra(Constantes.INTENT_GANADOR, ganador)
                         intent.putExtra(Constantes.INTENT_CHINCHON, false)
-                        intent.putExtra(Constantes.INTENT_NUMEROTURNO, numTurno)
+                        intent.putExtra(Constantes.INTENT_NUMERORONDA, numRonda)
                         finish()
                         startActivity(intent)
                     }

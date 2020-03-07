@@ -2,8 +2,6 @@ package juego.chinchon.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Button
-import android.widget.TextView
 import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Constantes
 import juego.chinchon.Jugador
@@ -27,7 +25,7 @@ class GanadorActivity : AppCompatActivity() {
         val jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
         val ganador = intent.getIntExtra(Constantes.INTENT_GANADOR, Constantes.EMPATE)
         val hizoChinchon = intent.getBooleanExtra(Constantes.INTENT_CHINCHON, false)
-        val numTurno = intent.getIntExtra(Constantes.INTENT_NUMEROTURNO, 0)
+        val numRonda = intent.getIntExtra(Constantes.INTENT_NUMERORONDA, 0)
 
         g_btn.setOnClickListener {
             finish()
@@ -62,7 +60,7 @@ class GanadorActivity : AppCompatActivity() {
             g_tv_2.textSize = resources.getDimension(R.dimen.g_winner_fontsize)
             g_tv_3.textSize = resources.getDimension(R.dimen.g_winner_fontsize)
         }
-        text6 = getString(R.string.g_turnos, numTurno)
+        text6 = getString(R.string.g_rondas, numRonda)
 
         g_tv_1.text = text1
         g_tv_2.text = text2
