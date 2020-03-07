@@ -41,13 +41,13 @@ class PartidaActivity : AppCompatActivity() {
     private var jugadorInicial = 0
     private var numTurno = TURNO_INICIAL
     private var numRonda = 1
-    private var jugadores: ArrayList<Jugador>
+    private var jugadores = ArrayList<Jugador>()
     private var mazo: Mazo? = null
     private var pila: Mazo? = null
 
     private var cartaCorte: Carta? = null
 
-    private val tablas: ArrayList<TableLayout>
+    private var tablas = ArrayList<TableLayout>()
 
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
@@ -75,70 +75,8 @@ class PartidaActivity : AppCompatActivity() {
         mj_nombrejugador_2.text = this.jugadores[1].nombre
         mj_puntos_2.text = getString(R.string.mj_puntos, this.jugadores[1].puntos)
 
-        mj_mazo.setOnClickListener {
-            when (fase) {
-                Fase.ROBAR_CARTA -> {
-
-                    if (this.mazo!!.cantidad == 0) {
-                        this.mazo!!.volcar(pila)
-                        this.mazo!!.setImagenTope(mj_mazo, true)
-                        this.pila!!.setImagenTope(mj_pila, false)
-                    }
-
-                    this.jugadores[numJugador].mano.addCarta(mazo!!.robar())
-                    this.fase = Fase.TIRAR_CARTA
-                    this.jugadores[numJugador].mano.toTableLayout(tablas[numJugador], true)
-                    if (mazo!!.cantidad == 0) {
-                        mazo!!.setImagenTope(mj_mazo, true)
-                    }
-                    carta = CARTA_NOSELECT
-
-                    mj_nombrecarta.text = ""
-                }
-                Fase.TIRAR_CARTA -> {
-
-                    val builder = AlertDialog.Builder(this@PartidaActivity)
-                    builder
-                            .setMessage("¿Desea renunciar?")
-                            .setPositiveButton("Si") { _, _ ->
-                                val ganador: Int = if (numJugador == 0) {
-                                    Constantes.GANADOR_2
-                                } else {
-                                    Constantes.GANADOR_1
-                                }
-                                val i = Intent(this@PartidaActivity, GanadorActivity::class.java)
-                                i.putExtra(Constantes.INTENT_JUGADORES, jugadores)
-                                i.putExtra(Constantes.INTENT_GANADOR, ganador)
-                                finish()
-                                startActivity(i)
-                            }
-                            .setNegativeButton("No", null)
-
-                    val dialog = builder.create()
-                    dialog.show()
-                }
-            }
-        }
-
-        mj_pila.setOnClickListener {
-            when (fase) {
-                Fase.ROBAR_CARTA -> if (!pila!!.vacio()) {
-                    this.jugadores[numJugador].mano.addCarta(pila!!.robar())
-                    fase = Fase.TIRAR_CARTA
-                    this.jugadores[numJugador].mano.toTableLayout(this.tablas[numJugador], true)
-                    carta = 0
-                    pila!!.setImagenTope(mj_pila, false)
-                }
-                Fase.TIRAR_CARTA -> if (carta != CARTA_NOSELECT) {
-                    pila!!.colocar(this.jugadores[numJugador].mano.tirarCarta(carta)!!)
-                    carta = CARTA_NOSELECT
-
-                    mj_nombrecarta.text = ""
-
-                    cambioTurno()
-                }
-            }
-        }
+        mj_mazo.setOnClickListener(mazoClickListener)
+        mj_pila.setOnClickListener(pilaClickListener)
 
         pila!!.setImagenTope(mj_pila, false)
 
@@ -157,30 +95,101 @@ class PartidaActivity : AppCompatActivity() {
         numJugador = jugadorInicial
     }
 
+    private val cartaClickListener = View.OnClickListener {
+        val estaCarta: Int = it.tag.toString().toInt()
+        if (!((estaCarta == 8) and (fase == Fase.ROBAR_CARTA))) {
+            if (carta == CARTA_NOSELECT) {
+                carta = estaCarta
+                mj_nombrecarta.text = jugadores[numJugador].mano.getCarta(carta).toString()
+
+            } else { // Intercambio las dos cartas seleccionadas:
+                jugadores[numJugador].mano.swapCartas(carta, estaCarta)
+                jugadores[numJugador].mano.toTableLayout(tablas[numJugador], fase == Fase.TIRAR_CARTA)
+
+                carta = CARTA_NOSELECT
+                mj_nombrecarta.text = ""
+            }
+        }
+    }
+
+    private val mazoClickListener = View.OnClickListener {
+        when (fase) {
+            Fase.ROBAR_CARTA -> {
+
+                if (this.mazo!!.cantidad == 0) {
+                    this.mazo!!.volcar(pila)
+                    this.mazo!!.setImagenTope(mj_mazo, true)
+                    this.pila!!.setImagenTope(mj_pila, false)
+                }
+
+                this.jugadores[numJugador].mano.addCarta(mazo!!.robar())
+                this.fase = Fase.TIRAR_CARTA
+                this.jugadores[numJugador].mano.toTableLayout(tablas[numJugador], true)
+                if (mazo!!.cantidad == 0) {
+                    mazo!!.setImagenTope(mj_mazo, true)
+                }
+                carta = CARTA_NOSELECT
+
+                mj_nombrecarta.text = ""
+            }
+            Fase.TIRAR_CARTA -> {
+
+                val builder = AlertDialog.Builder(this@PartidaActivity)
+                builder
+                        .setMessage("¿Desea renunciar?")
+                        .setPositiveButton("Si") { _, _ ->
+                            val ganador: Int = if (numJugador == 0) {
+                                Constantes.GANADOR_2
+                            } else {
+                                Constantes.GANADOR_1
+                            }
+                            val i = Intent(this@PartidaActivity, GanadorActivity::class.java)
+                            i.putExtra(Constantes.INTENT_JUGADORES, jugadores)
+                            i.putExtra(Constantes.INTENT_GANADOR, ganador)
+                            finish()
+                            startActivity(i)
+                        }
+                        .setNegativeButton("No", null)
+
+                val dialog = builder.create()
+                dialog.show()
+            }
+        }
+    }
+
+    private val pilaClickListener = View.OnClickListener {
+        when (fase) {
+            Fase.ROBAR_CARTA -> if (!pila!!.vacio()) {
+                this.jugadores[numJugador].mano.addCarta(pila!!.robar())
+                fase = Fase.TIRAR_CARTA
+                this.jugadores[numJugador].mano.toTableLayout(this.tablas[numJugador], true)
+                carta = 0
+                pila!!.setImagenTope(mj_pila, false)
+            }
+            Fase.TIRAR_CARTA -> if (carta != CARTA_NOSELECT) {
+                pila!!.colocar(this.jugadores[numJugador].mano.tirarCarta(carta)!!)
+                carta = CARTA_NOSELECT
+
+                mj_nombrecarta.text = ""
+
+                cambioTurno()
+            }
+        }
+    }
+
     private fun mostrarBotonCortar() {
         mj_cortar_btn.visibility = View.VISIBLE
+    }
+
+    private fun ocultarBotonCortar() {
+        mj_cortar_btn.visibility = View.INVISIBLE
     }
 
     private fun setClickListeners(tabla: TableLayout) {
         for (i in 0..1) {
             val tr = tabla.getChildAt(i) as TableRow
             for (j in 0..3) {
-                tr.getChildAt(j).setOnClickListener {
-                    val estaCarta: Int = it.tag.toString().toInt()
-                    if (!((estaCarta == 8) and (fase == Fase.ROBAR_CARTA))) {
-                        if (carta == CARTA_NOSELECT) {
-                            carta = estaCarta
-                            mj_nombrecarta.text = this.jugadores[numJugador].mano.getCarta(carta).toString()
-
-                        } else { // Intercambio las dos cartas seleccionadas:
-                            this.jugadores[numJugador].mano.swapCartas(carta, estaCarta)
-                            this.jugadores[numJugador].mano.toTableLayout(this.tablas[numJugador], fase == Fase.TIRAR_CARTA)
-
-                            carta = CARTA_NOSELECT
-                            mj_nombrecarta.text = ""
-                        }
-                    }
-                }
+                tr.getChildAt(j).setOnClickListener(cartaClickListener)
             }
         }
     }
@@ -242,6 +251,7 @@ class PartidaActivity : AppCompatActivity() {
 
         carta = CARTA_NOSELECT
 
+        ocultarBotonCortar()
         mj_nombrecarta.text = ""
     }
 
