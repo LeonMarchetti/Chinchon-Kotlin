@@ -30,6 +30,7 @@ class PartidaActivity : AppCompatActivity() {
         private const val TURNO_INICIAL = 1
         private const val CARTA_NOSELECT = 0
         private const val RC_CORTE = 1
+        private const val RC_CAMBIOTURNO = 2
 
         @Suppress("unused")
         private const val TAG = "PartidaActivity"
@@ -80,18 +81,7 @@ class PartidaActivity : AppCompatActivity() {
 
         pila!!.setImagenTope(mj_pila, false)
 
-        mj_cortar_btn.setOnClickListener {
-            if (fase == Fase.TIRAR_CARTA) {
-                if (carta != CARTA_NOSELECT) {
-                    cartaCorte = this.jugadores[numJugador].mano.tirarCarta(carta)
-
-                    val i = Intent(this@PartidaActivity, AcomodarActivity::class.java)
-                    i.putExtra(Constantes.INTENT_CORTE, numJugador)
-                    i.putExtra(Constantes.INTENT_JUGADORES, this.jugadores)
-                    startActivityForResult(i, RC_CORTE)
-                }
-            }
-        }
+        mj_cortar_btn.setOnClickListener(cortarClickListener)
         numJugador = jugadorInicial
     }
 
@@ -177,6 +167,19 @@ class PartidaActivity : AppCompatActivity() {
         }
     }
 
+    private val cortarClickListener = View.OnClickListener {
+        if (fase == Fase.TIRAR_CARTA) {
+            if (carta != CARTA_NOSELECT) {
+                cartaCorte = this.jugadores[numJugador].mano.tirarCarta(carta)
+
+                val intent = Intent(this@PartidaActivity, AcomodarActivity::class.java)
+                intent.putExtra(Constantes.INTENT_CORTE, numJugador)
+                intent.putExtra(Constantes.INTENT_JUGADORES, this.jugadores)
+                startActivityForResult(intent, RC_CORTE)
+            }
+        }
+    }
+
     private fun mostrarBotonCortar() {
         mj_cortar_btn.visibility = View.VISIBLE
     }
@@ -202,26 +205,7 @@ class PartidaActivity : AppCompatActivity() {
         val intent = Intent(this@PartidaActivity, CambioTurnoActivity::class.java)
         intent.putExtra(Constantes.INTENT_CARTA, pila!!.tope())
         intent.putExtra(Constantes.INTENT_JUGADOR, jugadores[numJugador])
-        startActivity(intent)
-
-        if (numJugador == 0) {
-            tablas[0].visibility = TableLayout.VISIBLE
-            tablas[1].visibility = TableLayout.GONE
-        } else {
-            tablas[1].visibility = TableLayout.VISIBLE
-            tablas[0].visibility = TableLayout.GONE
-        }
-        jugadores[numJugador].mano.toTableLayout(tablas[numJugador], false)
-        if (mazo!!.vacio()) {
-            mazo!!.volcar(pila)
-        }
-
-        pila!!.setImagenTope(mj_pila, false)
-
-        numTurno++
-        if (numTurno > TURNO_INICIAL + 1) {
-            mostrarBotonCortar()
-        }
+        startActivityForResult(intent, RC_CAMBIOTURNO)
     }
 
     private fun cambioRonda() {
@@ -257,38 +241,54 @@ class PartidaActivity : AppCompatActivity() {
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_CORTE) {
-            when (resultCode) {
-                1 -> {
-                    jugadores = data.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
+        when (requestCode) {
+            RC_CORTE -> {
+                when (resultCode) {
+                    1 -> {
+                        jugadores = data.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
 
-                    val v1 = jugadores[0].estaVencido()
-                    val v2 = jugadores[1].estaVencido()
-                    if (v1 || v2) {
-                        var ganador = Constantes.EMPATE
-                        if (v1 xor v2) {
-                            ganador = if (v2) Constantes.GANADOR_1 else Constantes.GANADOR_2
+                        val v1 = jugadores[0].estaVencido()
+                        val v2 = jugadores[1].estaVencido()
+                        if (v1 || v2) {
+                            var ganador = Constantes.EMPATE
+                            if (v1 xor v2) {
+                                ganador = if (v2) Constantes.GANADOR_1 else Constantes.GANADOR_2
+                            }
+
+                            val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
+                            intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
+                            intent.putExtra(Constantes.INTENT_GANADOR, ganador)
+                            intent.putExtra(Constantes.INTENT_CHINCHON, false)
+                            intent.putExtra(Constantes.INTENT_NUMERORONDA, numRonda)
+                            finish()
+                            startActivity(intent)
                         }
-
-                        val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
-                        intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
-                        intent.putExtra(Constantes.INTENT_GANADOR, ganador)
-                        intent.putExtra(Constantes.INTENT_CHINCHON, false)
-                        intent.putExtra(Constantes.INTENT_NUMERORONDA, numRonda)
-                        finish()
-                        startActivity(intent)
+                        cambioRonda()
                     }
-                    cambioRonda()
-                }
-                2 -> {
-                    jugadores[numJugador].mano.addCarta(cartaCorte)
-                    jugadores[numJugador].mano.toTableLayout(tablas[numJugador], true)
-                    carta = CARTA_NOSELECT
+                    2 -> {
+                        jugadores[numJugador].mano.addCarta(cartaCorte)
+                        jugadores[numJugador].mano.toTableLayout(tablas[numJugador], true)
+                        carta = CARTA_NOSELECT
 
-                    mj_nombrecarta.text = ""
-                    Toast.makeText(this, getText(R.string.mj_malcorte), Toast.LENGTH_SHORT).show()
+                        mj_nombrecarta.text = ""
+                        Toast.makeText(this, getText(R.string.mj_malcorte), Toast.LENGTH_SHORT).show()
+                    }
                 }
-                else -> {
+            }
+            RC_CAMBIOTURNO -> {
+                tablas[numJugador].visibility = TableLayout.VISIBLE
+                tablas[1 - numJugador].visibility = TableLayout.GONE
+
+                jugadores[numJugador].mano.toTableLayout(tablas[numJugador], false)
+                if (mazo!!.vacio()) {
+                    mazo!!.volcar(pila)
+                }
+
+                pila!!.setImagenTope(mj_pila, false)
+
+                numTurno++
+                if (numTurno > TURNO_INICIAL + 1) {
+                    mostrarBotonCortar()
                 }
             }
         }

@@ -1,5 +1,6 @@
 package juego.chinchon.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.leoam.chinchonkotlin.R
@@ -29,6 +30,8 @@ class CambioTurnoActivity : AppCompatActivity() {
         val jugador = intent.getSerializableExtra(Constantes.INTENT_JUGADOR) as Jugador
 
         ct_boton.setOnClickListener {
+            val intent = Intent()
+            setResult(0, intent)
             finish()
         }
         ct_carta.setImageResource(resources.getIdentifier(carta.imagePath, "drawable", this.packageName))
