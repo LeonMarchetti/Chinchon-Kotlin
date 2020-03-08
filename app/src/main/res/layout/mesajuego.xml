@@ -149,17 +149,6 @@
             android:textColor="@color/texto"
             android:textSize="@dimen/mj_fontsize" />
 
-        <!--
-        <TextView
-            android:id="@+id/mj_turno_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/mj_cortar_btn"
-            android:layout_centerHorizontal="true"
-            android:text="Turno "
-            />
-        -->
-
         <ImageView
             android:id="@+id/mj_pila"
             android:layout_width="wrap_content"

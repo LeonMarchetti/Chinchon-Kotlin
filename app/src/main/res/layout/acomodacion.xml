@@ -114,60 +114,75 @@
         android:layout_height="wrap_content"
         android:textColor="@color/texto" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/ac_buttonrow"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="20dip"
         android:orientation="horizontal">
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/ac_deseleccionado"
-            android:text="@string/ac_carta1" />
+            android:text="@string/ac_carta1"
+            android:textColor="@color/ac_textoBarraBotones" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/ac_deseleccionado"
-            android:text="@string/ac_carta2" />
+            android:text="@string/ac_carta2"
+            android:textColor="@color/ac_textoBarraBotones" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/ac_deseleccionado"
-            android:text="@string/ac_carta3" />
+            android:text="@string/ac_carta3"
+            android:textColor="@color/ac_textoBarraBotones" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/ac_deseleccionado"
-            android:text="@string/ac_carta4" />
+            android:text="@string/ac_carta4"
+            android:textColor="@color/ac_textoBarraBotones" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/ac_deseleccionado"
-            android:text="@string/ac_carta5" />
+            android:text="@string/ac_carta5"
+            android:textColor="@color/ac_textoBarraBotones" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/ac_deseleccionado"
-            android:text="@string/ac_carta6" />
+            android:text="@string/ac_carta6"
+            android:textColor="@color/ac_textoBarraBotones" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/ac_deseleccionado"
-            android:text="@string/ac_carta7" />
+            android:text="@string/ac_carta7"
+            android:textColor="@color/ac_textoBarraBotones" />
     </LinearLayout>
 
     <Button
