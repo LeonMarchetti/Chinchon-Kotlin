@@ -5,7 +5,6 @@ import android.widget.TableLayout
 import android.widget.TableRow
 import java.io.Serializable
 import java.util.*
-import android.util.Log
 
 /**
  * Clase Mano, representa el conjunto de cartas en "la mano" del jugador.
@@ -246,8 +245,8 @@ class Mano internal constructor() : Serializable {
      * @param octavaCarta Indica si se tiene que mostrar la octava carta de la
      * mano.
      */
-    fun toTableLayout(tabla: TableLayout?, octavaCarta: Boolean) {
-        val res = tabla!!.resources
+    fun toTableLayout(tabla: TableLayout, octavaCarta: Boolean) {
+        val res = tabla.resources
         val defPackage = tabla.context.packageName
         val defType = "drawable"
         if (tabla.childCount != 2) {

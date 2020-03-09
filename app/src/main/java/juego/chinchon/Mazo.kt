@@ -8,6 +8,8 @@ import java.util.*
  * para los cuatro palos más dos comodines.
  * También se utiliza para representar al pozo de descarte, al cual se le
  * colocan las cartas que descarta cada jugador durante el transcurso del juego.
+ *
+ * @param vacio Indica si hay que construir el mazo vacío (para el pozo de descarte) o lleno (para el mazo principal).
  * @author LeoAM
  */
 class Mazo(vacio: Boolean) {
@@ -163,11 +165,6 @@ class Mazo(vacio: Boolean) {
         private const val MAXCartas = 50
     }
 
-    /**
-     * Constructor de la clase Mazo. Puede crear el mazo vacío o con las cartas.
-     * @param vacio Indica si hay que construir el mazo vacío (para el pozo de
-     * descarte) o lleno (para el mazo principal).
-     */
     init {
         if (vacio) {
             cantidad = 0
