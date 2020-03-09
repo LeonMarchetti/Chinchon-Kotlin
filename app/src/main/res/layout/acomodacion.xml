@@ -18,6 +18,13 @@
         android:layout_height="wrap_content"
         android:textColor="@color/texto" />
 
+    <TextView
+        android:id="@+id/ac_tv_puntos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ac_sumapuntos"
+        android:textColor="@color/texto" />
+
     <TableLayout
         android:id="@+id/ac_mano"
         android:layout_width="match_parent"

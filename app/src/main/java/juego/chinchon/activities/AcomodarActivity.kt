@@ -65,6 +65,8 @@ class AcomodarActivity : AppCompatActivity() {
 
         jugadorActual = cortador
 
+        calcularPuntos()
+
         setJugadorEnPantalla()
     }
 
@@ -117,6 +119,7 @@ class AcomodarActivity : AppCompatActivity() {
                 ac_buttonrow.getChildAt(carta).setBackgroundColor(colorEmparejado)
             }
             ac_errortext.setText(R.string.ac_acomodado)
+            calcularPuntos()
 
         } else {
             ac_errortext.setText(R.string.ac_noacomodado)
@@ -128,6 +131,7 @@ class AcomodarActivity : AppCompatActivity() {
             estados[i] = Estado.DESELECCIONADO
             ac_buttonrow.getChildAt(i).setBackgroundColor(colorDeseleccionado)
         }
+        calcularPuntos()
     }
 
     /**
@@ -155,6 +159,7 @@ class AcomodarActivity : AppCompatActivity() {
                 }
                 jugadorActual = 1 - jugadorActual
                 setJugadorEnPantalla()
+                calcularPuntos()
             }
         } else {
             jugador.addPuntos(puntos)
@@ -204,5 +209,24 @@ class AcomodarActivity : AppCompatActivity() {
             }
         }
         ac_errortext.text = ""
+    }
+
+    /**
+     * Calcula los puntos que va a sumar el jugador y los puntos que va a tener
+     * en total si acomoda las cartas. Lo muestra en un TextView.
+     */
+    private fun calcularPuntos() {
+        val jugador: Jugador? = jugadores?.get(jugadorActual)
+        val puntosAhora = jugador!!.puntos
+        val acomodaciones = estados.map { it == Estado.EMPAREJADO }.toBooleanArray()
+        val puntosTurno = jugador.mano.getPuntos(acomodaciones)
+
+        if (jugadorActual == cortador && puntosTurno == 0) {
+            val puntosDespues = puntosAhora - 10
+            ac_tv_puntos.text = getString(R.string.ac_restapuntos, puntosDespues)
+        } else {
+            val puntosDespues = puntosAhora + puntosTurno
+            ac_tv_puntos.text = getString(R.string.ac_sumapuntos, puntosTurno, puntosDespues)
+        }
     }
 }

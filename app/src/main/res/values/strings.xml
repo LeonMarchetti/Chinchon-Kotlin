@@ -25,6 +25,8 @@
     <string name="ac_Finalizar">Finalizar</string>
     <string name="ac_noacomodado">¡No forman un juego!</string>
     <string name="ac_nombre">Jugador: %1$s: %2$d puntos.</string>
+    <string name="ac_sumapuntos">Sumás %d, pasás a tener %d puntos.</string>
+    <string name="ac_restapuntos">Restás 10, pasás a tener %d puntos.</string>
 
     <string name="ct_turno_de">Turno de %1$s</string>
 
