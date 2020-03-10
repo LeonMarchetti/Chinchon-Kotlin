@@ -5,12 +5,12 @@
     android:background="@color/fondo"
     android:orientation="vertical">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:id="@+id/rj_linear_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight=".30"
                 android:hint="@string/rj_jugador1"
-                android:textSize="@dimen/rj_fontsize" />
+                android:textSize="@dimen/rj_fontsize"
+                android:autofillHints="name"
+                android:inputType="text" />
 
             <EditText
                 android:id="@+id/rj_puntos1"
@@ -33,11 +35,12 @@
                 android:layout_weight=".70"
                 android:hint="@string/rj_hintpuntos"
                 android:inputType="number"
-                android:textSize="@dimen/rj_fontsize" />
+                android:textSize="@dimen/rj_fontsize"
+                android:autofillHints="number" />
 
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rj_linear_1"
@@ -50,7 +53,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight=".30"
                 android:hint="@string/rj_jugador2"
-                android:textSize="@dimen/rj_fontsize" />
+                android:textSize="@dimen/rj_fontsize"
+                android:inputType="text"
+                android:autofillHints="name" />
 
             <EditText
                 android:id="@+id/rj_puntos2"
@@ -60,7 +65,8 @@
                 android:layout_weight=".70"
                 android:hint="@string/rj_hintpuntos"
                 android:inputType="number"
-                android:textSize="@dimen/rj_fontsize" />
+                android:textSize="@dimen/rj_fontsize"
+                android:autofillHints="number" />
 
         </LinearLayout>
 
