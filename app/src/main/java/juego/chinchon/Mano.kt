@@ -1,9 +1,6 @@
 package juego.chinchon
 
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TableLayout
-import android.widget.TableRow
+import android.widget.*
 import java.io.Serializable
 import java.util.*
 
@@ -173,17 +170,11 @@ class Mano internal constructor() : Serializable {
             var aplicaComodin = hayComodin
             for (i in 1 until tmpSize) {
                 c = tmp[i]
-                if (c!!.palo != paloJuego) { // Si el palo es distinto no hay juego
+                if (c!!.palo != paloJuego) {
                     return false
                 }
-                /*
-                    Si el valor de esta carta no es consecutivo a la anterior no
-                    hay juego. Si hay un comodin entonces se puede permitir que
-                    éste reemplaze a una carta que esté en el medio entre dos
-                    cartas.
-                */if (c.valor != valorAnt + 1) {
-                    aplicaComodin = if (aplicaComodin && c.valor == valorAnt + 2) { /* "aplicaComodin" cambia a falso, ya que un comodín
-                        solo puede reemplazar a una sola carta. */
+                if (c.valor != valorAnt + 1) {
+                    aplicaComodin = if (aplicaComodin && c.valor == valorAnt + 2) {
                         false
                     } else {
                         return false
@@ -200,7 +191,8 @@ class Mano internal constructor() : Serializable {
      * Indica si las cartas de la mano formán chinchón. Se forma chinchón cuando
      * las 7 cartas son del mismo palo y además tienen valores numéricos
      * consecutivos. Ejemplo: 1, 2, 3, 4, 5, 6, 7 de Oro.
-     * @return Si hay chinchón en la mano,
+     *
+     * @return Si hay chinchón en la mano.
      */
     fun esChinchon(): Boolean {
         val tmp = ArrayList(cartas)
@@ -240,52 +232,28 @@ class Mano internal constructor() : Serializable {
     }
 
     /**
-     * Coloca en una TableLayout las cartas en la mano del jugador, 4 por fila,
-     * para una tabla de 2 filas y 4 columnas.
-     * @param tabla La tabla donde almacenar las imágenes de las cartas.
-     * @param octavaCarta Indica si se tiene que mostrar la octava carta de la
-     * mano.
+     * Coloca en un GridLayout las cartas en la mano del jugador.
+     *
+     * @param gridLayout La grilla donde almacenar las cartas.
+     * @param octavaCarta Indica si se tiene que mostrar la octava carta de la mano.
      */
-    fun toTableLayout(tabla: TableLayout, octavaCarta: Boolean) {
-        val res = tabla.resources
-        val defPackage = tabla.context.packageName
-        val defType = "drawable"
-        if (tabla.childCount != 2) {
-            return
-        }
-
-        val tableRow1 = tabla.getChildAt(0) as TableRow
-        if (tableRow1.childCount != 4) {
-            return
-        }
-        for (index in 0..3) {
+    fun toGridLayout(gridLayout: GridLayout, hayOctavaCarta: Boolean) {
+        for (index in 0 until 7) {
             val carta       = cartas[index]
-            val frameLayout = tableRow1.getChildAt(index) as FrameLayout
+            val frameLayout = gridLayout.getChildAt(index) as FrameLayout
             val imageView   = frameLayout.getChildAt(0) as ImageView
-            val imageId     = res.getIdentifier(carta!!.imagePath, defType, defPackage)
+            val imageId     = gridLayout.resources.getIdentifier(carta!!.imagePath, "drawable", gridLayout.context.packageName)
             imageView.setImageResource(imageId)
         }
 
-        val tableRow2 = tabla.getChildAt(1) as TableRow
-        if (tableRow2.childCount != 4) {
-            return
-        }
-        for (index in 0..2) {
-            val carta       = cartas[index + 4]
-            val frameLayout = tableRow2.getChildAt(index) as FrameLayout
-            val imageView   = frameLayout.getChildAt(0) as ImageView
-            val imageId     = res.getIdentifier(carta!!.imagePath, defType, defPackage)
-            imageView.setImageResource(imageId)
-        }
-
-        val frameLayout = tableRow2.getChildAt(3) as FrameLayout
-        val imageView   = frameLayout.getChildAt(0) as ImageView
-        val imageId     = if (octavaCarta) {
-            res.getIdentifier(cartaExtra!!.imagePath, defType, defPackage)
+        val frameLayout8 = gridLayout.getChildAt(7) as FrameLayout
+        val imageView8   = frameLayout8.getChildAt(0) as ImageView
+        val imageId      = if (hayOctavaCarta) {
+            gridLayout.resources.getIdentifier(cartaExtra!!.imagePath, "drawable", gridLayout.context.packageName)
         } else {
             0
         }
-        imageView.setImageResource(imageId)
+        imageView8.setImageResource(imageId)
     }
 
     /**
@@ -295,5 +263,4 @@ class Mano internal constructor() : Serializable {
         cartas.clear()
         cartaExtra = null
     }
-
 }

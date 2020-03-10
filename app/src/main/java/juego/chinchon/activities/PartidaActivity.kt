@@ -5,10 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.Toast
+import android.widget.*
 import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Carta
 import juego.chinchon.Constantes
@@ -22,7 +19,6 @@ import kotlinx.android.synthetic.main.mesajuego.*
  * @author LeoAM
  */
 class PartidaActivity : AppCompatActivity() {
-
     companion object {
         enum class Fase {
             ROBAR_CARTA,
@@ -49,18 +45,18 @@ class PartidaActivity : AppCompatActivity() {
 
     private var cartaCorte: Carta? = null
 
-    private var tablas = ArrayList<TableLayout>()
+    private var manos = ArrayList<GridLayout>()
 
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         setContentView(R.layout.mesajuego)
 
-        tablas.add(mj_mano_1)
-        tablas.add(mj_mano_2)
-        for (t in tablas) {
-            setClickListeners(t)
+        manos.add(mj_mano_1)
+        manos.add(mj_mano_2)
+        for (mano in manos) {
+            setClickListeners(mano)
         }
-        
+
         mazo = Mazo(false)
         pila = Mazo(true)
 
@@ -69,7 +65,7 @@ class PartidaActivity : AppCompatActivity() {
         mazo!!.repartir(jugadores)
 
         for (i in jugadores.indices) {
-            jugadores[i].mano.toTableLayout(tablas[i], false)
+            jugadores[i].mano.toGridLayout(manos[i], false)
         }
 
         mj_nombrejugador_1.text = this.jugadores[0].nombre
@@ -93,13 +89,13 @@ class PartidaActivity : AppCompatActivity() {
             if (carta == CARTA_NOSELECT) {
                 carta = estaCarta
                 mj_nombrecarta.text = jugadores[numJugador].mano.getCarta(carta).toString()
-
-                val frameLayout = imageView.parent as FrameLayout
-                frameLayout.getChildAt(1).visibility = View.VISIBLE
+                seleccionarCarta(true)
 
             } else {
                 jugadores[numJugador].mano.swapCartas(carta, estaCarta)
-                jugadores[numJugador].mano.toTableLayout(tablas[numJugador], fase == Fase.TIRAR_CARTA)
+                jugadores[numJugador].mano.toGridLayout(manos[numJugador], fase == Fase.TIRAR_CARTA)
+
+                seleccionarCarta(false)
 
                 carta = CARTA_NOSELECT
                 mj_nombrecarta.text = ""
@@ -119,7 +115,7 @@ class PartidaActivity : AppCompatActivity() {
 
                 this.jugadores[numJugador].mano.addCarta(mazo!!.robar())
                 this.fase = Fase.TIRAR_CARTA
-                this.jugadores[numJugador].mano.toTableLayout(tablas[numJugador], true)
+                this.jugadores[numJugador].mano.toGridLayout(manos[numJugador], true)
                 if (mazo!!.cantidad == 0) {
                     mazo!!.setImagenTope(mj_mazo, true)
                 }
@@ -157,12 +153,15 @@ class PartidaActivity : AppCompatActivity() {
             Fase.ROBAR_CARTA -> if (!pila!!.vacio()) {
                 this.jugadores[numJugador].mano.addCarta(pila!!.robar())
                 fase = Fase.TIRAR_CARTA
-                this.jugadores[numJugador].mano.toTableLayout(this.tablas[numJugador], true)
+                this.jugadores[numJugador].mano.toGridLayout(this.manos[numJugador], true)
                 carta = 0
                 pila!!.setImagenTope(mj_pila, false)
             }
             Fase.TIRAR_CARTA -> if (carta != CARTA_NOSELECT) {
                 pila!!.colocar(this.jugadores[numJugador].mano.tirarCarta(carta)!!)
+
+                seleccionarCarta(false)
+
                 carta = CARTA_NOSELECT
 
                 mj_nombrecarta.text = ""
@@ -176,6 +175,8 @@ class PartidaActivity : AppCompatActivity() {
         if (fase == Fase.TIRAR_CARTA) {
             if (carta != CARTA_NOSELECT) {
                 cartaCorte = this.jugadores[numJugador].mano.tirarCarta(carta)
+
+                seleccionarCarta(false)
 
                 val intent = Intent(this@PartidaActivity, AcomodarActivity::class.java)
                 intent.putExtra(Constantes.INTENT_CORTE, numJugador)
@@ -193,14 +194,11 @@ class PartidaActivity : AppCompatActivity() {
         mj_cortar_btn.visibility = View.INVISIBLE
     }
 
-    private fun setClickListeners(tabla: TableLayout) {
-        for (indexRow in 0..1) {
-            val tableRow = tabla.getChildAt(indexRow) as TableRow
-            for (indexCard in 0..3) {
-                val frameLayout = tableRow.getChildAt(indexCard) as FrameLayout
-                val imageView = frameLayout.getChildAt(0)
-                imageView.setOnClickListener(cartaClickListener)
-            }
+    private fun setClickListeners(gridLayout: GridLayout) {
+        for (index in 0..7) {
+            val frameLayout = gridLayout.getChildAt(index) as FrameLayout
+            val imageView = frameLayout.getChildAt(0)
+            imageView.setOnClickListener(cartaClickListener)
         }
     }
 
@@ -230,11 +228,11 @@ class PartidaActivity : AppCompatActivity() {
 
         mazo!!.repartir(jugadores)
 
-        val segJugador = 1 - numJugador
-        jugadores[numJugador].mano.toTableLayout(tablas[numJugador], false)
-        tablas[numJugador].visibility = TableLayout.VISIBLE
-        jugadores[segJugador].mano.toTableLayout(tablas[segJugador], false)
-        tablas[segJugador].visibility = TableLayout.GONE
+        val segundoJugador = 1 - numJugador
+        jugadores[numJugador].mano.toGridLayout(manos[numJugador], false)
+        manos[numJugador].visibility = TableLayout.VISIBLE
+        jugadores[segundoJugador].mano.toGridLayout(manos[segundoJugador], false)
+        manos[segundoJugador].visibility = TableLayout.GONE
 
         fase = Fase.ROBAR_CARTA
         numTurno = TURNO_INICIAL
@@ -275,7 +273,7 @@ class PartidaActivity : AppCompatActivity() {
                     }
                     2 -> {
                         jugadores[numJugador].mano.addCarta(cartaCorte)
-                        jugadores[numJugador].mano.toTableLayout(tablas[numJugador], true)
+                        jugadores[numJugador].mano.toGridLayout(manos[numJugador], true)
                         carta = CARTA_NOSELECT
 
                         mj_nombrecarta.text = ""
@@ -284,10 +282,10 @@ class PartidaActivity : AppCompatActivity() {
                 }
             }
             RC_CAMBIOTURNO -> {
-                tablas[numJugador].visibility = TableLayout.VISIBLE
-                tablas[1 - numJugador].visibility = TableLayout.GONE
+                manos[numJugador].visibility = TableLayout.VISIBLE
+                manos[1 - numJugador].visibility = TableLayout.GONE
 
-                jugadores[numJugador].mano.toTableLayout(tablas[numJugador], false)
+                jugadores[numJugador].mano.toGridLayout(manos[numJugador], false)
                 if (mazo!!.vacio()) {
                     mazo!!.volcar(pila)
                 }
@@ -302,8 +300,21 @@ class PartidaActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Muestra o esconde el "tick" sobre la carta seleccionada actualmente.
+     *
+     * @param seleccionar Si se selecciona o no la carta.
+     */
+    private fun seleccionarCarta(seleccionar: Boolean) {
+        val gridLayout: GridLayout = manos[numJugador]
+        val frameLayout = gridLayout.getChildAt(carta - 1) as FrameLayout
+        val imageView = frameLayout.getChildAt(1) as ImageView
+        val visibility = if (seleccionar) { View.VISIBLE } else { View.INVISIBLE }
+        imageView.visibility = visibility
+    }
+
     init {
         jugadores = ArrayList()
-        tablas = ArrayList()
+        manos = ArrayList()
     }
 }

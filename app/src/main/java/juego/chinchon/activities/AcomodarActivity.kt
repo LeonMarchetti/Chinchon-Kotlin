@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.TableRow
+import android.widget.FrameLayout
+import android.widget.ImageView
 import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Constantes
 import juego.chinchon.Jugador
@@ -48,15 +49,14 @@ class AcomodarActivity : AppCompatActivity() {
         super.onCreate(icicle)
         setContentView(R.layout.acomodacion)
 
+        @Suppress("UNCHECKED_CAST")
         jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>?
         cortador = intent.getIntExtra(Constantes.INTENT_CORTE, 0)
 
-        var fila: TableRow
-        for (f in 0 until ac_mano.childCount) {
-            fila = ac_mano.getChildAt(f) as TableRow
-            for (c in 0 until fila.childCount) {
-                fila.getChildAt(c).setOnClickListener(cartaClickListener)
-            }
+        for (index in 0 until ac_mano.childCount) {
+            val frameLayout = ac_mano.getChildAt(index) as FrameLayout
+            val imageView = frameLayout.getChildAt(0) as ImageView
+            imageView.setOnClickListener(cartaClickListener)
         }
 
         ac_emparejar_btn.setOnClickListener(emparejarClickListener)
@@ -201,7 +201,7 @@ class AcomodarActivity : AppCompatActivity() {
             startActivity(intent)
 
         } else {
-            jugador.mano.toTableLayout(ac_mano, false)
+            jugador.mano.toGridLayout(ac_mano, false)
 
             for (carta in 0..6) {
                 estados[carta] = Estado.DESELECCIONADO
