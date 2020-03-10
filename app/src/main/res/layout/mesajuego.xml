@@ -6,98 +6,198 @@
     android:orientation="vertical">
 
     <!-- mj_mano_1 -->
-    <TableLayout
-        android:id="@+id/mj_mano_1"
+    <TableLayout android:id="@+id/mj_mano_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <!-- mj_mano_1 tablerow1 -->
         <TableRow android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/mj_imgcarta_1_1"
-                android:layout_width="match_parent"
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="1" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_1_2"
-                android:layout_width="match_parent"
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="1" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="2" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_1_3"
-                android:layout_width="match_parent"
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="2" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="3" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_1_4"
-                android:layout_width="match_parent"
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="3" />
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="4" />
+                android:layout_weight="1">
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="4" />
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
 
         </TableRow>
 
         <!-- mj_mano_1 tablerow2 -->
         <TableRow android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/mj_imgcarta_1_5"
-                android:layout_width="match_parent"
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="5" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_1_6"
-                android:layout_width="match_parent"
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="5" />
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="6" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_1_7"
-                android:layout_width="match_parent"
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="6" />
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="7" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_1_8"
-                android:layout_width="match_parent"
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="7" />
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="8" />
+                android:layout_weight="1">
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="8" />
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
 
         </TableRow>
 
     </TableLayout>
 
-    <TextView
-        android:id="@+id/mj_nombrejugador_1"
+    <TextView android:id="@+id/mj_nombrejugador_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -105,8 +205,7 @@
         android:textColor="@color/texto"
         android:textSize="@dimen/mj_fontsize" />
 
-    <TextView
-        android:id="@+id/mj_puntos_1"
+    <TextView android:id="@+id/mj_puntos_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -116,30 +215,26 @@
 
 
     <!-- mj_mazos -->
-    <RelativeLayout
-        android:id="@+id/mj_mazos"
+    <RelativeLayout android:id="@+id/mj_mazos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <ImageView
-            android:id="@+id/mj_mazo"
+        <ImageView android:id="@+id/mj_mazo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:contentDescription="@string/carta"
             android:src="@drawable/dorso" />
 
-        <Button
-            android:id="@+id/mj_cortar_btn"
+        <Button android:id="@+id/mj_cortar_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/btn_cortar"
             android:visibility="invisible" />
 
-        <TextView
-            android:id="@+id/mj_nombrecarta"
+        <TextView android:id="@+id/mj_nombrecarta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/mj_cortar_btn"
@@ -149,8 +244,7 @@
             android:textColor="@color/texto"
             android:textSize="@dimen/mj_fontsize" />
 
-        <ImageView
-            android:id="@+id/mj_pila"
+        <ImageView android:id="@+id/mj_pila"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -158,8 +252,7 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/mj_puntos_2"
+    <TextView android:id="@+id/mj_puntos_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -167,8 +260,7 @@
         android:textColor="@color/texto"
         android:textSize="@dimen/mj_fontsize" />
 
-    <TextView
-        android:id="@+id/mj_nombrejugador_2"
+    <TextView android:id="@+id/mj_nombrejugador_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -177,8 +269,7 @@
         android:textSize="@dimen/mj_fontsize" />
 
     <!-- mj_mano_2 -->
-    <TableLayout
-        android:id="@+id/mj_mano_2"
+    <TableLayout android:id="@+id/mj_mano_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -186,87 +277,185 @@
 
         <!-- mj_mano_2 tablerow1 -->
         <TableRow android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/mj_imgcarta_2_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="1" />
-
-            <ImageView
-                android:id="@+id/mj_imgcarta_2_2"
-                android:layout_width="match_parent"
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="2" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_2_3"
-                android:layout_width="match_parent"
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="1" />
+
+                <ImageView 
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="3" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_2_4"
-                android:layout_width="match_parent"
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="2" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="4" />
+                android:layout_weight="1">
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="3" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="4" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
 
         </TableRow>
 
         <!-- mj_mano_2 tablerow2 -->
         <TableRow android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/mj_imgcarta_2_5"
-                android:layout_width="match_parent"
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="5" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_2_6"
-                android:layout_width="match_parent"
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="5" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="6" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_2_7"
-                android:layout_width="match_parent"
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="6" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="7" />
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/mj_imgcarta_2_8"
-                android:layout_width="match_parent"
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="7" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="@string/carta"
-                android:tag="8" />
+                android:layout_weight="1">
 
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:tag="8" />
+
+                <ImageView
+                    android:contentDescription="@string/carta"
+                    android:layout_gravity="top|start"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/check"
+                    android:visibility="invisible" />
+            </FrameLayout>
         </TableRow>
-
     </TableLayout>
-
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.Toast
@@ -63,6 +64,7 @@ class PartidaActivity : AppCompatActivity() {
         mazo = Mazo(false)
         pila = Mazo(true)
 
+        @Suppress("UNCHECKED_CAST")
         jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
         mazo!!.repartir(jugadores)
 
@@ -85,14 +87,17 @@ class PartidaActivity : AppCompatActivity() {
         numJugador = jugadorInicial
     }
 
-    private val cartaClickListener = View.OnClickListener {
-        val estaCarta: Int = it.tag.toString().toInt()
+    private val cartaClickListener = View.OnClickListener { imageView ->
+        val estaCarta: Int = imageView.tag.toString().toInt()
         if (!((estaCarta == 8) and (fase == Fase.ROBAR_CARTA))) {
             if (carta == CARTA_NOSELECT) {
                 carta = estaCarta
                 mj_nombrecarta.text = jugadores[numJugador].mano.getCarta(carta).toString()
 
-            } else { // Intercambio las dos cartas seleccionadas:
+                val frameLayout = imageView.parent as FrameLayout
+                frameLayout.getChildAt(1).visibility = View.VISIBLE
+
+            } else {
                 jugadores[numJugador].mano.swapCartas(carta, estaCarta)
                 jugadores[numJugador].mano.toTableLayout(tablas[numJugador], fase == Fase.TIRAR_CARTA)
 
@@ -189,10 +194,12 @@ class PartidaActivity : AppCompatActivity() {
     }
 
     private fun setClickListeners(tabla: TableLayout) {
-        for (i in 0..1) {
-            val tr = tabla.getChildAt(i) as TableRow
-            for (j in 0..3) {
-                tr.getChildAt(j).setOnClickListener(cartaClickListener)
+        for (indexRow in 0..1) {
+            val tableRow = tabla.getChildAt(indexRow) as TableRow
+            for (indexCard in 0..3) {
+                val frameLayout = tableRow.getChildAt(indexCard) as FrameLayout
+                val imageView = frameLayout.getChildAt(0)
+                imageView.setOnClickListener(cartaClickListener)
             }
         }
     }
@@ -245,6 +252,7 @@ class PartidaActivity : AppCompatActivity() {
             RC_CORTE -> {
                 when (resultCode) {
                     1 -> {
+                        @Suppress("UNCHECKED_CAST")
                         jugadores = data.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
 
                         val v1 = jugadores[0].estaVencido()

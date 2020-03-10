@@ -1,5 +1,6 @@
 package juego.chinchon
 
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -253,45 +254,38 @@ class Mano internal constructor() : Serializable {
             return
         }
 
-        val tr1 = tabla.getChildAt(0) as TableRow
-        if (tr1.childCount != 4) {
+        val tableRow1 = tabla.getChildAt(0) as TableRow
+        if (tableRow1.childCount != 4) {
             return
         }
-        for (i in 0..3) {
-            val c = cartas[i]
-            val v = tr1.getChildAt(i)
-            if (v is ImageView) {
-                val imageId = res.getIdentifier(c!!.imagePath, defType, defPackage)
-                v.setImageResource(imageId)
-            } else {
-                return
-            }
+        for (index in 0..3) {
+            val carta       = cartas[index]
+            val frameLayout = tableRow1.getChildAt(index) as FrameLayout
+            val imageView   = frameLayout.getChildAt(0) as ImageView
+            val imageId     = res.getIdentifier(carta!!.imagePath, defType, defPackage)
+            imageView.setImageResource(imageId)
         }
 
-        val tr2 = tabla.getChildAt(1) as TableRow
-        if (tr2.childCount != 4) {
+        val tableRow2 = tabla.getChildAt(1) as TableRow
+        if (tableRow2.childCount != 4) {
             return
         }
-        for (i in 0..2) {
-            val c = cartas[i + 4]
-            val v = tr2.getChildAt(i)
-            if (v is ImageView) {
-                val imageId = res.getIdentifier(c!!.imagePath, defType, defPackage)
-                v.setImageResource(imageId)
-            } else {
-                return
-            }
+        for (index in 0..2) {
+            val carta       = cartas[index + 4]
+            val frameLayout = tableRow2.getChildAt(index) as FrameLayout
+            val imageView   = frameLayout.getChildAt(0) as ImageView
+            val imageId     = res.getIdentifier(carta!!.imagePath, defType, defPackage)
+            imageView.setImageResource(imageId)
         }
 
-        val v = tr2.getChildAt(3)
-        if (v is ImageView) {
-            val imageId: Int = if (octavaCarta) { // Se muestra la octava carta:
-                res.getIdentifier(cartaExtra!!.imagePath, defType, defPackage)
-            } else { // No se muestra la octava carta:
-                0
-            }
-            v.setImageResource(imageId)
+        val frameLayout = tableRow2.getChildAt(3) as FrameLayout
+        val imageView   = frameLayout.getChildAt(0) as ImageView
+        val imageId     = if (octavaCarta) {
+            res.getIdentifier(cartaExtra!!.imagePath, defType, defPackage)
+        } else {
+            0
         }
+        imageView.setImageResource(imageId)
     }
 
     /**
