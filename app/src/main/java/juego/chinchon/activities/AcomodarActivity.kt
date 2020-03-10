@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.DisplayMetrics
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -49,6 +50,8 @@ class AcomodarActivity : AppCompatActivity() {
         super.onCreate(icicle)
         setContentView(R.layout.acomodacion)
 
+        redimensionarCartas()
+
         @Suppress("UNCHECKED_CAST")
         jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>?
         cortador = intent.getIntExtra(Constantes.INTENT_CORTE, 0)
@@ -68,6 +71,20 @@ class AcomodarActivity : AppCompatActivity() {
         calcularPuntos()
 
         setJugadorEnPantalla()
+    }
+
+    /**
+     * Redimensiona las cartas al ancho actual de la pantalla.
+     */
+    private fun redimensionarCartas() {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        var screenWidth = displayMetrics.widthPixels
+        for (index in 0..6) {
+            val frameLayout = ac_mano.getChildAt(index) as FrameLayout
+            val imageView = frameLayout.getChildAt(0) as ImageView
+            imageView.getLayoutParams().width = screenWidth / 4
+        }
     }
 
     private val cartaClickListener: View.OnClickListener = View.OnClickListener {

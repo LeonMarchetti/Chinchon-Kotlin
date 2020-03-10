@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.DisplayMetrics
 import android.view.View
 import android.widget.*
 import com.example.leoam.chinchonkotlin.R
@@ -57,6 +58,8 @@ class PartidaActivity : AppCompatActivity() {
             setClickListeners(mano)
         }
 
+        redimensionarCartas()
+
         mazo = Mazo(false)
         pila = Mazo(true)
 
@@ -81,6 +84,22 @@ class PartidaActivity : AppCompatActivity() {
 
         mj_cortar_btn.setOnClickListener(cortarClickListener)
         numJugador = jugadorInicial
+    }
+
+    /**
+     * Redimensiona las cartas al ancho actual de la pantalla.
+     */
+    private fun redimensionarCartas() {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        var screenWidth = displayMetrics.widthPixels
+        for (mano in manos) {
+            for (index in 0..7) {
+                val frameLayout = mano.getChildAt(index) as FrameLayout
+                val imageView = frameLayout.getChildAt(0) as ImageView
+                imageView.getLayoutParams().width = screenWidth / 4
+            }
+        }
     }
 
     private val cartaClickListener = View.OnClickListener { imageView ->
