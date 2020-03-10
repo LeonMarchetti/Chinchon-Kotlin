@@ -28,7 +28,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
                 android:contentDescription="@string/carta"
                 android:src="@drawable/check"
                 android:visibility="invisible" />
@@ -50,7 +49,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
                 android:contentDescription="@string/carta"
                 android:src="@drawable/check"
                 android:visibility="invisible" />
@@ -72,7 +70,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
                 android:contentDescription="@string/carta"
                 android:src="@drawable/check"
                 android:visibility="invisible" />
@@ -94,7 +91,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
                 android:contentDescription="@string/carta"
                 android:src="@drawable/check"
                 android:visibility="invisible" />
@@ -116,7 +112,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
                 android:contentDescription="@string/carta"
                 android:src="@drawable/check"
                 android:visibility="invisible" />
@@ -138,7 +133,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
                 android:contentDescription="@string/carta"
                 android:src="@drawable/check"
                 android:visibility="invisible" />
@@ -160,7 +154,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
                 android:contentDescription="@string/carta"
                 android:src="@drawable/check"
                 android:visibility="invisible" />
@@ -182,7 +175,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
                 android:contentDescription="@string/carta"
                 android:src="@drawable/check"
                 android:visibility="invisible" />
@@ -282,7 +274,6 @@
 
             <ImageView
                 android:contentDescription="@string/carta"
-                android:layout_gravity="top|start"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/check"
@@ -304,7 +295,6 @@
 
             <ImageView
                 android:contentDescription="@string/carta"
-                android:layout_gravity="top|start"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/check"
@@ -326,7 +316,6 @@
 
             <ImageView
                 android:contentDescription="@string/carta"
-                android:layout_gravity="top|start"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/check"
@@ -348,7 +337,6 @@
 
             <ImageView
                 android:contentDescription="@string/carta"
-                android:layout_gravity="top|start"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/check"
@@ -370,7 +358,6 @@
 
             <ImageView
                 android:contentDescription="@string/carta"
-                android:layout_gravity="top|start"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/check"
@@ -392,7 +379,6 @@
 
             <ImageView
                 android:contentDescription="@string/carta"
-                android:layout_gravity="top|start"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/check"
@@ -414,7 +400,6 @@
 
             <ImageView
                 android:contentDescription="@string/carta"
-                android:layout_gravity="top|start"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/check"
@@ -436,7 +421,6 @@
 
             <ImageView
                 android:contentDescription="@string/carta"
-                android:layout_gravity="top|start"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/check"
