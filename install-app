@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PACKAGE="com.example.leoam.chinchonkotlin"
+ACTIVITY="juego.chinchon.activities.MainActivity"
+
+#./gradlew uninstallDebug
+./gradlew assembleDebug
+./gradlew installDebug
+
+adb shell am start -n "$PACKAGE/$ACTIVITY"
