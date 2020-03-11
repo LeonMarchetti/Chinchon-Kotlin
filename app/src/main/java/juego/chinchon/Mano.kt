@@ -1,6 +1,5 @@
 package juego.chinchon
 
-import android.widget.*
 import java.io.Serializable
 import java.util.*
 
@@ -229,31 +228,6 @@ class Mano internal constructor() : Serializable {
 
     private fun esIndice(n: Int): Boolean {
         return n in 0..7
-    }
-
-    /**
-     * Coloca en un GridLayout las cartas en la mano del jugador.
-     *
-     * @param gridLayout La grilla donde almacenar las cartas.
-     * @param octavaCarta Indica si se tiene que mostrar la octava carta de la mano.
-     */
-    fun toGridLayout(gridLayout: GridLayout, hayOctavaCarta: Boolean) {
-        for (index in 0 until 7) {
-            val carta       = cartas[index]
-            val frameLayout = gridLayout.getChildAt(index) as FrameLayout
-            val imageView   = frameLayout.getChildAt(0) as ImageView
-            val imageId     = gridLayout.resources.getIdentifier(carta!!.imagePath, "drawable", gridLayout.context.packageName)
-            imageView.setImageResource(imageId)
-        }
-
-        val frameLayout8 = gridLayout.getChildAt(7) as FrameLayout
-        val imageView8   = frameLayout8.getChildAt(0) as ImageView
-        val imageId      = if (hayOctavaCarta) {
-            gridLayout.resources.getIdentifier(cartaExtra!!.imagePath, "drawable", gridLayout.context.packageName)
-        } else {
-            0
-        }
-        imageView8.setImageResource(imageId)
     }
 
     /**
