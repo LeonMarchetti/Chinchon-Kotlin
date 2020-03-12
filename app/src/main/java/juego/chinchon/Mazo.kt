@@ -13,6 +13,10 @@ import java.util.*
  * @author LeoAM
  */
 class Mazo(vacio: Boolean) {
+    companion object {
+        private const val MAXCartas = 50
+    }
+
     private val cartas: ArrayList<Carta> = ArrayList()
 
     /**
@@ -22,7 +26,20 @@ class Mazo(vacio: Boolean) {
     var cantidad = 0
         private set
 
-    // Método privado para crear las cartas para el mazo.
+    init {
+        if (vacio) {
+            cantidad = 0
+        } else {
+            cantidad = MAXCartas
+            setCartas()
+            mezclar()
+        }
+    }
+
+    /**
+     * Crea la baraja de cartas y las inserta en este mazo. La baraja consiste
+     * en las 12 cartas de los 4 palos y los dos comodines.
+     */
     private fun setCartas() {
         for (p in Palo.values()) {
             if (p == Palo.Comodin) {
@@ -36,11 +53,13 @@ class Mazo(vacio: Boolean) {
         cartas.add(Carta(0, Palo.Comodin))
     }
 
-    // Método privado para mezclar el mazo.
+    /**
+     * Mezcla las cartas del mazo.
+     */
     private fun mezclar() {
         if (cantidad > 1) {
             val rdm = Random()
-            var tmp: Carta?
+            var tmp: Carta
             var j: Int
             for (i in cantidad - 1 downTo 1) {
                 j = rdm.nextInt(i)
@@ -53,27 +72,26 @@ class Mazo(vacio: Boolean) {
 
     /**
      * Roba una carta del mazo.
+     *
      * @return La carta robada.
      */
-    fun robar(): Carta? {
+    fun robar(): Carta {
         cantidad--
         return cartas.removeAt(0)
     }
 
     /**
      * Muestra cuál es la carta en el tope del mazo. No la quita.
+     *
      * @return La carta en el tope.
      */
-    fun tope(): Carta? {
-        return if (cartas.isEmpty()) {
-            null
-        } else {
-            cartas[0]
-        }
+    fun tope(): Carta {
+        return cartas[0]
     }
 
     /**
-     * Coloca una carta al tope del mazo.
+     * Coloca una carta en el tope del mazo.
+     *
      * @param c La carta a colocar.
      */
     fun colocar(c: Carta) {
@@ -85,10 +103,11 @@ class Mazo(vacio: Boolean) {
 
     /**
      * Vuelca las cartas de un mazo en éste. Luego las mezcla.
+     *
      * @param m El mazo de donde se sacan las cartas.
      */
-    fun volcar(m: Mazo?) {
-        cantidad = m!!.cantidad
+    fun volcar(m: Mazo) {
+        cantidad = m.cantidad
         m.cantidad = 0
         for (i in 0 until cantidad) {
             cartas.add(m.cartas.removeAt(0))
@@ -99,29 +118,31 @@ class Mazo(vacio: Boolean) {
     /**
      * Reparte las cartas entre los jugadores. Reparte 8 cartas para el primer
      * jugador y 7 para el segundo.
+     *
      * @param jugadores Lista de jugadores.
      */
-    fun repartir(jugadores: ArrayList<Jugador>) { // Se reparte solo al inicio de la partida.
+    fun repartir(jugadores: ArrayList<Jugador>) {
         if (cantidad == MAXCartas) {
-            val cantJugadores = jugadores.size
-            var j: Int
-            // Vacío las manos de los jugadores:
-            for (jug in jugadores) {
-                jug.vaciarMano()
+            for (jugador in jugadores) {
+                jugador.vaciarMano()
             }
-            // Ciclo de cartas
-            for (i in 0..6) {
-                j = 0
-                while (j < cantJugadores) {
+
+            for (i in 0 until 7) {
+                for (j in 0 until jugadores.size) {
                     jugadores[j].mano.addCarta(robar())
-                    j++
                 }
             }
-            // Carta extra para el primer jugador de la ronda:
+
             jugadores[0].mano.addCarta(robar())
         }
     }
 
+    /**
+     * Devuelve la representación en String de este mazo como una lista de
+     * todas las cartas actualmente en el mazo, cada una en una línea.
+     *
+     * @return Representación en String de este mazo.
+     */
     override fun toString(): String {
         var str = ""
         for (i in 0 until cantidad) {
@@ -132,12 +153,13 @@ class Mazo(vacio: Boolean) {
 
     /**
      * Dada un componente de imagen, le coloca la imagen del tope del mazo.
+     *
      * @param iv Componente de ImageView.
      * @param oculto Si se trata del mazo de robo, entonces muestra el dorso de
      * la carta en lugar de la imagén de la carta en particular.
      */
-    fun setImagenTope(iv: ImageView?, oculto: Boolean) {
-        val res = iv!!.resources
+    fun setImagenTope(iv: ImageView, oculto: Boolean) {
+        val res = iv.resources
         val defPackage = iv.context.packageName
         val defType = "drawable"
         when {
@@ -155,23 +177,10 @@ class Mazo(vacio: Boolean) {
 
     /**
      * Comprueba que el mazó esté vacío.
+     *
      * @return Si el mazo está vacío o no.
      */
     fun vacio(): Boolean {
         return cartas.isEmpty()
-    }
-
-    companion object {
-        private const val MAXCartas = 50
-    }
-
-    init {
-        if (vacio) {
-            cantidad = 0
-        } else {
-            cantidad = MAXCartas
-            setCartas()
-            mezclar()
-        }
     }
 }

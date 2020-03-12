@@ -16,24 +16,19 @@ class Mano internal constructor() : Serializable {
         private const val TAG = "Mano"
     }
 
-    private val cartas: ArrayList<Carta?> = ArrayList(7)
-    private var cartaExtra: Carta? = null
+    private val cartas: ArrayList<Carta> = ArrayList(8)
+
     /**
      * Agrega una carta a la mano. Si es que la mano tiene menos de 7 cartas
      * (durante el reparto inicial) entonces la agrega directamente. Si tiene ya
      * las 7 cartas, entonces se agrega como una carta "extra".
+     *
      * @param c La carta a agregar a la mano.
      */
-    fun addCarta(c: Carta?) {
-        if (c != null) {
-            if (cartas.size >= 7) { //Si la mano está llena (pleno juego) lo asigno a la carta extra.
-                cartaExtra = Carta(c)
-                return
-            } else {
-                cartas.add(c)
-            }
+    fun addCarta(c: Carta) {
+        if (cartas.size < 8) {
+            cartas.add(c)
         }
-        cartas.size
     }
 
     /**
@@ -43,18 +38,8 @@ class Mano internal constructor() : Serializable {
      * @param n La posición en la mano (1-8)
      * @return La carta a descartar
      */
-    fun tirarCarta(n: Int): Carta? {
-        val n2 = n - 1
-        return if (esIndice(n2)) {
-            if (n2 != 7) { //Intercambio la carta a tirar con la carta extra
-                val tmp = cartas[n2]
-                cartas[n2] = cartaExtra
-                cartaExtra = tmp
-            }
-            cartaExtra
-        } else {
-            null
-        }
+    fun tirarCarta(n: Int): Carta {
+        return cartas.removeAt(n)
     }
 
     /**
@@ -62,17 +47,8 @@ class Mano internal constructor() : Serializable {
      * @param n Índice de la carta.
      * @return La carta seleccionada.
      */
-    fun getCarta(n: Int): Carta? {
-        val n2 = n - 1
-        return if (esIndice(n2)) {
-            if (n2 != 7) {
-                cartas[n2]
-            } else {
-                cartaExtra
-            }
-        } else {
-            null
-        }
+    fun getCarta(n: Int): Carta {
+        return cartas[n]
     }
 
     /**
@@ -81,49 +57,38 @@ class Mano internal constructor() : Serializable {
      * @param j Posición de la segunda carta. (1-8)
      */
     fun swapCartas(i: Int, j: Int) {
-        if (i != j) {
-            var max = if (i > j) i else j
-            var min = if (max == i) j else i
-            max--
-            min--
-            if (esIndice(max) && esIndice(min)) {
-                val tmp = cartas[min]
-                if (max == 7) {
-                    cartas[min] = cartaExtra
-                    cartaExtra = tmp
-                } else {
-                    cartas[min] = cartas[max]
-                    cartas[max] = tmp
-                }
-            }
-        }
+        val cartaI = cartas[i]
+        val cartaJ = cartas[j]
+        cartas[i] = cartaJ
+        cartas[j] = cartaI
     }
 
     /**
      * Indica si las cartas dadas (sus posiciones en la mano) tienen el mismo
      * valor numérico, con lo cual forman un juego. Son necesarias 3 cartas
      * como mínimo para el juego, y 4 como máximo.
+     *
      * @param indices Las posiciones de las cartas en la mano.
      * @return Si forman el juego de cartas con el mismo valor numérico.
      */
     fun mismoValor(indices: IntArray): Boolean {
-        if (indices.size == 3 || indices.size == 4) {
+        if (indices.size in 3..4) {
             var hayComodin = false
             var valor = 0
-            var c: Carta?
+            var carta: Carta
+
             for (indice in indices) {
-                c = cartas[indice]
-                if (c!!.palo == Palo.Comodin) {
+                carta = cartas[indice]
+                if (carta.palo == Palo.Comodin) {
                     if (hayComodin) {
                         return false
                     }
                     hayComodin = true
                 } else {
                     if (valor == 0) {
-                        valor = c.valor
-
+                        valor = carta.valor
                     } else {
-                        if (c.valor != valor) {
+                        if (carta.valor != valor) {
                             return false
                         }
                     }
@@ -138,50 +103,48 @@ class Mano internal constructor() : Serializable {
      * Indica si las cartas dadas (sus posiciones en la mano) tienen el mismo
      * palo, con lo cual forman un juego. Son necesarias 3 cartas como mínimo
      * para el juego.
+     *
      * @param indices Las posiciones de las cartas en la mano.
      * @return Si forman el juego de cartas con el mismo palo.
      */
     fun mismoPalo(indices: IntArray): Boolean {
         if (indices.size in 3..7) {
-            val tmp = ArrayList<Carta?>(indices.size)
-            var c: Carta?
+            var carta: Carta
             var hayComodin = false
+            var valorMin = Int.MAX_VALUE
+            var valorMax = Int.MIN_VALUE
+            var paloJuego: Palo? = null
 
             for (indice in indices) {
-                c = cartas[indice]
-                if (c!!.palo == Palo.Comodin) {
+                carta = cartas[indice]
+                if (carta.palo == Palo.Comodin) {
                     if (hayComodin) {
                         return false
                     }
                     hayComodin = true
                 } else {
-                    tmp.add(c)
-                }
-            }
-
-            tmp.sortBy { it?.valor }
-            c = tmp[0]
-
-            val paloJuego = c!!.palo
-            var valorAnt = c.valor
-
-            val tmpSize = tmp.size
-            var aplicaComodin = hayComodin
-            for (i in 1 until tmpSize) {
-                c = tmp[i]
-                if (c!!.palo != paloJuego) {
-                    return false
-                }
-                if (c.valor != valorAnt + 1) {
-                    aplicaComodin = if (aplicaComodin && c.valor == valorAnt + 2) {
-                        false
+                    if (paloJuego == null) {
+                        paloJuego = carta.palo
                     } else {
-                        return false
+                        if (carta.palo != paloJuego) {
+                            return false
+                        }
+                    }
+
+                    if (valorMin == Int.MAX_VALUE) {
+                        valorMin = carta.valor
+                        valorMax = carta.valor
+                    } else {
+                        if (carta.valor < valorMin) {
+                            valorMin = carta.valor
+                        }
+                        if (carta.valor > valorMax) {
+                            valorMax = carta.valor
+                        }
                     }
                 }
-                valorAnt = c.valor
             }
-            return true
+            return ((valorMax - valorMin) < indices.size)
         }
         return false
     }
@@ -194,17 +157,24 @@ class Mano internal constructor() : Serializable {
      * @return Si hay chinchón en la mano.
      */
     fun esChinchon(): Boolean {
-        val tmp = ArrayList(cartas)
-        tmp.sortBy { it?.valor }
-        val p = cartas[0]!!.palo
+        val palo = cartas[0].palo
+        var valorMin = cartas[0].valor
+        var valorMax = cartas[0].valor
 
-        for (i in 1 until tmp.size) {
-            if (p != tmp[i]!!.palo ||
-                    tmp[i]!!.valor != tmp[i - 1]!!.valor + 1) {
+        for (index in 1 until 7) {
+            val carta: Carta = cartas[index]
+            if (carta.palo != palo) {
                 return false
             }
+            if (carta.valor > valorMax) {
+                valorMax = carta.valor
+            }
+            if (carta.valor < valorMin) {
+                valorMin = carta.valor
+            }
         }
-        return true
+
+        return (valorMax - valorMin) == 6
     }
 
     /**
@@ -219,15 +189,11 @@ class Mano internal constructor() : Serializable {
         if (acomodadas.size >= 7) {
             for (i in 0..6) {
                 if (!acomodadas[i]) {
-                    puntos += cartas[i]!!.valor
+                    puntos += cartas[i].valor
                 }
             }
         }
         return puntos
-    }
-
-    private fun esIndice(n: Int): Boolean {
-        return n in 0..7
     }
 
     /**
@@ -235,6 +201,5 @@ class Mano internal constructor() : Serializable {
      */
     fun vaciar() {
         cartas.clear()
-        cartaExtra = null
     }
 }

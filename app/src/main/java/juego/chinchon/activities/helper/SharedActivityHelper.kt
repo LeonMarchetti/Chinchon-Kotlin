@@ -20,10 +20,10 @@ class SharedActivityHelper {
         fun manoToGridLayout(mano: Mano, gridLayout: GridLayout, hayOctavaCarta: Boolean) {
             val limit: Int = if (hayOctavaCarta) { 8 } else { 7 }
             for (index in 0 until limit) {
-                val carta = mano.getCarta(index + 1)
+                val carta = mano.getCarta(index)
                 val frameLayout = gridLayout.getChildAt(index) as FrameLayout
                 val imageView = frameLayout.getChildAt(0) as ImageView
-                val imageId = gridLayout.resources.getIdentifier(carta!!.imagePath, "drawable", gridLayout.context.packageName)
+                val imageId = gridLayout.resources.getIdentifier(carta.imagePath, "drawable", gridLayout.context.packageName)
                 imageView.setImageResource(imageId)
             }
 

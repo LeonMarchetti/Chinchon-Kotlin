@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.*
 import com.example.leoam.chinchonkotlin.R
@@ -27,12 +26,9 @@ class PartidaActivity : AppCompatActivity() {
             TIRAR_CARTA
         }
         private const val TURNO_INICIAL = 1
-        private const val CARTA_NOSELECT = 0
+        private const val CARTA_NOSELECT = -1
         private const val RC_CORTE = 1
         private const val RC_CAMBIOTURNO = 2
-
-        @Suppress("unused")
-        private const val TAG = "PartidaActivity"
     }
 
     private var fase: Fase = Fase.ROBAR_CARTA
@@ -42,10 +38,10 @@ class PartidaActivity : AppCompatActivity() {
     private var numTurno = TURNO_INICIAL
     private var numRonda = 1
     private var jugadores = ArrayList<Jugador>()
-    private var mazo: Mazo? = null
-    private var pila: Mazo? = null
+    private var mazo: Mazo = Mazo(false)
+    private var pila: Mazo = Mazo(true)
 
-    private var cartaCorte: Carta? = null
+    private lateinit var cartaCorte: Carta
 
     private var manos = ArrayList<GridLayout>()
 
@@ -60,12 +56,9 @@ class PartidaActivity : AppCompatActivity() {
             SharedActivityHelper.redimensionarCartas(this, mano)
         }
 
-        mazo = Mazo(false)
-        pila = Mazo(true)
-
         @Suppress("UNCHECKED_CAST")
         jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
-        mazo!!.repartir(jugadores)
+        mazo.repartir(jugadores)
 
         for (i in jugadores.indices) {
            SharedActivityHelper.manoToGridLayout(jugadores[i].mano, manos[i], false)
@@ -80,15 +73,14 @@ class PartidaActivity : AppCompatActivity() {
         mj_mazo.setOnClickListener(mazoClickListener)
         mj_pila.setOnClickListener(pilaClickListener)
 
-        pila!!.setImagenTope(mj_pila, false)
+        pila.setImagenTope(mj_pila, false)
 
         mj_cortar_btn.setOnClickListener(cortarClickListener)
-        numJugador = jugadorInicial
     }
 
     private val cartaClickListener = View.OnClickListener { imageView ->
         val estaCarta: Int = imageView.tag.toString().toInt()
-        if (!((estaCarta == 8) and (fase == Fase.ROBAR_CARTA))) {
+        if (!((estaCarta == 7) and (fase == Fase.ROBAR_CARTA))) {
             if (carta == CARTA_NOSELECT) {
                 carta = estaCarta
                 mj_nombrecarta.text = jugadores[numJugador].mano.getCarta(carta).toString()
@@ -110,17 +102,17 @@ class PartidaActivity : AppCompatActivity() {
         when (fase) {
             Fase.ROBAR_CARTA -> {
 
-                if (this.mazo!!.cantidad == 0) {
-                    this.mazo!!.volcar(pila)
-                    this.mazo!!.setImagenTope(mj_mazo, true)
-                    this.pila!!.setImagenTope(mj_pila, false)
+                if (mazo.cantidad == 0) {
+                    mazo.volcar(pila)
+                    mazo.setImagenTope(mj_mazo, true)
+                    pila.setImagenTope(mj_pila, false)
                 }
 
-                this.jugadores[numJugador].mano.addCarta(mazo!!.robar())
-                this.fase = Fase.TIRAR_CARTA
+                jugadores[numJugador].mano.addCarta(mazo.robar())
+                fase = Fase.TIRAR_CARTA
                 SharedActivityHelper.manoToGridLayout(jugadores[numJugador].mano, manos[numJugador], true)
-                if (mazo!!.cantidad == 0) {
-                    mazo!!.setImagenTope(mj_mazo, true)
+                if (mazo.cantidad == 0) {
+                    mazo.setImagenTope(mj_mazo, true)
                 }
                 carta = CARTA_NOSELECT
 
@@ -153,25 +145,21 @@ class PartidaActivity : AppCompatActivity() {
 
     private val pilaClickListener = View.OnClickListener {
         when (fase) {
-            Fase.ROBAR_CARTA -> if (!pila!!.vacio()) {
-                this.jugadores[numJugador].mano.addCarta(pila!!.robar())
+            Fase.ROBAR_CARTA -> if (!pila.vacio()) {
+                this.jugadores[numJugador].mano.addCarta(pila.robar())
                 fase = Fase.TIRAR_CARTA
                 SharedActivityHelper.manoToGridLayout(jugadores[numJugador].mano, manos[numJugador], true)
-                carta = 0
-                pila!!.setImagenTope(mj_pila, false)
+
+                pila.setImagenTope(mj_pila, false)
             }
             Fase.TIRAR_CARTA -> if (carta != CARTA_NOSELECT) {
-                pila!!.colocar(this.jugadores[numJugador].mano.tirarCarta(carta)!!)
-
+                pila.colocar(this.jugadores[numJugador].mano.tirarCarta(carta))
                 seleccionarCarta(false)
-
-                carta = CARTA_NOSELECT
-
                 mj_nombrecarta.text = ""
-
                 cambioTurno()
             }
         }
+        carta = CARTA_NOSELECT
     }
 
     private val cortarClickListener = View.OnClickListener {
@@ -205,13 +193,13 @@ class PartidaActivity : AppCompatActivity() {
         }
     }
 
-    private fun cambioTurno() { // Cambio del jugador actual:
+    private fun cambioTurno() {
         numJugador = (numJugador + 1) % jugadores.size
 
         fase = Fase.ROBAR_CARTA
 
         val intent = Intent(this@PartidaActivity, CambioTurnoActivity::class.java)
-        intent.putExtra(Constantes.INTENT_CARTA, pila!!.tope())
+        intent.putExtra(Constantes.INTENT_CARTA, pila.tope())
         intent.putExtra(Constantes.INTENT_JUGADOR, jugadores[numJugador])
         startActivityForResult(intent, RC_CAMBIOTURNO)
     }
@@ -226,10 +214,10 @@ class PartidaActivity : AppCompatActivity() {
         mazo = Mazo(false)
         pila = Mazo(true)
 
-        mazo!!.setImagenTope(mj_mazo, true)
-        pila!!.setImagenTope(mj_pila, false)
+        mazo.setImagenTope(mj_mazo, true)
+        pila.setImagenTope(mj_pila, false)
 
-        mazo!!.repartir(jugadores)
+        mazo.repartir(jugadores)
 
         val segundoJugador = 1 - numJugador
         SharedActivityHelper.manoToGridLayout(jugadores[numJugador].mano, manos[numJugador], false)
@@ -288,11 +276,11 @@ class PartidaActivity : AppCompatActivity() {
                 manos[numJugador].visibility = TableLayout.VISIBLE
                 manos[1 - numJugador].visibility = TableLayout.GONE
                 SharedActivityHelper.manoToGridLayout(jugadores[numJugador].mano, manos[numJugador], false)
-                if (mazo!!.vacio()) {
-                    mazo!!.volcar(pila)
+                if (mazo.vacio()) {
+                    mazo.volcar(pila)
                 }
 
-                pila!!.setImagenTope(mj_pila, false)
+                pila.setImagenTope(mj_pila, false)
 
                 numTurno++
                 if (numTurno > TURNO_INICIAL + 1) {
@@ -309,14 +297,9 @@ class PartidaActivity : AppCompatActivity() {
      */
     private fun seleccionarCarta(seleccionar: Boolean) {
         val gridLayout: GridLayout = manos[numJugador]
-        val frameLayout = gridLayout.getChildAt(carta - 1) as FrameLayout
+        val frameLayout = gridLayout.getChildAt(carta) as FrameLayout
         val imageView = frameLayout.getChildAt(1) as ImageView
         val visibility = if (seleccionar) { View.VISIBLE } else { View.INVISIBLE }
         imageView.visibility = visibility
-    }
-
-    init {
-        jugadores = ArrayList()
-        manos = ArrayList()
     }
 }

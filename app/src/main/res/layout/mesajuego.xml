@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/carta"
-                android:tag="1" />
+                android:tag="0" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -35,6 +35,27 @@
 
         <FrameLayout
             android:layout_column="1"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_width="wrap_content" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/carta"
+                android:tag="1" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/carta"
+                android:src="@drawable/check"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_column="2"
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_width="wrap_content" >
@@ -55,7 +76,7 @@
         </FrameLayout>
 
         <FrameLayout
-            android:layout_column="2"
+            android:layout_column="3"
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_width="wrap_content" >
@@ -76,27 +97,6 @@
         </FrameLayout>
 
         <FrameLayout
-            android:layout_column="3"
-            android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:layout_width="wrap_content" >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:contentDescription="@string/carta"
-                android:tag="4" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/carta"
-                android:src="@drawable/check"
-                android:visibility="invisible" />
-        </FrameLayout>
-
-        <FrameLayout
             android:layout_column="0"
             android:layout_height="wrap_content"
             android:layout_row="1"
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/carta"
-                android:tag="5" />
+                android:tag="4" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/carta"
-                android:tag="6" />
+                android:tag="5" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/carta"
-                android:tag="7" />
+                android:tag="6" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/carta"
-                android:tag="8" />
+                android:tag="7" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -270,7 +270,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:tag="1" />
+                android:tag="0" />
 
             <ImageView
                 android:contentDescription="@string/carta"
@@ -282,6 +282,27 @@
 
         <FrameLayout
             android:layout_column="1"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_width="wrap_content" >
+
+            <ImageView
+                android:contentDescription="@string/carta"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:tag="1" />
+
+            <ImageView
+                android:contentDescription="@string/carta"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:src="@drawable/check"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_column="2"
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_width="wrap_content" >
@@ -302,7 +323,7 @@
         </FrameLayout>
 
         <FrameLayout
-            android:layout_column="2"
+            android:layout_column="3"
             android:layout_height="wrap_content"
             android:layout_row="0"
             android:layout_width="wrap_content" >
@@ -323,27 +344,6 @@
         </FrameLayout>
 
         <FrameLayout
-            android:layout_column="3"
-            android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:layout_width="wrap_content" >
-
-            <ImageView
-                android:contentDescription="@string/carta"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:tag="4" />
-
-            <ImageView
-                android:contentDescription="@string/carta"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:src="@drawable/check"
-                android:visibility="invisible" />
-        </FrameLayout>
-
-        <FrameLayout
             android:layout_column="0"
             android:layout_height="wrap_content"
             android:layout_row="1"
@@ -354,7 +354,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:tag="5" />
+                android:tag="4" />
 
             <ImageView
                 android:contentDescription="@string/carta"
@@ -375,7 +375,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:tag="6" />
+                android:tag="5" />
 
             <ImageView
                 android:contentDescription="@string/carta"
@@ -396,7 +396,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:tag="7" />
+                android:tag="6" />
 
             <ImageView
                 android:contentDescription="@string/carta"
@@ -417,7 +417,7 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:tag="8" />
+                android:tag="7" />
 
             <ImageView
                 android:contentDescription="@string/carta"

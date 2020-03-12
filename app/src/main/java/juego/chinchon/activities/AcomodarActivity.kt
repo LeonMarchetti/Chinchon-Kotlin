@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -32,9 +31,6 @@ class AcomodarActivity : AppCompatActivity() {
             }
         }
         private const val CANTIDAD_CARTAS: Int = 7
-
-        @Suppress("unused")
-        private const val TAG = "AcomodarActivity"
     }
 
     private val colorDeseleccionado by lazy { ContextCompat.getColor(this, R.color.ac_deseleccionado) }
@@ -75,8 +71,8 @@ class AcomodarActivity : AppCompatActivity() {
     }
 
     private val cartaClickListener: View.OnClickListener = View.OnClickListener {
-        val estaCarta: Int = it.tag.toString().toInt() - 1
-        if (estaCarta != 8) {
+        val estaCarta: Int = it.tag.toString().toInt()
+        if (estaCarta != 7) {
             val estadoCarta = ac_buttonrow.getChildAt(estaCarta)
             when (estados[estaCarta]) {
                 Estado.DESELECCIONADO -> {
