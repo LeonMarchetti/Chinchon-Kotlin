@@ -4,7 +4,6 @@ PACKAGE="com.example.leoam.chinchonkotlin"
 ACTIVITY="juego.chinchon.activities.MainActivity"
 
 #./gradlew uninstallDebug
-./gradlew assembleDebug
-./gradlew installDebug
-
+./gradlew assembleDebug || exit 1
+./gradlew installDebug || exit 1
 adb shell am start -n "$PACKAGE/$ACTIVITY"
