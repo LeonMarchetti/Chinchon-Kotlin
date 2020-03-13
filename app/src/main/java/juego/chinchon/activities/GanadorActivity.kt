@@ -13,23 +13,21 @@ import kotlinx.android.synthetic.main.ganador.*
  * @author LeoAM
  */
 class GanadorActivity : AppCompatActivity() {
-
-    companion object {
-        @Suppress("unused")
-        private const val TAG = "GanadorActivity"
-    }
-
     /**
-     * Called when the activity is first created.
+     * Configura la pantalla que muestra el resultado de la partida. Muestra
+     * los datos del jugador ganador a arriba y al perdedor abajo, con su
+     * nombre y cantidad de puntos. Muestra la cantidad de rondas que tuvo la
+     * partida.
      */
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         setContentView(R.layout.ganador)
 
-        val jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
-        val ganador = intent.getIntExtra(Constantes.INTENT_GANADOR, Constantes.EMPATE)
+        @Suppress("UNCHECKED_CAST")
+        val jugadores    = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
+        val ganador      = intent.getIntExtra(Constantes.INTENT_GANADOR, Constantes.EMPATE)
         val hizoChinchon = intent.getBooleanExtra(Constantes.INTENT_CHINCHON, false)
-        val numRonda = intent.getIntExtra(Constantes.INTENT_NUMERORONDA, 0)
+        val numRonda     = intent.getIntExtra(Constantes.INTENT_NUMERORONDA, 0)
 
         g_btn.setOnClickListener {
             finish()

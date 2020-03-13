@@ -162,17 +162,32 @@ class PartidaActivity : AppCompatActivity() {
         carta = CARTA_NOSELECT
     }
 
+    /**
+     * Evento de click del botón "Cortar". Si el jugador que cortó hizo
+     * chinchón entonces lo declara el ganador, sino pasa a la fase de
+     * acomodación.
+     */
     private val cortarClickListener = View.OnClickListener {
         if (fase == Fase.TIRAR_CARTA) {
             if (carta != CARTA_NOSELECT) {
-                cartaCorte = this.jugadores[numJugador].mano.tirarCarta(carta)
+                cartaCorte = jugadores[numJugador].mano.tirarCarta(carta)
 
                 seleccionarCarta(false)
 
-                val intent = Intent(this@PartidaActivity, AcomodarActivity::class.java)
-                intent.putExtra(Constantes.INTENT_CORTE, numJugador)
-                intent.putExtra(Constantes.INTENT_JUGADORES, this.jugadores)
-                startActivityForResult(intent, RC_CORTE)
+                if (jugadores[numJugador].mano.esChinchon()) {
+                    val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
+                    intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
+                    intent.putExtra(Constantes.INTENT_GANADOR, numJugador)
+                    intent.putExtra(Constantes.INTENT_CHINCHON, true)
+                    intent.putExtra(Constantes.INTENT_NUMERORONDA, numRonda)
+                    startActivity(intent)
+
+                } else {
+                    val intent = Intent(this@PartidaActivity, AcomodarActivity::class.java)
+                    intent.putExtra(Constantes.INTENT_CORTE, numJugador)
+                    intent.putExtra(Constantes.INTENT_JUGADORES, this.jugadores)
+                    startActivityForResult(intent, RC_CORTE)
+                }
             }
         }
     }

@@ -38,7 +38,7 @@ class AcomodarActivity : AppCompatActivity() {
     private val colorEmparejado by lazy { ContextCompat.getColor(this, R.color.ac_emparejado) }
 
     private val estados: ArrayList<Estado> = arrayListOf(Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO, Estado.DESELECCIONADO)
-    private var jugadores: ArrayList<Jugador>? = null
+    private lateinit var jugadores: ArrayList<Jugador>
     private var jugadorActual = 0
     private var cortador = 0
     private var cartasSeleccionadas = 0
@@ -50,7 +50,7 @@ class AcomodarActivity : AppCompatActivity() {
         SharedActivityHelper.redimensionarCartas(this, ac_mano)
 
         @Suppress("UNCHECKED_CAST")
-        jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>?
+        jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
         cortador = intent.getIntExtra(Constantes.INTENT_CORTE, 0)
 
         for (index in 0 until ac_mano.childCount) {
@@ -112,7 +112,7 @@ class AcomodarActivity : AppCompatActivity() {
             indices[i] = tmpLista[i]
         }
 
-        val mano = jugadores!![jugadorActual].mano
+        val mano = jugadores[jugadorActual].mano
         if (mano.mismoPalo(indices) || mano.mismoValor(indices)) {
             for (carta in tmpLista) {
                 estados[carta] = Estado.EMPAREJADO
@@ -138,7 +138,7 @@ class AcomodarActivity : AppCompatActivity() {
      * Click listener del botón "Finalizar".
      */
     private val finalizarClickListener: View.OnClickListener = View.OnClickListener {
-        val jugador = jugadores!![jugadorActual]
+        val jugador = jugadores[jugadorActual]
         val acomodadas = BooleanArray(7)
         for (carta in 0 until 7) {
             acomodadas[carta] = estados[carta] == Estado.EMPAREJADO
@@ -181,8 +181,14 @@ class AcomodarActivity : AppCompatActivity() {
         return jugadorActual == cortador
     }
 
+    /**
+     * Muestra la información del jugador y sus cartas en la pantalla. Indica
+     * si el jugador es el que cortó en la última ronda. Configura el estado
+     * de selección de las cartas para que no esté ninguna seleccionada al
+     * inicio.
+     */
     private fun setJugadorEnPantalla() {
-        val jugador = jugadores!![jugadorActual]
+        val jugador = jugadores[jugadorActual]
 
         ac_tv_nombre.text = getString(R.string.ac_nombre, jugador.nombre, jugador.puntos)
 
@@ -193,21 +199,14 @@ class AcomodarActivity : AppCompatActivity() {
         } else {
             ac_tv_corte.text = ""
         }
-        if (jugador.mano.esChinchon() && acomodaCortador()) {
-            val intent = Intent(this@AcomodarActivity, GanadorActivity::class.java)
-            intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
-            intent.putExtra(Constantes.INTENT_GANADOR, jugadorActual + 1)
-            intent.putExtra(Constantes.INTENT_CHINCHON, true)
-            startActivity(intent)
 
-        } else {
-            SharedActivityHelper.manoToGridLayout(jugador.mano, ac_mano, false)
+        SharedActivityHelper.manoToGridLayout(jugador.mano, ac_mano, false)
 
-            for (carta in 0..6) {
-                estados[carta] = Estado.DESELECCIONADO
-                ac_buttonrow.getChildAt(carta).setBackgroundColor(colorDeseleccionado)
-            }
+        for (carta in 0..6) {
+            estados[carta] = Estado.DESELECCIONADO
+            ac_buttonrow.getChildAt(carta).setBackgroundColor(colorDeseleccionado)
         }
+
         ac_errortext.text = ""
     }
 
@@ -216,8 +215,8 @@ class AcomodarActivity : AppCompatActivity() {
      * en total si acomoda las cartas. Lo muestra en un TextView.
      */
     private fun calcularPuntos() {
-        val jugador: Jugador? = jugadores?.get(jugadorActual)
-        val puntosAhora = jugador!!.puntos
+        val jugador: Jugador = jugadores[jugadorActual]
+        val puntosAhora = jugador.puntos
         val acomodaciones = estados.map { it == Estado.EMPAREJADO }.toBooleanArray()
         val puntosTurno = jugador.mano.getPuntos(acomodaciones)
 
