@@ -1,16 +1,9 @@
 package com.example.leoam.chinchonkotlin
 
-import juego.chinchon.Carta
-import juego.chinchon.Mano
-import juego.chinchon.Palo
+import juego.chinchon.*
 import junit.framework.Assert.*
 import org.junit.Test
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see [Testing documentation](http://d.android.com/tools/testing)
- */
 class ChinchonKotlinUnitTest {
     @Test
     fun acomodacion_MismoPalo() {
@@ -42,5 +35,27 @@ class ChinchonKotlinUnitTest {
         assertFalse(mano.mismoPalo(intArrayOf(0, 1, 3)))
         assertFalse(mano.mismoPalo(intArrayOf(0, 1)))
         assertFalse(mano.mismoPalo(intArrayOf(0, 5, 6)))
+    }
+
+    @Test
+    fun partida_robarPila() {
+        val mazo = Mazo(false)
+        val pila = Mazo(true)
+
+        val jugadores = arrayListOf(
+                Jugador("Jugador 1"),
+                Jugador("Jugador 2"))
+        mazo.repartir(jugadores)
+
+        val cartaTirar = jugadores[0].mano.tirarCarta(7)
+        pila.colocar(cartaTirar)
+
+        val cartaRobar = pila.robar()
+        jugadores[1].mano.addCarta(cartaRobar)
+
+        val octavaCarta = jugadores[1].mano.getCarta(7)
+
+        assertEquals(cartaTirar, cartaRobar)
+        assertEquals(cartaRobar, octavaCarta)
     }
 }
