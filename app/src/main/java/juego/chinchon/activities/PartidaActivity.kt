@@ -83,7 +83,6 @@ class PartidaActivity : AppCompatActivity() {
         if (!((estaCarta == 7) and (fase == Fase.ROBAR_CARTA))) {
             if (carta == CARTA_NOSELECT) {
                 carta = estaCarta
-                mj_nombrecarta.text = jugadores[numJugador].mano.getCarta(carta).toString()
                 seleccionarCarta(true)
 
             } else {
@@ -93,7 +92,6 @@ class PartidaActivity : AppCompatActivity() {
                 seleccionarCarta(false)
 
                 carta = CARTA_NOSELECT
-                mj_nombrecarta.text = ""
             }
         }
     }
@@ -115,8 +113,6 @@ class PartidaActivity : AppCompatActivity() {
                     mazo.setImagenTope(mj_mazo, true)
                 }
                 carta = CARTA_NOSELECT
-
-                mj_nombrecarta.text = ""
             }
             Fase.TIRAR_CARTA -> {
 
@@ -155,7 +151,6 @@ class PartidaActivity : AppCompatActivity() {
             Fase.TIRAR_CARTA -> if (carta != CARTA_NOSELECT) {
                 pila.colocar(this.jugadores[numJugador].mano.tirarCarta(carta))
                 seleccionarCarta(false)
-                mj_nombrecarta.text = ""
                 cambioTurno()
             }
         }
@@ -247,7 +242,6 @@ class PartidaActivity : AppCompatActivity() {
         carta = CARTA_NOSELECT
 
         ocultarBotonCortar()
-        mj_nombrecarta.text = ""
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -282,7 +276,6 @@ class PartidaActivity : AppCompatActivity() {
                         SharedActivityHelper.manoToGridLayout(jugadores[numJugador].mano, manos[numJugador], true)
                         carta = CARTA_NOSELECT
 
-                        mj_nombrecarta.text = ""
                         Toast.makeText(this, getText(R.string.mj_malcorte), Toast.LENGTH_SHORT).show()
                     }
                 }
