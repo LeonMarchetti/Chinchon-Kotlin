@@ -62,4 +62,8 @@ class Jugador(val nombre: String) : Serializable {
     fun estaVencido(): Boolean {
         return puntos > MAX_PUNTOS
     }
+
+    override fun toString(): String {
+        return "$nombre ($puntos puntos)"
+    }
 }

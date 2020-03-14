@@ -11,17 +11,22 @@ import java.util.*
  */
 class Mano internal constructor() : Serializable {
 
-    companion object {
-        @Suppress("unused")
-        private const val TAG = "Mano"
-    }
-
     private val cartas: ArrayList<Carta> = ArrayList(8)
 
+    override fun toString(): String {
+        val primeraCarta = cartas[0]
+        var resultado = "[$primeraCarta"
+        var i = 1
+        while (i < cartas.size) {
+            val carta = cartas[i]
+            resultado = "$resultado, $carta"
+            i++
+        }
+        return "$resultado]"
+    }
+
     /**
-     * Agrega una carta a la mano. Si es que la mano tiene menos de 7 cartas
-     * (durante el reparto inicial) entonces la agrega directamente. Si tiene ya
-     * las 7 cartas, entonces se agrega como una carta "extra".
+     * Agrega una carta a la mano.
      *
      * @param c La carta a agregar a la mano.
      */
