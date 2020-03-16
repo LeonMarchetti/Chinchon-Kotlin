@@ -2,6 +2,7 @@ package juego.chinchon.fragments
 
 import android.os.Bundle
 import android.app.Fragment
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,8 @@ class ManoFragment : Fragment() {
         val jugador = arguments.getSerializable("JUGADOR") as Jugador
         val hayOctavaCarta = arguments.getBoolean("OCTAVA")
         val grillaCartas = v.findViewById(R.id.grillaCartas) as GridLayout
+
+        redimensionarCartas(grillaCartas)
 
         manoToGridLayout(jugador.mano, grillaCartas, hayOctavaCarta)
 
@@ -120,6 +123,17 @@ class ManoFragment : Fragment() {
             val frameLayout = gridLayout.getChildAt(7) as FrameLayout
             val imageView = frameLayout.getChildAt(0) as ImageView
             imageView.setImageResource(0)
+        }
+    }
+
+    private fun redimensionarCartas(gridLayout: GridLayout) {
+        val displayMetrics = DisplayMetrics()
+        activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+        for (index in 0..7) {
+            val frameLayout = gridLayout.getChildAt(index) as FrameLayout
+            val imageView = frameLayout.getChildAt(0) as ImageView
+            imageView.layoutParams.width = screenWidth / 4
         }
     }
 }

@@ -5,16 +5,9 @@
     android:background="@color/fondo"
     android:orientation="vertical" >
 
-    <!--<fragment android:id="@+id/mj_mano_1"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        class="juego.chinchon.fragments.ManoFragment" />-->
-
     <FrameLayout android:id="@+id/containerMano1"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" >
-
-    </FrameLayout>
+        android:layout_width="match_parent" />
 
     <TextView android:id="@+id/mj_nombrejugador_1"
         android:layout_width="match_parent"
@@ -75,15 +68,8 @@
         android:textColor="@color/texto"
         android:textSize="@dimen/mj_fontsize" />
 
-    <!--<fragment android:id="@+id/mj_mano_2"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        class="juego.chinchon.fragments.ManoFragment" />-->
-
     <FrameLayout android:id="@+id/containerMano2"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent" >
-
-    </FrameLayout>
+        android:layout_width="match_parent" />
 
 </LinearLayout>
