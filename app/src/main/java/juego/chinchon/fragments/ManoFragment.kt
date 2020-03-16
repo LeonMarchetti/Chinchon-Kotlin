@@ -12,6 +12,7 @@ import android.widget.ImageView
 import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Jugador
 import juego.chinchon.Mano
+import juego.chinchon.activities.IManoFragment
 import kotlinx.android.synthetic.main.fragment_mano.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,14 +28,6 @@ private const val ARG_PARAM2 = "param2"
 class ManoFragment : Fragment() {
     private var cartaSeleccionada: Int = CARTA_NOSELECT
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        /*arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_mano, container, false)
 
@@ -49,14 +42,16 @@ class ManoFragment : Fragment() {
             val imageView = frameLayout.getChildAt(0)
             imageView.setOnClickListener { cartaImageView ->
                 val estaCarta: Int = cartaImageView.tag.toString().toInt()
-                Log.d("Chinchon-Kotlin", "estaCarta = $estaCarta")
-                /*if (cartaSeleccionada == CARTA_NOSELECT) {
+                if (cartaSeleccionada == CARTA_NOSELECT) {
                     cartaSeleccionada = estaCarta
                     mostrarIconoSeleccion(cartaSeleccionada, true)
                 } else {
+                    val partidaActivity = activity as IManoFragment
+                    partidaActivity.intercambiarCartas(cartaSeleccionada, estaCarta)
+
                     mostrarIconoSeleccion(cartaSeleccionada, false)
                     cartaSeleccionada = CARTA_NOSELECT
-                }*/
+                }
             }
         }
 
@@ -93,8 +88,16 @@ class ManoFragment : Fragment() {
         val gridLayout: GridLayout = grillaCartas
         val frameLayout = gridLayout.getChildAt(indice) as FrameLayout
         val imageView = frameLayout.getChildAt(1) as ImageView
-        val visibility = if (seleccionar) View.VISIBLE else View.INVISIBLE
-        imageView.visibility = visibility
+
+        if (seleccionar) {
+            imageView.setImageResource(R.drawable.check)
+        } else {
+            imageView.setImageDrawable(null)
+        }
+    }
+
+    fun mostrarMano(mano: Mano, hayOctavaCarta: Boolean) {
+        manoToGridLayout(mano, grillaCartas, hayOctavaCarta)
     }
 
     /**
@@ -105,7 +108,7 @@ class ManoFragment : Fragment() {
      * @param gridLayout Grilla con los ImageView a modificar.
      * @param hayOctavaCarta Si es que hay que mostrar la octava carta de la mano.
      */
-    fun manoToGridLayout(mano: Mano, gridLayout: GridLayout, hayOctavaCarta: Boolean) {
+    private fun manoToGridLayout(mano: Mano, gridLayout: GridLayout, hayOctavaCarta: Boolean) {
         val limit: Int = if (hayOctavaCarta) { 8 } else { 7 }
         for (index in 0 until limit) {
             val carta = mano.getCarta(index)

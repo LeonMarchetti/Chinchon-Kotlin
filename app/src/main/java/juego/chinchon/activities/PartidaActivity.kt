@@ -1,7 +1,6 @@
 package juego.chinchon.activities
 
 import android.app.AlertDialog
-import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.mesajuego.*
  *
  * @author LeoAM
  */
-class PartidaActivity : AppCompatActivity() {
+class PartidaActivity : AppCompatActivity(), IManoFragment {
     companion object {
         enum class Fase {
             ROBAR_CARTA,
@@ -43,10 +42,17 @@ class PartidaActivity : AppCompatActivity() {
     private var mazo: Mazo = Mazo(false)
     private var pila: Mazo = Mazo(true)
 
+    private val manos = ArrayList<ManoFragment>()
+
     private lateinit var cartaCorte: Carta
 
 //    private var manos = ArrayList<GridLayout>()
-    private var listaManoFragment = ArrayList<ManoFragment>()
+
+    override fun intercambiarCartas(i: Int, j: Int) {
+        val mano = jugadores[numJugador].mano
+        mano.swapCartas(i, j)
+        manos[numJugador].mostrarMano(mano, fase == Fase.TIRAR_CARTA)
+    }
 
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
@@ -76,7 +82,7 @@ class PartidaActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.containerMano1, manoFragment1)
                 .commit()
-        listaManoFragment.add(manoFragment1)
+        manos.add(manoFragment1)
 
         val manoFragment2 = ManoFragment()
         manoFragment2.arguments = Bundle().apply {
@@ -87,7 +93,7 @@ class PartidaActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.containerMano2, manoFragment2)
                 .commit()
-        listaManoFragment.add(manoFragment2)
+        manos.add(manoFragment2)
         containerMano2.visibility = View.GONE
 
         mj_nombrejugador_1.text = this.jugadores[0].nombre
@@ -131,9 +137,13 @@ class PartidaActivity : AppCompatActivity() {
                     pila.setImagenTope(mj_pila, false)
                 }
 
-                jugadores[numJugador].mano.addCarta(mazo.robar())
+                val mano = jugadores[numJugador].mano
+                mano.addCarta(mazo.robar())
                 fase = Fase.TIRAR_CARTA
+
 //                SharedActivityHelper.manoToGridLayout(jugadores[numJugador].mano, manos[numJugador], true)
+                manos[numJugador].mostrarMano(mano, true)
+
                 if (mazo.cantidad == 0) {
                     mazo.setImagenTope(mj_mazo, true)
                 }
