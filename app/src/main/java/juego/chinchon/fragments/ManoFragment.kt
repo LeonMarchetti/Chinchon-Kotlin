@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.ImageView
 import com.example.leoam.chinchonkotlin.R
-import juego.chinchon.Jugador
 import juego.chinchon.Mano
 import juego.chinchon.activities.IManoFragment
 import kotlinx.android.synthetic.main.fragment_mano.*
@@ -31,13 +30,12 @@ class ManoFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_mano, container, false)
 
-        val jugador = arguments.getSerializable("JUGADOR") as Jugador
-        val hayOctavaCarta = arguments.getBoolean("OCTAVA")
+        val mano = arguments.getSerializable("MANO") as Mano
         val grillaCartas = v.findViewById(R.id.grillaCartas) as GridLayout
 
         redimensionarCartas(grillaCartas)
 
-        manoToGridLayout(jugador.mano, grillaCartas, hayOctavaCarta)
+        manoToGridLayout(mano, grillaCartas)
 
         for (index in 0..7) {
             val frameLayout = grillaCartas.getChildAt(index) as FrameLayout
@@ -50,7 +48,6 @@ class ManoFragment : Fragment() {
                 } else {
                     val partidaActivity = activity as IManoFragment
                     partidaActivity.intercambiarCartas(cartaSeleccionada, estaCarta)
-
                     mostrarIconoSeleccion(cartaSeleccionada, false)
                     cartaSeleccionada = CARTA_NOSELECT
                 }
@@ -97,32 +94,29 @@ class ManoFragment : Fragment() {
         }
     }
 
-    fun mostrarMano(mano: Mano, hayOctavaCarta: Boolean) {
-        manoToGridLayout(mano, grillaCartas, hayOctavaCarta)
+    fun mostrarMano(mano: Mano) {
+        manoToGridLayout(mano, grillaCartas)
     }
 
     /**
-     * Modifica los ImageView de una GridLayout con las cartas de una mano.
-     * La mano puede llegar a tener
+     * Modifica los ImageView de una GridLayout con las cartas de una mano. La
+     * grilla tiene lugar para 8 cartas así que cuando la mano tenga 8 cartas
+     * se deja un espacio vacío.
      *
      * @param mano La mano con las cartas a mostrar.
      * @param gridLayout Grilla con los ImageView a modificar.
-     * @param hayOctavaCarta Si es que hay que mostrar la octava carta de la mano.
      */
-    private fun manoToGridLayout(mano: Mano, gridLayout: GridLayout, hayOctavaCarta: Boolean) {
-        val limit: Int = if (hayOctavaCarta) { 8 } else { 7 }
-        for (index in 0 until limit) {
+    private fun manoToGridLayout(mano: Mano, gridLayout: GridLayout) {
+        for (index in 0 until 8) {
             val carta = mano.getCarta(index)
             val frameLayout = gridLayout.getChildAt(index) as FrameLayout
             val imageView = frameLayout.getChildAt(0) as ImageView
-            val imageId = gridLayout.resources.getIdentifier(carta.imagePath, "drawable", gridLayout.context.packageName)
+            val imageId = if (carta == null) {
+                0
+            } else {
+                gridLayout.resources.getIdentifier(carta.imagePath, "drawable", gridLayout.context.packageName)
+            }
             imageView.setImageResource(imageId)
-        }
-
-        if (!hayOctavaCarta) {
-            val frameLayout = gridLayout.getChildAt(7) as FrameLayout
-            val imageView = frameLayout.getChildAt(0) as ImageView
-            imageView.setImageResource(0)
         }
     }
 

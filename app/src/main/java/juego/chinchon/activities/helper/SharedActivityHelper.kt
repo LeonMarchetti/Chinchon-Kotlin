@@ -23,7 +23,7 @@ class SharedActivityHelper {
                 val carta = mano.getCarta(index)
                 val frameLayout = gridLayout.getChildAt(index) as FrameLayout
                 val imageView = frameLayout.getChildAt(0) as ImageView
-                val imageId = gridLayout.resources.getIdentifier(carta.imagePath, "drawable", gridLayout.context.packageName)
+                val imageId = gridLayout.resources.getIdentifier(carta?.imagePath, "drawable", gridLayout.context.packageName)
                 imageView.setImageResource(imageId)
             }
 

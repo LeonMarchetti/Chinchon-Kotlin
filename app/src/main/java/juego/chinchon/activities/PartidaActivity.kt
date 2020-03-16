@@ -40,17 +40,14 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
     private var jugadores = ArrayList<Jugador>()
     private var mazo: Mazo = Mazo(false)
     private var pila: Mazo = Mazo(true)
-
     private val manos = ArrayList<ManoFragment>()
 
     private lateinit var cartaCorte: Carta
 
-//    private var manos = ArrayList<GridLayout>()
-
     override fun intercambiarCartas(i: Int, j: Int) {
         val mano = jugadores[numJugador].mano
         mano.swapCartas(i, j)
-        manos[numJugador].mostrarMano(mano, fase == Fase.TIRAR_CARTA)
+        manos[numJugador].mostrarMano(mano)
     }
 
     public override fun onCreate(icicle: Bundle?) {
@@ -66,7 +63,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
         val manoFragment1 = ManoFragment()
         manoFragment1.arguments = Bundle().apply {
-            putSerializable("JUGADOR", jugadores[0])
+            putSerializable("MANO", jugadores[0].mano)
             putBoolean("OCTAVACARTA", true)
         }
         fragmentManager
@@ -77,7 +74,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
         val manoFragment2 = ManoFragment()
         manoFragment2.arguments = Bundle().apply {
-            putSerializable("JUGADOR", jugadores[1])
+            putSerializable("MANO", jugadores[1].mano)
             putBoolean("OCTAVACARTA", false)
         }
         fragmentManager
@@ -101,21 +98,6 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         mj_cortar_btn.setOnClickListener(cortarClickListener)
     }
 
-    /*private val cartaClickListener = View.OnClickListener { imageView ->
-        val estaCarta: Int = imageView.tag.toString().toInt()
-        if (!((estaCarta == 7) and (fase == Fase.ROBAR_CARTA))) {
-            if (carta == CARTA_NOSELECT) {
-                carta = estaCarta
-                seleccionarCarta(true)
-
-            } else {
-                jugadores[numJugador].mano.swapCartas(carta, estaCarta)
-                seleccionarCarta(false)
-                carta = CARTA_NOSELECT
-            }
-        }
-    }*/
-
     private val mazoClickListener = View.OnClickListener {
         when (fase) {
             Fase.ROBAR_CARTA -> {
@@ -129,7 +111,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 mano.addCarta(mazo.robar())
                 fase = Fase.TIRAR_CARTA
 
-                manos[numJugador].mostrarMano(mano, true)
+                manos[numJugador].mostrarMano(mano)
 
                 if (mazo.cantidad == 0) {
                     mazo.setImagenTope(mj_mazo, true)
@@ -137,7 +119,6 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 carta = CARTA_NOSELECT
             }
             Fase.TIRAR_CARTA -> {
-
                 val builder = AlertDialog.Builder(this@PartidaActivity)
                 builder
                         .setMessage("¿Desea renunciar?")
@@ -187,8 +168,6 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
             if (carta != CARTA_NOSELECT) {
                 cartaCorte = jugadores[numJugador].mano.tirarCarta(carta)
 
-//                seleccionarCarta(false)
-
                 if (jugadores[numJugador].mano.esChinchon()) {
                     val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
                     intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
@@ -214,14 +193,6 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
     private fun ocultarBotonCortar() {
         mj_cortar_btn.visibility = View.INVISIBLE
     }
-
-    /*private fun setClickListeners(gridLayout: GridLayout) {
-        for (index in 0..7) {
-            val frameLayout = gridLayout.getChildAt(index) as FrameLayout
-            val imageView = frameLayout.getChildAt(0)
-            imageView.setOnClickListener(cartaClickListener)
-        }
-    }*/
 
     private fun cambioTurno() {
         numJugador = (numJugador + 1) % jugadores.size
@@ -315,17 +286,4 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
             }
         }
     }
-
-    /**
-     * Muestra o esconde el "tick" sobre la carta seleccionada actualmente.
-     *
-     * param seleccionar Si se selecciona o no la carta.
-     */
-    /*private fun seleccionarCarta(seleccionar: Boolean) {
-        val gridLayout: GridLayout = manos[numJugador]
-        val frameLayout = gridLayout.getChildAt(carta) as FrameLayout
-        val imageView = frameLayout.getChildAt(1) as ImageView
-        val visibility = if (seleccionar) { View.VISIBLE } else { View.INVISIBLE }
-        imageView.visibility = visibility
-    }*/
 }
