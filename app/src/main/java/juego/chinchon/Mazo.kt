@@ -132,8 +132,6 @@ class Mazo(vacio: Boolean) {
                     jugadores[j].mano.addCarta(robar())
                 }
             }
-
-            jugadores[0].mano.addCarta(robar())
         }
     }
 
