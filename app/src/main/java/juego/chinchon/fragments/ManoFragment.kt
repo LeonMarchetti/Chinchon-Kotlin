@@ -16,8 +16,7 @@ import kotlinx.android.synthetic.main.fragment_mano.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val PARAM_MANO = "MANO"
 
 /**
  * A simple [Fragment] subclass.
@@ -62,19 +61,17 @@ class ManoFragment : Fragment() {
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment ManoFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: Mano) =
                 ManoFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+                    this.arguments = Bundle().apply {
+                        putSerializable(PARAM_MANO, param1)
                     }
                 }
-        private const val CARTA_NOSELECT = -1
+        const val CARTA_NOSELECT = -1
     }
 
     /**
@@ -128,6 +125,19 @@ class ManoFragment : Fragment() {
             val frameLayout = gridLayout.getChildAt(index) as FrameLayout
             val imageView = frameLayout.getChildAt(0) as ImageView
             imageView.layoutParams.width = screenWidth / 4
+        }
+    }
+
+    fun getSeleccion(): Int {
+        return cartaSeleccionada
+    }
+
+    fun limpiarSeleccion() {
+        cartaSeleccionada = CARTA_NOSELECT
+        for (indice in 0..7) {
+            val frameLayout = grillaCartas.getChildAt(indice) as FrameLayout
+            val imageView = frameLayout.getChildAt(1) as ImageView
+            imageView.setImageDrawable(null)
         }
     }
 }
