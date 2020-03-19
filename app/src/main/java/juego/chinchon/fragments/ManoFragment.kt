@@ -11,7 +11,6 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Mano
-import juego.chinchon.activities.IManoFragment
 import kotlinx.android.synthetic.main.fragment_mano.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,36 +23,11 @@ private const val PARAM_MANO = "MANO"
  * create an instance of this fragment.
  */
 class ManoFragment : Fragment() {
-    private var cartaSeleccionada: Int = CARTA_NOSELECT
+    /** El índice de la carta seleccionada actualmente. */
+//    private var cartaSeleccionada: Int = CARTA_NOSELECT
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.fragment_mano, container, false)
-
-        val mano = arguments.getSerializable("MANO") as Mano
-        val grillaCartas = v.findViewById(R.id.grillaCartas) as GridLayout
-
-        redimensionarCartas(grillaCartas)
-
-        manoToGridLayout(mano, grillaCartas)
-
-        for (index in 0..7) {
-            val frameLayout = grillaCartas.getChildAt(index) as FrameLayout
-            val imageView = frameLayout.getChildAt(0)
-            imageView.setOnClickListener { cartaImageView ->
-                val estaCarta: Int = cartaImageView.tag.toString().toInt()
-                if (cartaSeleccionada == CARTA_NOSELECT) {
-                    cartaSeleccionada = estaCarta
-                    mostrarIconoSeleccion(cartaSeleccionada, true)
-                } else {
-                    val partidaActivity = activity as IManoFragment
-                    partidaActivity.intercambiarCartas(cartaSeleccionada, estaCarta)
-                    mostrarIconoSeleccion(cartaSeleccionada, false)
-                    cartaSeleccionada = CARTA_NOSELECT
-                }
-            }
-        }
-        return v
-    }
+    /** Arreglo con los estados de selección actuales de todas las cartas. */
+    private val estadoSeleccion = Array(8) { EstadoSeleccion.DESELECCIONADO }
 
     companion object {
         /**
@@ -71,12 +45,61 @@ class ManoFragment : Fragment() {
                         putSerializable(PARAM_MANO, param1)
                     }
                 }
+
+        /** Número de indice que indica que no hay ninguna carta seleccionada. */
         const val CARTA_NOSELECT = -1
+
+        enum class EstadoSeleccion(var idRes: Int) {
+            DESELECCIONADO(0),
+            JUEGO_1(R.drawable.flag_blue),
+            JUEGO_2(R.drawable.flag_red),
+            SELECCIONADO(R.drawable.check)
+        }
+    }
+
+    /**
+     * Crea la instancia de las vistas de la interface y la devuelve. Además:
+     * * Obtiene el objeto `Mano` pasado como parámetro y muestra sus cartas en
+     * la pantalla.
+     * * Redimensiona los `ImageView` de las cartas.
+     * * Configura el estado inicial no seleccionado de las cartas.
+     */
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val v = inflater.inflate(R.layout.fragment_mano, container, false)
+
+        val mano = arguments.getSerializable("MANO") as Mano
+        val grillaCartas = v.findViewById(R.id.grillaCartas) as GridLayout
+
+        redimensionarCartas(grillaCartas)
+
+        manoToGridLayout(mano, grillaCartas)
+
+        for (index in 0..7) {
+            val frameLayout = grillaCartas.getChildAt(index) as FrameLayout
+            val imageView = frameLayout.getChildAt(0)
+            imageView.setOnClickListener { cartaImageView ->
+                val estaCarta = cartaImageView.tag.toString().toInt()
+                val iManoFragmentActivity = activity as IManoFragment
+                iManoFragmentActivity.seleccionarCarta(estaCarta)
+                /*val estaCarta: Int = cartaImageView.tag.toString().toInt()
+                if (cartaSeleccionada == CARTA_NOSELECT) {
+                    cartaSeleccionada = estaCarta
+                    mostrarIconoSeleccion(cartaSeleccionada, true)
+                } else {
+                    val iManoFragmentActivity = activity as IManoFragment
+                    iManoFragmentActivity.intercambiarCartas(cartaSeleccionada, estaCarta)
+                    mostrarIconoSeleccion(cartaSeleccionada, false)
+                    cartaSeleccionada = CARTA_NOSELECT
+                }*/
+            }
+        }
+        return v
     }
 
     /**
      * Muestra o esconde el "tick" sobre la carta seleccionada actualmente.
      *
+     * @param indice Índice de la carta seleccionada.
      * @param seleccionar Si se selecciona o no la carta.
      */
     private fun mostrarIconoSeleccion(indice: Int, seleccionar: Boolean) {
@@ -91,6 +114,11 @@ class ManoFragment : Fragment() {
         }
     }
 
+    /**
+     * Muestra las cartas de la mano en este fragmento.
+     *
+     * @param mano La mano a mostrar.
+     */
     fun mostrarMano(mano: Mano) {
         manoToGridLayout(mano, grillaCartas)
     }
@@ -117,6 +145,12 @@ class ManoFragment : Fragment() {
         }
     }
 
+    /**
+     * Redimensiona los `ImageView` de las cartas para que entren todas en la
+     * pantalla, en un formato de cuatro (4) columnas.
+     *
+     * @param gridLayout La grilla con los `ImageView` a redimensionar.
+     */
     private fun redimensionarCartas(gridLayout: GridLayout) {
         val displayMetrics = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -128,13 +162,38 @@ class ManoFragment : Fragment() {
         }
     }
 
-    fun getSeleccion(): Int {
+    /** Devuelve el índice de la carta seleccionada actualmente. */
+    /*fun getSeleccion(): Int {
         return cartaSeleccionada
+    }*/
+
+    /**
+     * Selecciona una carta en este fragmento, indicando el tipo de selección y
+     * su ícono correspondiente.
+     *
+     * @param i Índice de la carta seleccionada.
+     * @param e Tipo de selección.
+     */
+    fun seleccionarCarta(i: Int, e: EstadoSeleccion) {
+        estadoSeleccion[i] = e
+        val frameLayout = grillaCartas.getChildAt(i) as FrameLayout
+        val imageView = frameLayout.getChildAt(1) as ImageView
+        imageView.setImageResource(e.idRes)
     }
 
+    /** Devuelve el estado de selección de una carta. */
+    fun getEstadoSeleccion(i: Int): EstadoSeleccion {
+        return estadoSeleccion[i]
+    }
+
+    /**
+     * Cambia el indice de carta seleccionada a "sin selección" y oculta todos
+     * los íconos de selección.
+     */
     fun limpiarSeleccion() {
-        cartaSeleccionada = CARTA_NOSELECT
+//        cartaSeleccionada = CARTA_NOSELECT
         for (indice in 0..7) {
+            estadoSeleccion[indice] = EstadoSeleccion.DESELECCIONADO
             val frameLayout = grillaCartas.getChildAt(indice) as FrameLayout
             val imageView = frameLayout.getChildAt(1) as ImageView
             imageView.setImageDrawable(null)

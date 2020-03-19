@@ -11,6 +11,7 @@ import juego.chinchon.Carta
 import juego.chinchon.Constantes
 import juego.chinchon.Jugador
 import juego.chinchon.Mazo
+import juego.chinchon.fragments.IManoFragment
 import juego.chinchon.fragments.ManoFragment
 import kotlinx.android.synthetic.main.mesajuego.*
 
@@ -28,6 +29,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         private const val TURNO_INICIAL = 1
         private const val RC_CORTE = 1
         private const val RC_CAMBIOTURNO = 2
+        private const val CARTA_NOSELECT = -1
     }
 
     private var fase: Fase = Fase.ROBAR_CARTA
@@ -39,13 +41,23 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
     private var mazo: Mazo = Mazo(false)
     private var pila: Mazo = Mazo(true)
     private val manos = ArrayList<ManoFragment>()
+    private var carta = CARTA_NOSELECT
 
     private lateinit var cartaCorte: Carta
 
-    override fun intercambiarCartas(i: Int, j: Int) {
-        val mano = jugadores[numJugador].mano
-        mano.swapCartas(i, j)
-        manos[numJugador].mostrarMano(mano)
+    override fun seleccionarCarta(i: Int) {
+        if (!((i == 7) and (fase == Fase.ROBAR_CARTA))) {
+            if (carta == CARTA_NOSELECT) {
+                carta = i
+                manos[numJugador].seleccionarCarta(carta, ManoFragment.Companion.EstadoSeleccion.SELECCIONADO)
+            } else {
+                val mano = jugadores[numJugador].mano
+                mano.swapCartas(carta, i)
+                manos[numJugador].mostrarMano(mano)
+                manos[numJugador].seleccionarCarta(carta, ManoFragment.Companion.EstadoSeleccion.DESELECCIONADO)
+                carta = CARTA_NOSELECT
+            }
+        }
     }
 
     public override fun onCreate(icicle: Bundle?) {
@@ -110,6 +122,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                     mazo.setImagenTope(mj_mazo, true)
                 }
                 manos[numJugador].limpiarSeleccion()
+                carta = ManoFragment.CARTA_NOSELECT
             }
             Fase.TIRAR_CARTA -> {
                 val builder = AlertDialog.Builder(this@PartidaActivity)
@@ -146,15 +159,18 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
                 pila.setImagenTope(mj_pila, false)
             }
-            Fase.TIRAR_CARTA ->  {
-                val cartaSeleccionada = manos[numJugador].getSeleccion()
-                if (cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
-                    pila.colocar(jugadores[numJugador].mano.tirarCarta(cartaSeleccionada))
+            Fase.TIRAR_CARTA -> {
+//                val cartaSeleccionada = manos[numJugador].getSeleccion()
+//                if (cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
+                if (carta != ManoFragment.CARTA_NOSELECT) {
+                    pila.colocar(jugadores[numJugador].mano.tirarCarta(carta))
+//                    pila.colocar(jugadores[numJugador].mano.tirarCarta(cartaSeleccionada))
                     cambioTurno()
                 }
             }
         }
         manos[numJugador].limpiarSeleccion()
+        carta = ManoFragment.CARTA_NOSELECT
     }
 
     /**
@@ -164,9 +180,11 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
      */
     private val cortarClickListener = View.OnClickListener {
         if (fase == Fase.TIRAR_CARTA) {
-            val cartaSeleccionada = manos[numJugador].getSeleccion()
-            if (cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
-                cartaCorte = jugadores[numJugador].mano.tirarCarta(cartaSeleccionada)
+//            val cartaSeleccionada = manos[numJugador].getSeleccion()
+            if (carta != ManoFragment.CARTA_NOSELECT) {
+//            if (cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
+                cartaCorte = jugadores[numJugador].mano.tirarCarta(carta)
+//                cartaCorte = jugadores[numJugador].mano.tirarCarta(cartaSeleccionada)
                 manos[numJugador].limpiarSeleccion()
 
                 if (jugadores[numJugador].mano.esChinchon()) {
@@ -186,14 +204,19 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         }
     }
 
-    private fun mostrarBotonCortar() {
-        mj_cortar_btn.visibility = View.VISIBLE
+    /**
+     * Muestra/oculta el botón "Cortar". Se oculta el botón de cortar durante
+     * el primer turno de cada jugando, ya que no está permitido.
+     */
+    private fun mostrarBotonCortar(visible: Boolean) {
+        mj_cortar_btn.visibility = if (visible) View.VISIBLE else View.INVISIBLE
     }
 
-    private fun ocultarBotonCortar() {
-        mj_cortar_btn.visibility = View.INVISIBLE
-    }
-
+    /**
+     * Se inicia el cambio de turno entre los jugadores, actualizando el número
+     * del jugador actual, cambiando la fase a la de robar carta e iniciando
+     * la actividad de cambio de turno.
+     */
     private fun cambioTurno() {
         numJugador = (numJugador + 1) % jugadores.size
 
@@ -244,9 +267,26 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
         manos[numJugador].limpiarSeleccion()
 
-        ocultarBotonCortar()
+        carta = ManoFragment.CARTA_NOSELECT
+
+        mostrarBotonCortar(false)
     }
 
+    /**
+     * Se ejecuta cuando se regresa de una actividad ejecutada desde esta
+     * actividad. Las situaciones contempladas son:
+     * * Cuando se vuelve de cortar, desde `AcomodarActivity`:
+     *      * Si se cortó bien, se comprueba la puntuación de los jugadores y
+     *      si alguno o los dos perdieron entonces se va a `GanadorActivity`;
+     *      si no, se muestra un mensaje de error.
+     * * Cuando se cambia de turno, desde `CambioTurnoActivity`:
+     *      * Se muestra la mano del jugador que le toca jugar y oculta la del
+     *      anterior.
+     *      * Se comprueba si el mazo está vacío y se actualiza la imagen de la
+     *      pila.
+     *      * Avanza el número de turnos y muestra el botón "Cortar" si es el
+     *      segundo turno del jugador.
+     */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -298,8 +338,10 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
                 numTurno++
                 if (numTurno > TURNO_INICIAL + 1) {
-                    mostrarBotonCortar()
+                    mostrarBotonCortar(true)
                 }
+
+                carta = ManoFragment.CARTA_NOSELECT
             }
         }
     }
