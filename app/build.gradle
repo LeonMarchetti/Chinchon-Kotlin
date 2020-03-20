@@ -18,14 +18,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "version"
-    productFlavors {
-        prueba {
-            dimension "version"
-            applicationIdSuffix ".prueba"
-            versionNameSuffix "-prueba"
-        }
-    }
+//    flavorDimensions "version"
+//    productFlavors {
+//        prueba {
+//            dimension "version"
+//            applicationIdSuffix ".prueba"
+//            versionNameSuffix "-prueba"
+//        }
+//    }
 }
 
 dependencies {

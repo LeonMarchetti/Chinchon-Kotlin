@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChinchonKotlin-Prueba</string>
+    <string name="app_name">ChinchonKotlin</string>
     <string name="title_activity_acomodar">AcomodarActivity</string>
     <string name="title_activity_cambio_turno">CambioTurnoActivity</string>
     <string name="title_activity_ganador">GanadorActivity</string>
@@ -42,7 +42,7 @@
     <string name="g_puntos">con %1$d puntos</string>
     <string name="g_rondas">en %1$d rondas</string>
 
-    <string name="main_titulo">Chinchon Kotlin (Prueba)</string>
+    <string name="main_titulo">Chinchon Kotlin</string>
     <string name="main_comenzar">Comenzar partida</string>
     <string name="main_salir">Salir</string>
 
