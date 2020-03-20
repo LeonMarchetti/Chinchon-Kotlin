@@ -65,20 +65,14 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
         mazo.repartir(jugadores)
 
-        val manoFragment1 = ManoFragment()
-        manoFragment1.arguments = Bundle().apply {
-            putSerializable("MANO", jugadores[0].mano)
-        }
+        val manoFragment1 = ManoFragment.newInstance()
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.containerMano1, manoFragment1)
                 .commit()
         manos.add(manoFragment1)
 
-        val manoFragment2 = ManoFragment()
-        manoFragment2.arguments = Bundle().apply {
-            putSerializable("MANO", jugadores[1].mano)
-        }
+        val manoFragment2 = ManoFragment.newInstance()
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.containerMano2, manoFragment2)
@@ -98,6 +92,15 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         pila.setImagenTope(mj_pila, false)
 
         mj_cortar_btn.setOnClickListener(cortarClickListener)
+    }
+
+    /**
+     * Muestra la mano del primer jugador. En los fragmentos ya está disponible
+     * la vista para ser modificada.
+     */
+    public override fun onStart() {
+        super.onStart()
+        manos[0].mostrarMano(jugadores[0].mano)
     }
 
     private val mazoClickListener = View.OnClickListener {

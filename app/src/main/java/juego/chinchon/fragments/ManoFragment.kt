@@ -13,19 +13,12 @@ import com.example.leoam.chinchonkotlin.R
 import juego.chinchon.Mano
 import kotlinx.android.synthetic.main.fragment_mano.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val PARAM_MANO = "MANO"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [ManoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 class ManoFragment : Fragment() {
-    /** El índice de la carta seleccionada actualmente. */
-//    private var cartaSeleccionada: Int = CARTA_NOSELECT
-
     /** Arreglo con los estados de selección actuales de todas las cartas. */
     private val estadoSeleccion = Array(8) { EstadoSeleccion.DESELECCIONADO }
 
@@ -34,17 +27,10 @@ class ManoFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
          * @return A new instance of fragment ManoFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: Mano) =
-                ManoFragment().apply {
-                    this.arguments = Bundle().apply {
-                        putSerializable(PARAM_MANO, param1)
-                    }
-                }
+        fun newInstance() = ManoFragment().apply {}
 
         /** Número de indice que indica que no hay ninguna carta seleccionada. */
         const val CARTA_NOSELECT = -1
@@ -67,12 +53,9 @@ class ManoFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_mano, container, false)
 
-        val mano = arguments.getSerializable("MANO") as Mano
         val grillaCartas = v.findViewById(R.id.grillaCartas) as GridLayout
 
         redimensionarCartas(grillaCartas)
-
-        manoToGridLayout(mano, grillaCartas)
 
         for (index in 0..7) {
             val frameLayout = grillaCartas.getChildAt(index) as FrameLayout
@@ -84,24 +67,6 @@ class ManoFragment : Fragment() {
             }
         }
         return v
-    }
-
-    /**
-     * Muestra o esconde el "tick" sobre la carta seleccionada actualmente.
-     *
-     * @param indice Índice de la carta seleccionada.
-     * @param seleccionar Si se selecciona o no la carta.
-     */
-    private fun mostrarIconoSeleccion(indice: Int, seleccionar: Boolean) {
-        val gridLayout: GridLayout = grillaCartas
-        val frameLayout = gridLayout.getChildAt(indice) as FrameLayout
-        val imageView = frameLayout.getChildAt(1) as ImageView
-
-        if (seleccionar) {
-            imageView.setImageResource(R.drawable.check)
-        } else {
-            imageView.setImageDrawable(null)
-        }
     }
 
     /**
@@ -152,11 +117,6 @@ class ManoFragment : Fragment() {
         }
     }
 
-    /** Devuelve el índice de la carta seleccionada actualmente. */
-    /*fun getSeleccion(): Int {
-        return cartaSeleccionada
-    }*/
-
     /**
      * Selecciona una carta en este fragmento, indicando el tipo de selección y
      * su ícono correspondiente.
@@ -181,7 +141,6 @@ class ManoFragment : Fragment() {
      * los íconos de selección.
      */
     fun limpiarSeleccion() {
-//        cartaSeleccionada = CARTA_NOSELECT
         for (indice in 0..7) {
             estadoSeleccion[indice] = EstadoSeleccion.DESELECCIONADO
             val frameLayout = grillaCartas.getChildAt(indice) as FrameLayout

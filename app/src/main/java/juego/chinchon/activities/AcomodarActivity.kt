@@ -28,10 +28,15 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
     private lateinit var jugadores: ArrayList<Jugador>
     private var jugadorActual = 0
     private var cortador = 0
+    /**
+     * Cantidad de cartas seleccionadas. Usado para cambiar el texto del botón
+     * "Finalizar" por "Cancelar", para mostrar que el jugador que corta puede
+     * volver a la partida si no pudo formar un juego.
+     */
     private var cartasSeleccionadas = 0
     /**
      * Cantidad de juegos formados hasta el momento. Solo puede haber un
-     * máximo de dos juegos
+     * máximo de dos juegos.
      */
     private var juegosActuales = 0
 
@@ -59,10 +64,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
 
         jugadorActual = cortador
 
-        manoFragment = ManoFragment()
-        manoFragment.arguments = Bundle().apply {
-            putSerializable("MANO", jugadores[jugadorActual].mano)
-        }
+        manoFragment = ManoFragment.newInstance()
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.containerMano, manoFragment)
@@ -70,6 +72,15 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
 
         calcularPuntos()
         setInformacionJugador()
+    }
+
+    /**
+     * Muestra la mano del jugador que cortó. En el fragmento ya está
+     * disponible la vista para ser modificada.
+     */
+    override fun onStart() {
+        super.onStart()
+        manoFragment.mostrarMano(jugadores[cortador].mano)
     }
 
     /**
@@ -237,7 +248,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         }
         val puntosTurno = jugador.mano.getPuntos(acomodadas)
 
-        if (jugadorActual == cortador && puntosTurno == 0) {
+        if (acomodaCortador() && puntosTurno == 0) {
             ac_tv_puntos.text = getString(R.string.ac_restapuntos, puntosAhora - 10)
         } else {
             ac_tv_puntos.text = getString(R.string.ac_sumapuntos, puntosTurno, puntosAhora + puntosTurno)
@@ -254,7 +265,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
 
         ac_tv_nombre.text = getString(R.string.ac_nombre, jugador.nombre, jugador.puntos)
 
-        if (cortador == jugadorActual) {
+        if (acomodaCortador()) {
             ac_tv_corte.setText(R.string.ac_corte)
         } else {
             ac_tv_corte.text = ""
