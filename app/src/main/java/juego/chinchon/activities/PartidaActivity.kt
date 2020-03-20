@@ -11,6 +11,7 @@ import juego.chinchon.*
 import juego.chinchon.fragments.IManoFragment
 import juego.chinchon.fragments.ManoFragment
 import kotlinx.android.synthetic.main.mesajuego.*
+import java.lang.IllegalArgumentException
 
 /**
  * Actividad donde transcurre la partida.
@@ -89,7 +90,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         mj_mazo.setOnClickListener(mazoClickListener)
         mj_pila.setOnClickListener(pilaClickListener)
 
-        pila.setImagenTope(mj_pila, false)
+        setTopeMazo(pila)
 
         mj_cortar_btn.setOnClickListener(cortarClickListener)
     }
@@ -108,8 +109,8 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
             Fase.ROBAR_CARTA -> {
                 if (mazo.cantidad == 0) {
                     mazo.volcar(pila)
-                    mazo.setImagenTope(mj_mazo, true)
-                    pila.setImagenTope(mj_pila, false)
+                    setTopeMazo(mazo)
+                    setTopeMazo(pila)
                 }
 
                 val mano = jugadores[numJugador].mano
@@ -119,7 +120,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 manos[numJugador].mostrarMano(mano)
 
                 if (mazo.cantidad == 0) {
-                    mazo.setImagenTope(mj_mazo, true)
+                    setTopeMazo(mazo)
                 }
                 manos[numJugador].limpiarSeleccion()
                 carta = ManoFragment.CARTA_NOSELECT
@@ -157,14 +158,11 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
                 manos[numJugador].mostrarMano(mano)
 
-                pila.setImagenTope(mj_pila, false)
+                setTopeMazo(pila)
             }
             Fase.TIRAR_CARTA -> {
-//                val cartaSeleccionada = manos[numJugador].getSeleccion()
-//                if (cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
                 if (carta != ManoFragment.CARTA_NOSELECT) {
                     pila.colocar(jugadores[numJugador].mano.tirarCarta(carta))
-//                    pila.colocar(jugadores[numJugador].mano.tirarCarta(cartaSeleccionada))
                     cambioTurno()
                 }
             }
@@ -243,8 +241,8 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         mazo = Mazo(false)
         pila = Mazo(true)
 
-        mazo.setImagenTope(mj_mazo, true)
-        pila.setImagenTope(mj_pila, false)
+        setTopeMazo(mazo)
+        setTopeMazo(pila)
 
         mazo.repartir(jugadores)
         manos[0].mostrarMano(jugadores[0].mano)
@@ -328,8 +326,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 if (mazo.vacio()) {
                     mazo.volcar(pila)
                 }
-
-                pila.setImagenTope(mj_pila, false)
+                setTopeMazo(pila)
 
                 numTurno++
                 if (numTurno > TURNO_INICIAL + 1) {
@@ -339,5 +336,26 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 carta = ManoFragment.CARTA_NOSELECT
             }
         }
+    }
+
+    /**
+     * Define la imagen del mazo o la pila de acuerdo a la carta que esté
+     * arriba. Si se trata del mazo entonces se muestra el dorso; si es la pila
+     * se muestra la carta. En ambos, si está vacío, no se muestra nada.
+     */
+    private fun setTopeMazo(mazoArg: Mazo) {
+        val defType = "drawable"
+        val name: String = when (mazoArg) {
+            mazo -> {
+                if (mazo.vacio()) { "vacio" } else { "dorso" }
+            }
+            pila -> {
+                if (pila.vacio()) { "vacio" } else { pila.tope().imagePath }
+            }
+            else -> {
+                throw IllegalArgumentException()
+            }
+        }
+        mj_pila.setImageResource(resources.getIdentifier(name, defType, packageName))
     }
 }

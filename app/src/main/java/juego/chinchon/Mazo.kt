@@ -150,30 +150,6 @@ class Mazo(vacio: Boolean) {
     }
 
     /**
-     * Dada un componente de imagen, le coloca la imagen del tope del mazo.
-     *
-     * @param iv Componente de ImageView.
-     * @param oculto Si se trata del mazo de robo, entonces muestra el dorso de
-     * la carta en lugar de la imagén de la carta en particular.
-     */
-    fun setImagenTope(iv: ImageView, oculto: Boolean) {
-        val res = iv.resources
-        val defPackage = iv.context.packageName
-        val defType = "drawable"
-        when {
-            cartas.isEmpty() -> { // Si el mazo o la pila están vacíos, entonces dejó vacío el espacio para la imagen.
-                iv.setImageResource(res.getIdentifier("vacio", defType, defPackage))
-            }
-            oculto -> {
-                iv.setImageResource(res.getIdentifier("dorso", defType, defPackage))
-            }
-            else -> {
-                iv.setImageResource(res.getIdentifier(cartas[0].imagePath, defType, defPackage))
-            }
-        }
-    }
-
-    /**
      * Comprueba que el mazó esté vacío.
      *
      * @return Si el mazo está vacío o no.
