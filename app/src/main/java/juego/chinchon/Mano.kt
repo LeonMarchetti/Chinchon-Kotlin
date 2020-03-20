@@ -52,8 +52,12 @@ class Mano internal constructor() : Serializable {
      * @param n Índice de la carta.
      * @return La carta seleccionada.
      */
-    fun getCarta(n: Int): Carta {
-        return cartas[n]
+    fun getCarta(n: Int): Carta? {
+        return try {
+            cartas[n]
+        } catch (e: IndexOutOfBoundsException) {
+            null
+        }
     }
 
     /**
