@@ -83,14 +83,19 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
                 DESELECCIONADO -> {
                     manoFragment.seleccionarCarta(i, SELECCIONADO)
                     cartasSeleccionadas++
+                    if (acomodaCortador()) {
+                        ac_finalizar_btn.setText(R.string.ac_Finalizar)
+                    }
                 }
                 SELECCIONADO -> {
                     manoFragment.seleccionarCarta(i, DESELECCIONADO)
                     cartasSeleccionadas--
-                    if (acomodaCortador() and (cartasSeleccionadas == 0)) {
-                        ac_finalizar_btn.setText(R.string.ac_Cancelar)
-                    } else {
-                        ac_finalizar_btn.setText(R.string.ac_Finalizar)
+                    if (acomodaCortador()) {
+                        if (cartasSeleccionadas == 0) {
+                            ac_finalizar_btn.setText(R.string.ac_Cancelar)
+                        } else {
+                            ac_finalizar_btn.setText(R.string.ac_Finalizar)
+                        }
                     }
                 }
                 else -> {
@@ -149,6 +154,9 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         manoFragment.limpiarSeleccion()
         juegosActuales = 0
         calcularPuntos()
+
+        cartasSeleccionadas = 0
+        ac_finalizar_btn.setText(R.string.ac_Cancelar)
     }
 
     /**
