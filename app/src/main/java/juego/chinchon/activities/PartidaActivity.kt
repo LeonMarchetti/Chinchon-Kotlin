@@ -7,10 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.*
 import com.example.leoam.chinchonkotlin.R
-import juego.chinchon.Carta
-import juego.chinchon.Constantes
-import juego.chinchon.Jugador
-import juego.chinchon.Mazo
+import juego.chinchon.*
 import juego.chinchon.fragments.IManoFragment
 import juego.chinchon.fragments.ManoFragment
 import kotlinx.android.synthetic.main.mesajuego.*
@@ -179,27 +176,22 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
      * acomodación.
      */
     private val cortarClickListener = View.OnClickListener {
-        if (fase == Fase.TIRAR_CARTA) {
-//            val cartaSeleccionada = manos[numJugador].getSeleccion()
-            if (carta != ManoFragment.CARTA_NOSELECT) {
-//            if (cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
-                cartaCorte = jugadores[numJugador].mano.tirarCarta(carta)
-//                cartaCorte = jugadores[numJugador].mano.tirarCarta(cartaSeleccionada)
-                manos[numJugador].limpiarSeleccion()
-
-                if (jugadores[numJugador].mano.esChinchon()) {
-                    val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
-                    intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
-                    intent.putExtra(Constantes.INTENT_GANADOR, numJugador)
-                    intent.putExtra(Constantes.INTENT_CHINCHON, true)
-                    intent.putExtra(Constantes.INTENT_NUMERORONDA, numRonda)
-                    startActivity(intent)
-                } else {
-                    val intent = Intent(this@PartidaActivity, AcomodarActivity::class.java)
-                    intent.putExtra(Constantes.INTENT_CORTE, numJugador)
-                    intent.putExtra(Constantes.INTENT_JUGADORES, this.jugadores)
-                    startActivityForResult(intent, RC_CORTE)
-                }
+        if ((fase == Fase.TIRAR_CARTA) && (carta != ManoFragment.CARTA_NOSELECT)) {
+            cartaCorte = jugadores[numJugador].mano.tirarCarta(carta)
+            manos[numJugador].limpiarSeleccion()
+            if (jugadores[numJugador].mano.esChinchon()) {
+                val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
+                intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
+                intent.putExtra(Constantes.INTENT_GANADOR, numJugador)
+                intent.putExtra(Constantes.INTENT_CHINCHON, true)
+                intent.putExtra(Constantes.INTENT_NUMERORONDA, numRonda)
+                finish()
+                startActivity(intent)
+            } else {
+                val intent = Intent(this@PartidaActivity, AcomodarActivity::class.java)
+                intent.putExtra(Constantes.INTENT_CORTE, numJugador)
+                intent.putExtra(Constantes.INTENT_JUGADORES, this.jugadores)
+                startActivityForResult(intent, RC_CORTE)
             }
         }
     }

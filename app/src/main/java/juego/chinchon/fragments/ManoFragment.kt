@@ -81,16 +81,6 @@ class ManoFragment : Fragment() {
                 val estaCarta = cartaImageView.tag.toString().toInt()
                 val iManoFragmentActivity = activity as IManoFragment
                 iManoFragmentActivity.seleccionarCarta(estaCarta)
-                /*val estaCarta: Int = cartaImageView.tag.toString().toInt()
-                if (cartaSeleccionada == CARTA_NOSELECT) {
-                    cartaSeleccionada = estaCarta
-                    mostrarIconoSeleccion(cartaSeleccionada, true)
-                } else {
-                    val iManoFragmentActivity = activity as IManoFragment
-                    iManoFragmentActivity.intercambiarCartas(cartaSeleccionada, estaCarta)
-                    mostrarIconoSeleccion(cartaSeleccionada, false)
-                    cartaSeleccionada = CARTA_NOSELECT
-                }*/
             }
         }
         return v
