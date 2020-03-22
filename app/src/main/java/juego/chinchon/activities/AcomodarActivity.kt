@@ -6,8 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.example.leoam.chinchonkotlin.R
-import juego.chinchon.Constantes
+//import juego.chinchon.Constantes
 import juego.chinchon.Jugador
+import juego.chinchon.Partida
 import juego.chinchon.fragments.IManoFragment
 import juego.chinchon.fragments.ManoFragment
 import juego.chinchon.fragments.ManoFragment.Companion.EstadoSeleccion.*
@@ -25,7 +26,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         private const val CANTIDAD_CARTAS: Int = 7
     }
 
-    private lateinit var jugadores: ArrayList<Jugador>
+//    private lateinit var jugadores: ArrayList<Jugador>
     private var jugadorActual = 0
     private var cortador = 0
     /**
@@ -39,6 +40,8 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
      * máximo de dos juegos.
      */
     private var juegosActuales = 0
+
+    private lateinit var partida: Partida
 
     private lateinit var manoFragment: ManoFragment
 
@@ -54,15 +57,18 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         super.onCreate(icicle)
         setContentView(R.layout.acomodacion)
 
-        @Suppress("UNCHECKED_CAST")
+        /*@Suppress("UNCHECKED_CAST")
         jugadores = intent.getSerializableExtra(Constantes.INTENT_JUGADORES) as ArrayList<Jugador>
-        cortador = intent.getIntExtra(Constantes.INTENT_CORTE, 0)
+        cortador = intent.getIntExtra(Constantes.INTENT_CORTE, 0)*/
+
+        partida = intent.getSerializableExtra("PARTIDA") as Partida
 
         ac_emparejar_btn.setOnClickListener(emparejarClickListener)
         ac_desarmar_btn.setOnClickListener(desarmarClickListener)
         ac_finalizar_btn.setOnClickListener(finalizarClickListener)
 
-        jugadorActual = cortador
+//        jugadorActual = cortador
+        jugadorActual = partida.rondaActual.cortador!!
 
         manoFragment = ManoFragment.newInstance()
         fragmentManager
@@ -80,7 +86,8 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
      */
     override fun onStart() {
         super.onStart()
-        manoFragment.mostrarMano(jugadores[cortador].mano)
+//        manoFragment.mostrarMano(jugadores[cortador].mano)
+        manoFragment.mostrarMano(partida.jugadores[jugadorActual].mano)
     }
 
     /**
@@ -134,9 +141,10 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         }
 
         val indices = tmpListaIndices.toIntArray()
-        val mano = jugadores[jugadorActual].mano
+//        val mano = jugadores[jugadorActual].mano
 
-        if (mano.mismoPalo(indices) || mano.mismoValor(indices)) {
+//        if (mano.mismoPalo(indices) || mano.mismoValor(indices)) {
+        if (partida.rondaActual.formanJuego(jugadorActual, indices)) {
             val estadoSeleccionJuego = when(juegosActuales) {
                 0 -> JUEGO_1
                 1 -> JUEGO_2
@@ -171,14 +179,13 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
     }
 
     /**
-     * Click listener del botón "Finalizar".
-     * * Genera una lista de booleanos con las cartas que fueron emparejadas y
-     * las pasa al objeto mano para calcular cuantos puntos hizo. Si es el
-     * cortador e hizo más de 5 puntos, entonces vuelve a la partida con un
-     * mensaje de error.
+     * Click listener del botón "Finalizar". Genera una lista de booleanos con
+     * las cartas que fueron emparejadas y las pasa al objeto mano para
+     * calcular cuantos puntos hizo. Si es el cortador e hizo más de 5 puntos,
+     * entonces vuelve a la partida con un mensaje de error.
      */
     private val finalizarClickListener: View.OnClickListener = View.OnClickListener {
-        val jugador = jugadores[jugadorActual]
+        /*val jugador = jugadores[jugadorActual]
 
         val acomodadas = BooleanArray(CANTIDAD_CARTAS) { i ->
             manoFragment.getEstadoSeleccion(i) == JUEGO_1 ||
@@ -200,6 +207,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
                 }
                 jugadorActual = 1 - jugadorActual
                 juegosActuales = 0
+
                 setJugadorEnPantalla()
                 calcularPuntos()
             }
@@ -210,7 +218,36 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
             intent.putExtra(Constantes.INTENT_JUGADORES, jugadores)
             setResult(1, intent)
             finish()
+        }*/
+
+        try {
+            if (partida.acomodar(jugadorActual, cartasEmparejadas())) {
+                // Acomodó el que cortó, sigo con el otro jugador
+                jugadorActual = 1 - jugadorActual
+                setJugadorEnPantalla()
+                calcularPuntos()
+            } else {
+                // Acomodó el otro jugador, termino esta fase.
+                if (partida.hayGanador) {
+                    val intent = Intent(this@AcomodarActivity, GanadorActivity::class.java)
+                    intent.putExtra("PARTIDA", partida)
+                    finishActivity(PartidaActivity.RC_CORTE)
+                    finish()
+                    startActivity(intent)
+                } else {
+                    val intent = Intent()
+                    intent.putExtra("PARTIDA", partida)
+                    setResult(1, intent)
+                    finish()
+                }
+            }
+        } catch (e: IllegalStateException) {
+            val intent = Intent()
+            setResult(2, intent)
+            finish()
         }
+
+        partida.acomodar(jugadorActual, cartasEmparejadas())
     }
 
     /**
@@ -228,11 +265,13 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
      * ninguna seleccionada al inicio.
      */
     private fun setJugadorEnPantalla() {
+        juegosActuales = 0
         setInformacionJugador()
-        manoFragment.mostrarMano(jugadores[jugadorActual].mano)
+        manoFragment.mostrarMano(partida.jugadores[jugadorActual].mano)
         manoFragment.limpiarSeleccion()
         ac_finalizar_btn.setText(R.string.ac_Finalizar)
         cartasSeleccionadas = 0
+
     }
 
     /**
@@ -240,13 +279,15 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
      * en total si acomoda las cartas. Lo muestra en un TextView.
      */
     private fun calcularPuntos() {
-        val jugador: Jugador = jugadores[jugadorActual]
+        val jugador: Jugador = partida.jugadores[jugadorActual]
         val puntosAhora = jugador.puntos
-        val acomodadas = BooleanArray(CANTIDAD_CARTAS) { i ->
+        /*val acomodadas = BooleanArray(CANTIDAD_CARTAS) { i ->
             manoFragment.getEstadoSeleccion(i) == JUEGO_1 ||
             manoFragment.getEstadoSeleccion(i) == JUEGO_2
         }
-        val puntosTurno = jugador.mano.getPuntos(acomodadas)
+        val acomodadas = cartasEmparejadas()
+        val puntosTurno = jugador.mano.getPuntos(acomodadas)*/
+        val puntosTurno = jugador.mano.getPuntos(cartasEmparejadas())
 
         if (acomodaCortador() && puntosTurno == 0) {
             ac_tv_puntos.text = getString(R.string.ac_restapuntos, puntosAhora - 10)
@@ -261,7 +302,8 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
      * * Si fue el que cortó en esta ronda.
      */
     private fun setInformacionJugador() {
-        val jugador = jugadores[jugadorActual]
+//        val jugador = jugadores[jugadorActual]
+        val jugador = partida.jugadores[jugadorActual]
 
         ac_tv_nombre.text = getString(R.string.ac_nombre, jugador.nombre, jugador.puntos)
 
@@ -269,6 +311,13 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
             ac_tv_corte.setText(R.string.ac_corte)
         } else {
             ac_tv_corte.text = ""
+        }
+    }
+
+    private fun cartasEmparejadas(): BooleanArray {
+        return BooleanArray(CANTIDAD_CARTAS) { i ->
+            manoFragment.getEstadoSeleccion(i) == JUEGO_1 ||
+                    manoFragment.getEstadoSeleccion(i) == JUEGO_2
         }
     }
 }

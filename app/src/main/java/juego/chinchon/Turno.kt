@@ -1,12 +1,14 @@
 package juego.chinchon
 
-class Turno (val numero: Int, val jugador: Jugador, val mazo: Mazo, val pila: Mazo) {
-    lateinit var cartaPila: Carta
-    lateinit var cartaRobo: Carta
+import java.io.Serializable
+
+class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Mazo, private val pila: Mazo): Serializable {
+    private lateinit var cartaPila: Carta
+    private lateinit var cartaRobo: Carta
     var fase: FaseTurno
 
     companion object {
-        enum class FaseTurno(var denominacion: String) {
+        enum class FaseTurno(private var denominacion: String) {
             ROBAR("Robar"),
             TIRAR("Tirar");
 
@@ -28,11 +30,22 @@ class Turno (val numero: Int, val jugador: Jugador, val mazo: Mazo, val pila: Ma
         return "Turno n°$numero - ${jugador.nombre}"
     }
 
+    /** Comprueba que el turno está en la fase de robar. */
+    fun esFaseRobo(): Boolean {
+        return fase == FaseTurno.ROBAR
+    }
+
+    /** Comprueba que el turno está en la fase de tirar. */
+    fun esFaseTirar(): Boolean {
+        return fase == FaseTurno.TIRAR
+    }
+
     /**
      * Roba una carta del mazo. Si el mazo está vacío al iniciar el turno
      * entonces se vuelca el contenido de la pila en el mazo antes de efectuar
      * el robo. Cambia a la fase de "tirar carta".
      */
+    @Throws(IllegalStateException::class)
     fun robarCartaMazo() {
         if (fase != FaseTurno.ROBAR) {
             throw IllegalStateException("Solo se puede robar una carta durante la fase de \"robo\"")
@@ -49,6 +62,7 @@ class Turno (val numero: Int, val jugador: Jugador, val mazo: Mazo, val pila: Ma
      * Roba una carta de la pila. Cambia a la fase de "tirar carta". No se
      * permite robar una carta de una pila vacía.
      */
+    @Throws(IllegalStateException::class)
     fun robarCartaPila() {
         if (fase != FaseTurno.ROBAR) {
             throw IllegalStateException("Solo se puede robar una carta durante la fase de \"robo\"")
@@ -67,6 +81,7 @@ class Turno (val numero: Int, val jugador: Jugador, val mazo: Mazo, val pila: Ma
     }
 
     /** Tira una carta de la mano del jugador a la pila. */
+    @Throws(IllegalStateException::class)
     fun tirarCarta(i: Int) {
         if (fase != FaseTurno.TIRAR) {
             throw IllegalStateException("Solo se puede tirar una carta durante la fase de \"tirar\"")
@@ -76,10 +91,19 @@ class Turno (val numero: Int, val jugador: Jugador, val mazo: Mazo, val pila: Ma
     }
 
     /** Corta, tirando una carta de la mano del jugador. */
-    fun cortar(i: Int) {
+    @Throws(IllegalStateException::class)
+    fun cortar(i: Int): Carta {
         if (fase != FaseTurno.TIRAR) {
             throw IllegalStateException("Solo se puede cortar durante la fase de \"tirar\"")
         }
-        cartaPila = jugador.mano.tirarCarta(i)
+        return jugador.mano.tirarCarta(i)
+    }
+
+    @Throws(IllegalStateException::class)
+    fun resumir(carta: Carta) {
+        if (fase != FaseTurno.TIRAR) {
+            throw IllegalStateException("Solo se puede cortar durante la fase de \"tirar\"")
+        }
+        jugador.mano.addCarta(carta)
     }
 }
