@@ -82,6 +82,9 @@ class Partida : Serializable {
             chinchon = true
             resultado = Resultado.GANADOR
             jugadorGanador = jugadorCortador
+            perdedores = jugadores.filter { j ->
+                j != jugadorGanador
+            } as ArrayList<Jugador>
         }
     }
 
