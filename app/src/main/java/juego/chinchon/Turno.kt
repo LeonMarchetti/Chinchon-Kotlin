@@ -2,12 +2,18 @@ package juego.chinchon
 
 import java.io.Serializable
 
+/**
+ * Clase que representa el turno de un jugador.
+ *
+ * @author LeonMarchetti
+ */
 class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Mazo, private val pila: Mazo): Serializable {
     private lateinit var cartaPila: Carta
     private lateinit var cartaRobo: Carta
     var fase: FaseTurno
 
     companion object {
+        /** Clase que representa la fase de un turno. */
         enum class FaseTurno(private var denominacion: String) {
             ROBAR("Robar"),
             TIRAR("Tirar");
@@ -99,6 +105,10 @@ class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Ma
         return jugador.mano.tirarCarta(i)
     }
 
+    /**
+     * Resume el turno después de cancelar el corte, agregando la carta de
+     * vuelta a la mano.
+     */
     @Throws(IllegalStateException::class)
     fun resumir(carta: Carta) {
         if (fase != FaseTurno.TIRAR) {

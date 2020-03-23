@@ -3,20 +3,41 @@ package juego.chinchon
 import java.io.Serializable
 import java.lang.IllegalStateException
 
+/**
+ * Clase que representa la partida de chinchón. Maneja a los jugadores que
+ * participan y las rondas que lo conforman.
+ *
+ * @author LeonMarchetti
+ */
 class Partida : Serializable {
     var jugadores: ArrayList<Jugador>
+        private set
     var rondas: ArrayList<Ronda>
+        private set
     val rondaActual: Ronda
         get() = rondas.last()
     var resultado: Resultado
+        private set
     var jugadorGanador: Jugador?
+        private set
     var chinchon: Boolean
+        private set
     val hayGanador: Boolean
         get() = resultado == Resultado.GANADOR
+    /**
+     * Determina el jugador inicial de una ronda. Para la primer ronda se elije
+     * al primer jugador ingresado a la partida.
+     */
     private var jugadorInicial: Int
+    /**
+     * Lista de jugadores que perdieron en la partida. Se actualiza con las
+     * llamadas a `cortar`, `renunciar` y `acomodar`.
+     */
     var perdedores: ArrayList<Jugador>
+        private set
 
     companion object {
+        /** Estado de una partida. */
         enum class Resultado {
             GANADOR,
             EMPATE,
@@ -34,11 +55,16 @@ class Partida : Serializable {
         perdedores = ArrayList()
     }
 
+    /** Añade a un nuevo jugador a la partida */
     fun nuevoJugador(nombre: String, puntos: Int) {
         val jugador = Jugador(nombre, puntos)
         jugadores.add(jugador)
     }
 
+    /**
+     * Inicia una nueva ronda en la partida. Hace avanzar el número del jugador
+     * inicial para la próxima ronda.
+     */
     fun nuevaRonda(): Ronda {
         val ronda = Ronda(rondas.size + 1, jugadorInicial, jugadores)
         jugadorInicial = (jugadorInicial + 1) % jugadores.size
@@ -46,6 +72,10 @@ class Partida : Serializable {
         return ronda
     }
 
+    /**
+     * Renuncia un jugador a la partida. Comprueba si hay otros jugadores en
+     * juego y establece el resultado de la partida.
+     */
     fun renunciar(i: Int) {
         if (resultado != Resultado.EN_JUEGO) {
             throw IllegalStateException("Solo puede renunciar alguien si se está en juego.")
@@ -73,7 +103,8 @@ class Partida : Serializable {
     }
 
     /**
-     * Cortar durante el turno actual
+     * Cortar durante el turno actual. Comprueba si el jugador hizo chinchón y
+     * establece el resutlado de la partida.
      */
     fun cortar(i: Int) {
         rondaActual.cortar(i)
@@ -88,6 +119,10 @@ class Partida : Serializable {
         }
     }
 
+    /**
+     * Resume el juego luego de que se canceló el corte durante la ronda
+     * actual.
+     */
     fun resumir() {
         rondaActual.resumir()
     }

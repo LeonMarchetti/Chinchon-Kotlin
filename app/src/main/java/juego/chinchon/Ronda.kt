@@ -3,6 +3,12 @@ package juego.chinchon
 import java.io.Serializable
 import kotlin.IllegalStateException
 
+/**
+ * Clase que representa una ronda en una partida. Maneja los turnos que
+ * transcurren dentro de ella, el mazo y la pila.
+ *
+ * @author LeonMarchetti
+ */
 class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores: ArrayList<Jugador>): Serializable {
     var pila: Mazo
     var mazo: Mazo
@@ -13,6 +19,11 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
     val numeroTurno: Int
         get() = turnos.size
     var cortador: Int? = null
+    /**
+     * La carta que el cortador tiró al momento del corte. Se mantiene en
+     * memoria por si se cancela el corte y hay que volver a agregarla a la
+     * mano.
+     */
     private lateinit var cartaCorte: Carta
 
     init {
@@ -39,6 +50,12 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
         return turno
     }
 
+    /**
+     * Determina si se forma un juego con las cartas seleccionadas.
+     *
+     * @param i Índice del jugador.
+     * @param indices Índices de las cartas seleccionadas.
+     */
     fun formanJuego(i: Int, indices: IntArray): Boolean {
         val mano = jugadores[i].mano
         val mismoPalo = mano.mismoPalo(indices)
@@ -47,7 +64,7 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
     }
 
     /**
-     *
+     * Cortar durante el turno actual. Se guarda la carta con la que se cortó.
      */
     fun cortar(i: Int) {
         cartaCorte = turnoActual.cortar(i)
@@ -88,6 +105,10 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
         }
     }
 
+    /**
+     * Resume el juego luego de que se canceló el corte durante el turno
+     * actual.
+     */
     fun resumir() {
         turnoActual.resumir(cartaCorte)
     }
