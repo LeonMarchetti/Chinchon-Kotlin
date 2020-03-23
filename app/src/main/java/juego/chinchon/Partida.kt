@@ -13,7 +13,7 @@ class Partida : Serializable {
     var chinchon: Boolean
     val hayGanador: Boolean
         get() = resultado == Resultado.GANADOR
-    var jugadorInicial: Int
+    private var jugadorInicial: Int
     var perdedores: ArrayList<Jugador>
 
     companion object {
@@ -50,21 +50,12 @@ class Partida : Serializable {
         if (resultado != Resultado.EN_JUEGO) {
             throw IllegalStateException("Solo puede renunciar alguien si se está en juego.")
         }
-        /*val enJuego = ArrayList<Jugador>()
-        for (j in 0 until jugadores.size) {
-            if (i != j) {
-                val jugador = jugadores[j]
-                val estaVencido = jugador.estaVencido()
-                if (!estaVencido) {
-                    enJuego.add(jugador)
-                }
-            }
-        }*/
-        val enJuego = jugadores.filter { jugador ->
-            !jugador.estaVencido() && jugador == jugadores[i]
-        }
 
         perdedores.add(jugadores[i])
+
+        val enJuego = jugadores.filter { j ->
+            !perdedores.contains(j)
+        }
 
         when (enJuego.size) {
             0 -> {
