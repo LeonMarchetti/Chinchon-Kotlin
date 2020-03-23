@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/fondo"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    style="@style/ActivityTheme" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -73,7 +73,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/rj_boton_1"
+        android:id="@+id/rj_continuar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

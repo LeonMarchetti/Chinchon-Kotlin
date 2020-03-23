@@ -6,7 +6,12 @@ import java.io.Serializable
  * Clase Carta, representa una carta, de la baraja española.
  * @author LeoAM
  */
-class Carta : Comparable<Carta>, Serializable {
+class Carta
+/**
+ * Constructor para la clase Carta, pasando valor y palo.
+ * @param v Valor de la carta a crear.
+ * @param p Palo de la carta.
+ */ internal constructor(v: Int, p: Palo) : Comparable<Carta>, Serializable {
     /**
      * Devuelve el valor numérico de la carta.
      * @return El valor numérico de la carta.
@@ -17,7 +22,7 @@ class Carta : Comparable<Carta>, Serializable {
      * Devuelve el "palo" de la carta (Espada, Basto, Oro o Copa)
      * @return El palo de la carta.
      */
-    val palo: Palo
+    val palo: Palo = p
 
     /**
      * Método que devuelve el nombre del archivo que almacena la imagen para
@@ -26,34 +31,9 @@ class Carta : Comparable<Carta>, Serializable {
      */
     val imagePath: String
 
-    /**
-     * Constructor para la clase Carta, pasando valor y palo.
-     * @param v Valor de la carta a crear.
-     * @param p Palo de la carta.
-     */
-    internal constructor(v: Int, p: Palo) {
-        valor = if (v in 1..12) {
-            v
-        } else {
-            VALORCOMODIN
-        }
-        palo = p
-        imagePath = if (palo == Palo.Comodin) {
-            palo.paloPath
-        } else {
-            palo.paloPath + "_" + valor + "s"
-        }
-    }
-
-    /**
-     * Constructor de la clase Carta, pasando otra carta como parámetro, el cual
-     * el nuevo objeto tomará el mismo valor numérico y palo.
-     * @param c Carta a copiar.
-     */
-    internal constructor(c: Carta) {
-        valor = c.valor
-        palo = c.palo
-        imagePath = c.imagePath
+    init {
+        valor = if (v in 1..12) { v } else { VALORCOMODIN }
+        imagePath = if (palo == Palo.Comodin) { palo.paloPath } else { palo.paloPath + "_" + valor + "s" }
     }
 
     override fun toString(): String {

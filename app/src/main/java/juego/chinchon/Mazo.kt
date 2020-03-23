@@ -1,6 +1,6 @@
 package juego.chinchon
 
-import android.widget.ImageView
+import java.io.Serializable
 import java.util.*
 
 /**
@@ -12,7 +12,7 @@ import java.util.*
  * @param vacio Indica si hay que construir el mazo vacío (para el pozo de descarte) o lleno (para el mazo principal).
  * @author LeoAM
  */
-class Mazo(vacio: Boolean) {
+class Mazo(vacio: Boolean): Serializable {
     companion object {
         private const val MAXCartas = 50
     }
@@ -23,8 +23,7 @@ class Mazo(vacio: Boolean) {
      * Devuelve la cantidad de cartas en el mazo.
      * @return Devuelve la cantidad de cartas en el mazo.
      */
-    var cantidad = 0
-        private set
+    private var cantidad = 0
 
     init {
         if (vacio) {
