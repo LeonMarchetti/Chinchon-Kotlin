@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/fondo"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    style="@style/ActivityTheme" >
 
     <TextView
         android:id="@+id/main_titulo"
