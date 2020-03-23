@@ -28,7 +28,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
 
 //    private lateinit var jugadores: ArrayList<Jugador>
     private var jugadorActual = 0
-    private var cortador = 0
+//    private var cortador = 0
     /**
      * Cantidad de cartas seleccionadas. Usado para cambiar el texto del botón
      * "Finalizar" por "Cancelar", para mostrar que el jugador que corta puede
@@ -175,7 +175,9 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         calcularPuntos()
 
         cartasSeleccionadas = 0
-        ac_finalizar_btn.setText(R.string.ac_Cancelar)
+        if (acomodaCortador()) {
+            ac_finalizar_btn.setText(R.string.ac_Cancelar)
+        }
     }
 
     /**
@@ -227,27 +229,16 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
                 setJugadorEnPantalla()
                 calcularPuntos()
             } else {
-                // Acomodó el otro jugador, termino esta fase.
-                if (partida.hayGanador) {
-                    val intent = Intent(this@AcomodarActivity, GanadorActivity::class.java)
-                    intent.putExtra("PARTIDA", partida)
-                    finishActivity(PartidaActivity.RC_CORTE)
-                    finish()
-                    startActivity(intent)
-                } else {
-                    val intent = Intent()
-                    intent.putExtra("PARTIDA", partida)
-                    setResult(1, intent)
-                    finish()
-                }
+                val intent = Intent()
+                intent.putExtra("PARTIDA", partida)
+                setResult(1, intent)
+                finish()
             }
         } catch (e: IllegalStateException) {
             val intent = Intent()
             setResult(2, intent)
             finish()
         }
-
-        partida.acomodar(jugadorActual, cartasEmparejadas())
     }
 
     /**
@@ -255,7 +246,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
      * en esta ronda.
      */
     private fun acomodaCortador(): Boolean {
-        return jugadorActual == cortador
+        return jugadorActual == partida.rondaActual.cortador
     }
 
     /**

@@ -88,7 +88,7 @@ class GanadorActivity : AppCompatActivity() {
                 }
                 //endregion
                 //region perdedor
-                val perdedor = partida.perdedores()[0]
+                val perdedor = partida.perdedores[0]
                 g_tv_4.text = getString(R.string.g_contra, perdedor.nombre)
                 g_tv_5.text = getString(R.string.g_puntos, perdedor.puntos)
                 //endregion

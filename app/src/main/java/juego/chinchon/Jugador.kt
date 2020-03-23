@@ -66,4 +66,17 @@ class Jugador(val nombre: String) : Serializable {
     override fun toString(): String {
         return "$nombre ($puntos puntos)"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other?.javaClass != javaClass) return false
+
+        other as Jugador
+
+        return this.nombre == other.nombre
+    }
+
+    override fun hashCode(): Int {
+        return nombre.hashCode()
+    }
 }

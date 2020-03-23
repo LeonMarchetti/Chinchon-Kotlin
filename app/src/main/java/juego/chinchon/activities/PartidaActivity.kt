@@ -185,7 +185,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         when (turnoActual.fase) {
             Turno.Companion.FaseTurno.ROBAR -> {
                 turnoActual.robarCartaMazo()
-                manos[0].mostrarMano(turnoActual.jugador.mano)
+                manos[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
                 setTopeMazo(rondaActual.mazo, mj_mazo, true)
                 cartaSeleccionada = ManoFragment.CARTA_NOSELECT
             }
@@ -239,6 +239,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
             Turno.Companion.FaseTurno.TIRAR -> {
                 if (cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
                     turnoActual.tirarCarta(cartaSeleccionada)
+                    turnoActual = rondaActual.nuevoTurno()
 
                     val intent = Intent(this@PartidaActivity, CambioTurnoActivity::class.java)
                     intent.putExtra("PARTIDA", partida)
@@ -276,6 +277,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         }*/
         if (turnoActual.esFaseTirar() && cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
             partida.cortar(cartaSeleccionada)
+            manos[partida.rondaActual.jugadorActual].limpiarSeleccion()
             if (partida.hayGanador) {
                 val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
                 intent.putExtra("PARTIDA", partida)
@@ -401,6 +403,14 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                         cambioRonda()*/
 
                         partida = data.getSerializableExtra("PARTIDA") as Partida
+
+                        if (partida.hayGanador) {
+                            val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
+                            intent.putExtra("PARTIDA", partida)
+                            finish()
+                            startActivity(intent)
+                        }
+
                         rondaActual = partida.nuevaRonda()
                         turnoActual = rondaActual.nuevoTurno()
 
@@ -414,11 +424,17 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                         setTopeMazo(rondaActual.pila, mj_pila, false)
                         //endregion
 
+                        val jugadorActual = rondaActual.jugadorActual
+
                         fragmentManager
                                 .beginTransaction()
-                                .show(manos[rondaActual.jugadorActual])
-                                .hide(manos[1 - rondaActual.jugadorActual])
+                                .show(manos[jugadorActual])
+                                .hide(manos[1 - jugadorActual])
                                 .commit()
+
+                        manos[jugadorActual].mostrarMano(partida.jugadores[jugadorActual].mano)
+                        manos[jugadorActual].limpiarSeleccion()
+                        cartaSeleccionada = ManoFragment.CARTA_NOSELECT
 
                         mostrarBotonCortar(false)
                     }
@@ -453,6 +469,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
                 carta = ManoFragment.CARTA_NOSELECT*/
 
+//                turnoActual = rondaActual.nuevoTurno()
                 val jugadorActual = rondaActual.jugadorActual
                 fragmentManager
                         .beginTransaction()
@@ -463,7 +480,6 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 setTopeMazo(rondaActual.pila, mj_pila, false)
                 cartaSeleccionada = ManoFragment.CARTA_NOSELECT
 
-                turnoActual = rondaActual.nuevoTurno()
                 if (rondaActual.numeroTurno > 2) {
                     mostrarBotonCortar(true)
                 }

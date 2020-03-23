@@ -13,6 +13,8 @@ class Partida : Serializable {
     var chinchon: Boolean
     val hayGanador: Boolean
         get() = resultado == Resultado.GANADOR
+    var jugadorInicial: Int
+    var perdedores: ArrayList<Jugador>
 
     companion object {
         enum class Resultado {
@@ -28,6 +30,8 @@ class Partida : Serializable {
         resultado = Resultado.EN_JUEGO
         jugadorGanador = null
         chinchon = false
+        jugadorInicial = 0
+        perdedores = ArrayList()
     }
 
     fun nuevoJugador(nombre: String, puntos: Int) {
@@ -36,7 +40,8 @@ class Partida : Serializable {
     }
 
     fun nuevaRonda(): Ronda {
-        val ronda = Ronda(rondas.size + 1, jugadores)
+        val ronda = Ronda(rondas.size + 1, jugadorInicial, jugadores)
+        jugadorInicial = (jugadorInicial + 1) % jugadores.size
         rondas.add(ronda)
         return ronda
     }
@@ -45,7 +50,7 @@ class Partida : Serializable {
         if (resultado != Resultado.EN_JUEGO) {
             throw IllegalStateException("Solo puede renunciar alguien si se está en juego.")
         }
-        val enJuego = ArrayList<Jugador>()
+        /*val enJuego = ArrayList<Jugador>()
         for (j in 0 until jugadores.size) {
             if (i != j) {
                 val jugador = jugadores[j]
@@ -54,7 +59,13 @@ class Partida : Serializable {
                     enJuego.add(jugador)
                 }
             }
+        }*/
+        val enJuego = jugadores.filter { jugador ->
+            !jugador.estaVencido() && jugador == jugadores[i]
         }
+
+        perdedores.add(jugadores[i])
+
         when (enJuego.size) {
             0 -> {
                 resultado = Resultado.EMPATE
@@ -95,9 +106,13 @@ class Partida : Serializable {
      */
     fun acomodar(i: Int, acomodadas: BooleanArray): Boolean {
         val resultadoAcomodar = rondaActual.acomodar(i, acomodadas)
+        val jugador = jugadores[i]
+        if (jugador.estaVencido() && jugador !in perdedores) {
+            perdedores.add(jugador)
+        }
 
-        val enJuego = jugadores.filter { jugador ->
-            !jugador.estaVencido()
+        val enJuego = jugadores.filter { j ->
+            !j.estaVencido()
         }
         when (enJuego.size) {
             0 -> {
@@ -105,16 +120,12 @@ class Partida : Serializable {
             }
             1 -> {
                 resultado = Resultado.GANADOR
-                jugadorGanador = enJuego[i]
+                jugadorGanador = enJuego[0]
             }
             else -> {
                 // No hacer nada
             }
         }
         return resultadoAcomodar
-    }
-
-    fun perdedores(): List<Jugador> {
-        return jugadores.filter { jugador -> jugador.estaVencido() }
     }
 }

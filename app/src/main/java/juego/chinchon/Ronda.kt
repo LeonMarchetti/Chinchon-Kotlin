@@ -3,7 +3,7 @@ package juego.chinchon
 import java.io.Serializable
 import kotlin.IllegalStateException
 
-class Ronda(private val numero: Int, private val jugadores: ArrayList<Jugador>): Serializable {
+class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores: ArrayList<Jugador>): Serializable {
     var pila: Mazo
     var mazo: Mazo
     private var turnos: ArrayList<Turno>
@@ -20,7 +20,7 @@ class Ronda(private val numero: Int, private val jugadores: ArrayList<Jugador>):
         pila = Mazo(true)
         mazo.repartir(jugadores)
         turnos = ArrayList()
-        jugadorActual = jugadores.size - 1
+        jugadorActual = (jugadorInicial - 1) % jugadores.size
     }
 
     /** Representación textual de la ronda, que consiste en: `"Ronda n°$numero"` */
