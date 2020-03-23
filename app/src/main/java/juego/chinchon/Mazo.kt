@@ -23,8 +23,7 @@ class Mazo(vacio: Boolean): Serializable {
      * Devuelve la cantidad de cartas en el mazo.
      * @return Devuelve la cantidad de cartas en el mazo.
      */
-    var cantidad = 0
-        private set
+    private var cantidad = 0
 
     init {
         if (vacio) {

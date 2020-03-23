@@ -11,12 +11,6 @@ import kotlinx.android.synthetic.main.registrojugadores.*
 
 class RegistroJugadoresActivity : AppCompatActivity() {
 
-    companion object {
-        private const val CANT_JUGADORES = 2
-        @Suppress("unused")
-        private const val TAG = "RegistroJugadoresActivity"
-    }
-
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         setContentView(R.layout.registrojugadores)
@@ -50,15 +44,6 @@ class RegistroJugadoresActivity : AppCompatActivity() {
         val strPuntos2 = rj_puntos2.text.toString()
         val puntos2 = if (strPuntos2 == "") { 0 } else { strPuntos2.toInt() }
         //endregion
-
-        /*//region jugadores
-        val jugador1 = Jugador(nombreJugador1, puntos1)
-        val jugador2 = Jugador(nombreJugador2, puntos2)
-
-        val jugadores = ArrayList<Jugador>(CANT_JUGADORES)
-        jugadores.add(jugador1)
-        jugadores.add(jugador2)
-        //endregion*/
 
         val partida = Partida()
         partida.nuevoJugador(nombreJugador1, puntos1)
