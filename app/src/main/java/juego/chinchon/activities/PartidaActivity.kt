@@ -166,6 +166,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         if (turnoActual.esFaseTirar() && cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
             partida.cortar(cartaSeleccionada)
             manos[partida.rondaActual.jugadorActual].limpiarSeleccion()
+            cartaSeleccionada = CARTA_NOSELECT
             if (partida.hayGanador) {
                 val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
                 intent.putExtra("PARTIDA", partida)
