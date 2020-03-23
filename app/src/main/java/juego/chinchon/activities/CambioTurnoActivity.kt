@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.example.leoam.chinchonkotlin.R
-//import juego.chinchon.Carta
-//import juego.chinchon.Constantes
-//import juego.chinchon.Jugador
 import juego.chinchon.Partida
 import kotlinx.android.synthetic.main.cambioturno.*
 
@@ -27,18 +24,6 @@ class CambioTurnoActivity : AppCompatActivity() {
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         this.setContentView(R.layout.cambioturno)
-
-        /*val carta = intent.getSerializableExtra(Constantes.INTENT_CARTA) as Carta
-        val jugador = intent.getSerializableExtra(Constantes.INTENT_JUGADOR) as Jugador
-
-        ct_boton.setOnClickListener {
-            val intent = Intent()
-            setResult(0, intent)
-            finish()
-        }
-        ct_carta.setImageResource(resources.getIdentifier(carta.imagePath, "drawable", this.packageName))
-
-        ct_turno_de.text = getString(R.string.ct_turno_de, jugador.nombre)*/
 
         val partida = intent.getSerializableExtra("PARTIDA") as Partida
 
