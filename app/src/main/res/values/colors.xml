@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="fondo">#2D7E2F</color>
+    <color name="seleccion">#7E2D7E2F</color>
     <color name="texto">#FFFFFF</color>
 
     <color name="colorPrimary">#3F51B5</color>

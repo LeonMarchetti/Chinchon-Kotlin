@@ -32,6 +32,17 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
     private lateinit var turnoActual: Turno
 
     /**
+     * Acción que se realiza al arrastrar una carta sobre otra en el fragmento.
+     * Se intercambia de lugar una carta por otra.
+     */
+    override fun arrastrarCarta(origen: Int, destino: Int) {
+        if (origen != destino) {
+            turnoActual.intercambiarCartas(origen, destino)
+            manos[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
+        }
+    }
+
+    /**
      * Al seleccionar una carta de la mano, si ya se había seleccionado otra
      * entonces se intercambian de lugar.
      *

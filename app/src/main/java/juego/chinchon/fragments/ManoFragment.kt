@@ -1,8 +1,13 @@
 package juego.chinchon.fragments
 
-import android.os.Bundle
 import android.app.Fragment
+import android.content.ClipData
+import android.content.ClipDescription
+import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
+import android.util.Log
+import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,13 +65,72 @@ class ManoFragment : Fragment() {
         for (index in 0..7) {
             val frameLayout = grillaCartas.getChildAt(index) as FrameLayout
             val imageView = frameLayout.getChildAt(0)
-            imageView.setOnClickListener { cartaImageView ->
-                val estaCarta = cartaImageView.tag.toString().toInt()
-                val iManoFragmentActivity = activity as IManoFragment
-                iManoFragmentActivity.seleccionarCarta(estaCarta)
-            }
+            imageView.setOnClickListener(cartaClickListener)
+
+            imageView.setOnLongClickListener(cartaLongClickListener)
+            imageView.setOnDragListener(cartaDragListener)
         }
         return v
+    }
+
+    /**
+     * Click listener de las cartas de la mano. Llama al método
+     * `seleccionarCarta` de la actividad, para que esta decida que hacer con
+     * la carta seleccionada.
+     */
+    private val cartaClickListener = View.OnClickListener { cartaImageView ->
+        val estaCarta = cartaImageView.tag.toString().toInt()
+        (activity as IManoFragment).seleccionarCarta(estaCarta)
+    }
+
+    private val cartaLongClickListener = View.OnLongClickListener { view ->
+        val tag = view.tag as CharSequence
+        val item = ClipData.Item(tag)
+        val dragData = ClipData(tag, arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN), item)
+        val myShadow = View.DragShadowBuilder(view)
+        view.startDrag(dragData, myShadow, null, 0)
+        return@OnLongClickListener true
+    }
+
+    private val cartaDragListener = View.OnDragListener { view, event ->
+        when (event.action) {
+            DragEvent.ACTION_DRAG_STARTED -> {
+                return@OnDragListener event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
+            }
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.seleccion))
+                return@OnDragListener true
+            }
+            DragEvent.ACTION_DRAG_LOCATION -> {
+                return@OnDragListener true
+            }
+            DragEvent.ACTION_DRAG_EXITED -> {
+                (view as ImageView).clearColorFilter()
+                view.invalidate()
+                return@OnDragListener true
+            }
+            DragEvent.ACTION_DROP -> {
+                val item = event.clipData.getItemAt(0)
+                val dragData = item.text
+                (view as ImageView).clearColorFilter()
+                view.invalidate()
+
+                val tagOrigen: Int = Integer.parseInt(dragData.toString())
+                val tagDestino: Int = Integer.parseInt(view.tag.toString())
+                (activity as IManoFragment).arrastrarCarta(tagOrigen, tagDestino)
+
+                return@OnDragListener true
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                (view as ImageView).clearColorFilter()
+                view.invalidate()
+                return@OnDragListener true
+            }
+            else -> {
+                Log.w("Chinchon-Kotlin", "Unkwown action type received by OnDragListener")
+                return@OnDragListener false
+            }
+        }
     }
 
     /**

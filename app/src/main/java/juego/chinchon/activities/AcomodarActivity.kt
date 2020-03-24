@@ -37,9 +37,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
      * máximo de dos juegos.
      */
     private var juegosActuales = 0
-
     private lateinit var partida: Partida
-
     private lateinit var manoFragment: ManoFragment
 
     /**
@@ -79,6 +77,18 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
     override fun onStart() {
         super.onStart()
         manoFragment.mostrarMano(partida.jugadores[jugadorActual].mano)
+    }
+
+    /**
+     * Acción que se realiza al arrastrar una carta sobre otra en el fragmento.
+     * Se intercambia de lugar una carta por otra.
+     */
+    override fun arrastrarCarta(origen: Int, destino: Int) {
+        if (origen != destino) {
+            val mano = partida.jugadores[jugadorActual].mano
+            mano.swapCartas(origen, destino)
+            manoFragment.mostrarMano(mano)
+        }
     }
 
     /**
