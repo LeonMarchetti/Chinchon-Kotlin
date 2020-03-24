@@ -25,7 +25,8 @@
                 android:hint="@string/rj_jugador1"
                 android:textSize="@dimen/rj_fontsize"
                 android:autofillHints="name"
-                android:inputType="text" />
+                android:inputType="text"
+                style="@style/EditTextTheme" />
 
             <EditText
                 android:id="@+id/rj_puntos1"
@@ -36,7 +37,8 @@
                 android:hint="@string/rj_hintpuntos"
                 android:inputType="number"
                 android:textSize="@dimen/rj_fontsize"
-                android:autofillHints="number" />
+                android:autofillHints="number"
+                style="@style/EditTextTheme" />
 
         </LinearLayout>
 
@@ -55,7 +57,8 @@
                 android:hint="@string/rj_jugador2"
                 android:textSize="@dimen/rj_fontsize"
                 android:inputType="text"
-                android:autofillHints="name" />
+                android:autofillHints="name"
+                style="@style/EditTextTheme" />
 
             <EditText
                 android:id="@+id/rj_puntos2"
@@ -66,7 +69,8 @@
                 android:hint="@string/rj_hintpuntos"
                 android:inputType="number"
                 android:textSize="@dimen/rj_fontsize"
-                android:autofillHints="number" />
+                android:autofillHints="number"
+                style="@style/EditTextTheme" />
 
         </LinearLayout>
 
