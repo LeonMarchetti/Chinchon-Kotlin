@@ -3,7 +3,6 @@
     <string name="title_activity_acomodar">AcomodarActivity</string>
     <string name="title_activity_cambio_turno">CambioTurnoActivity</string>
     <string name="title_activity_ganador">GanadorActivity</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_partida">PartidaActivity</string>
     <string name="title_activity_registro_jugadores">RegistroJugadoresActivity</string>
 
@@ -11,13 +10,6 @@
     <string name="nombre_jugador_2">Jugador 2</string>
 
     <string name="ac_acomodado">¡Juego formado!</string>
-    <string name="ac_carta1">1</string>
-    <string name="ac_carta2">2</string>
-    <string name="ac_carta3">3</string>
-    <string name="ac_carta4">4</string>
-    <string name="ac_carta5">5</string>
-    <string name="ac_carta6">6</string>
-    <string name="ac_carta7">7</string>
     <string name="ac_corte">Vos cortaste</string>
     <string name="ac_Cancelar">Cancelar</string>
     <string name="ac_Desarmar">Desarmar</string>
@@ -33,8 +25,6 @@
     <string name="g_chinchon">con %1$d puntos y haciendo CHINCHÓN</string>
     <string name="g_contra">Contra: %1$s</string>
     <string name="g_empate">¡Empate! Felicitaciones a ambos.</string>
-    <string name="g_error">¡Error!</string>
-    <string name="g_errorinfo">No se encontró información de los jugadores.</string>
     <string name="g_felicitaciones">¡Felicitaciones!</string>
     <string name="g_finalizar">Finalizar</string>
     <string name="g_ganador">Ganó: %1$s</string>
@@ -50,11 +40,8 @@
     <string name="mj_cartapila">Pila</string>
     <string name="mj_malcorte">¡No se puede cortar así!</string>
     <string name="mj_puntos">%1$d puntos.</string>
-    <string name="mj_turno">Turno %1$d.</string>
 
     <string name="rj_continuar">Continuar</string>
-    <string name="rj_errornombre">Algún nombre es inválido.</string>
-    <string name="rj_errorpuntos">Algún puntaje es inválido.</string>
     <string name="rj_hint1">Ingrese nombre y cantidad de puntos iniciales para cada jugador.</string>
     <string name="rj_hint2">Si un cuadro de puntos queda vacío, se toma como 0 puntos ingresados.</string>
     <string name="rj_hint3">El primer jugador ingresado es el que comienza.</string>

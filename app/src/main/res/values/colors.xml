@@ -6,9 +6,4 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
-    <color name="ac_deseleccionado">#A9A9A9</color>
-    <color name="ac_seleccionado">#FFFF00</color>
-    <color name="ac_emparejado">#00FF00</color>
-    <color name="ac_textoBarraBotones">#000000</color>
 </resources>
