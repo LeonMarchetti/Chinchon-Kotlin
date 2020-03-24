@@ -3,29 +3,38 @@ package juego.chinchon.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.example.leoam.chinchonkotlin.R
 import kotlinx.android.synthetic.main.main.*
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        @Suppress("unused")
-        private const val TAG = "MainActivity"
-    }
-
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
-        main_btn_1.setOnClickListener {
-            val intent = Intent(this@MainActivity, RegistroJugadoresActivity::class.java)
-            startActivity(intent)
-        }
+        //region Click listeners
+        main_comenzar.setOnClickListener(comenzarClickListener)
+        main_salir.setOnClickListener(salirClickListener)
+        //endregion
+    }
 
-        main_btn_2.setOnClickListener {
-            val intent = Intent(Intent.ACTION_MAIN)
-            intent.addCategory(Intent.CATEGORY_HOME)
-            startActivity(intent)
-        }
+    /**
+     * Click listener del botón "Comenzar". Cambia a la actividad
+     * "RegistroJugadoresActivity".
+     */
+    private val comenzarClickListener = View.OnClickListener {
+        val intent = Intent(this@MainActivity, RegistroJugadoresActivity::class.java)
+        startActivity(intent)
+    }
+
+    /**
+     * Click listener del botón "Salir". Cambia a la pantalla inicial del
+     * dispositivo.
+     */
+    private val salirClickListener = View.OnClickListener {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        startActivity(intent)
     }
 }
