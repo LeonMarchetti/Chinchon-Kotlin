@@ -29,8 +29,8 @@
         android:textColor="@color/texto"
         android:textSize="@dimen/mj_fontsize" />
 
-    <Button
-        android:id="@+id/ct_boton"
+    <Button android:id="@+id/ct_boton"
+        android:background="@android:drawable/btn_default"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

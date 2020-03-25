@@ -37,10 +37,12 @@
             android:contentDescription="@string/carta"
             android:src="@drawable/dorso" />
 
-        <Button android:id="@+id/mj_cortar_btn"
+        <Button
+            android:id="@+id/mj_cortar_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:background="@android:drawable/btn_default"
             android:text="@string/btn_cortar"
             android:visibility="invisible" />
 

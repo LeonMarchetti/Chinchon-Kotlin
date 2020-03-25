@@ -34,8 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/ac_emparejar_btn"
+        <Button android:id="@+id/ac_emparejar_btn"
+            android:background="@android:drawable/btn_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ac_Emparejar"
@@ -44,6 +44,7 @@
 
         <Button
             android:id="@+id/ac_desarmar_btn"
+            android:background="@android:drawable/btn_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ac_Desarmar"
@@ -52,6 +53,7 @@
 
         <Button
             android:id="@+id/ac_finalizar_btn"
+            android:background="@android:drawable/btn_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ac_Cancelar"
