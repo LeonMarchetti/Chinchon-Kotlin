@@ -1,11 +1,11 @@
 package juego.chinchon.activities
 
+import androidx.fragment.app.FragmentActivity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import android.util.Log
 import android.view.DragEvent
 import android.view.View
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.mesajuego.*
  *
  * @author LeoAM
  */
-class PartidaActivity : AppCompatActivity(), IManoFragment {
+class PartidaActivity : FragmentActivity(), IManoFragment {
     companion object {
         const val RC_CORTE = 1
         private const val RC_CAMBIOTURNO = 2
@@ -68,7 +68,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
         //region manoFragment1
         val manoFragment1 = ManoFragment.newInstance()
-        fragmentManager
+        supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.containerMano1, manoFragment1)
                 .commit()
@@ -77,7 +77,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
         //region manoFragment2
         val manoFragment2 = ManoFragment.newInstance()
-        fragmentManager
+        supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.containerMano2, manoFragment2)
                 .hide(manoFragment2)
@@ -292,14 +292,14 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
      *      * Avanza el número de turnos y muestra el botón "Cortar" si es el
      *      segundo turno del jugador.
      */
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             RC_CORTE -> {
                 when (resultCode) {
                     // Se cortó bien, ronda nueva
                     1 -> {
-                        partida = data.getSerializableExtra("PARTIDA") as Partida
+                        partida = data!!.getSerializableExtra("PARTIDA") as Partida
 
                         if (partida.hayGanador) {
                             val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
@@ -325,7 +325,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
                         val jugadorActual = rondaActual.jugadorActual
 
-                        fragmentManager
+                        supportFragmentManager
                                 .beginTransaction()
                                 .show(listaManoFragment[jugadorActual])
                                 .hide(listaManoFragment[1 - jugadorActual])
@@ -344,7 +344,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
             }
             RC_CAMBIOTURNO -> {
                 val jugadorActual = rondaActual.jugadorActual
-                fragmentManager
+                supportFragmentManager
                         .beginTransaction()
                         .show(listaManoFragment[jugadorActual])
                         .hide(listaManoFragment[1 - jugadorActual])

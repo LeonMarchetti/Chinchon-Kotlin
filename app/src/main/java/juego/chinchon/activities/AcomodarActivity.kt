@@ -1,8 +1,8 @@
 package juego.chinchon.activities
 
+import androidx.fragment.app.FragmentActivity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.example.leoam.chinchonkotlin.R
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.acomodacion.*
  *
  * @author LeoAM
  */
-class AcomodarActivity : AppCompatActivity(), IManoFragment {
+class AcomodarActivity : FragmentActivity(), IManoFragment {
 
     companion object {
         /** Cantidad de cartas en la mano. */
@@ -71,7 +71,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         jugadorActual = partida.rondaActual.cortador!!
 
         manoFragment = ManoFragment.newInstance()
-        fragmentManager
+        supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.containerMano, manoFragment)
                 .commit()

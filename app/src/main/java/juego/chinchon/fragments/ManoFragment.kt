@@ -1,10 +1,10 @@
 package juego.chinchon.fragments
 
-import android.app.Fragment
+import androidx.fragment.app.Fragment
 import android.content.ClipData
 import android.content.ClipDescription
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.DragEvent
@@ -83,6 +83,7 @@ class ManoFragment : Fragment() {
         val item = ClipData.Item(tag)
         val dragData = ClipData(tag, arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN), item)
         val myShadow = View.DragShadowBuilder(view)
+        @Suppress("DEPRECATION")
         view.startDrag(dragData, myShadow, null, 0)
         return@OnTouchListener true
     }
@@ -97,7 +98,7 @@ class ManoFragment : Fragment() {
                 return@OnDragListener event.clipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)
             }
             DragEvent.ACTION_DRAG_ENTERED -> {
-                (view as ImageView).setColorFilter(ContextCompat.getColor(context, R.color.seleccion))
+                (view as ImageView).setColorFilter(ContextCompat.getColor(context!!, R.color.seleccion))
                 return@OnDragListener true
             }
             DragEvent.ACTION_DRAG_LOCATION -> {
@@ -171,7 +172,7 @@ class ManoFragment : Fragment() {
      */
     private fun redimensionarCartas(gridLayout: GridLayout) {
         val displayMetrics = DisplayMetrics()
-        activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        activity!!.windowManager.defaultDisplay.getMetrics(displayMetrics)
         val screenWidth = displayMetrics.widthPixels
         for (index in 0..7) {
             val frameLayout = gridLayout.getChildAt(index) as FrameLayout
