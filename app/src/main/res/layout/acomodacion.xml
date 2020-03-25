@@ -44,9 +44,10 @@
 
         <Button
             android:id="@+id/ac_desarmar_btn"
-            android:background="@android:drawable/btn_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_default"
+            android:enabled="false"
             android:text="@string/ac_Desarmar"
             app:layout_constraintBottom_toTopOf="@+id/ac_finalizar_btn"
             tools:layout_editor_absoluteX="0dp" />

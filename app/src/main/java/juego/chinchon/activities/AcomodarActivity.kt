@@ -28,11 +28,20 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
     /** Índice del jugador actual. */
     private var jugadorActual = 0
     /**
-     * Cantidad de cartas seleccionadas. Usado para cambiar el texto del botón
-     * "Finalizar" por "Cancelar", para mostrar que el jugador que corta puede
-     * volver a la partida si no pudo formar un juego.
+     * Cantidad de cartas seleccionadas. Lo uso para determinar:
+     * * El estado de habilitación del botón "Desarmar".
+     * * El texto del botón "Cancelar"/"Finalizar", cuando el jugador actual
+     * es el que cortó
      */
     private var cartasSeleccionadas = 0
+        set(value) {
+            field = value
+            ac_desarmar_btn.isEnabled = cartasSeleccionadas != 0
+            if (acomodaCortador()) {
+                val texto = if (field == 0) { R.string.ac_Cancelar } else { R.string.ac_Finalizar }
+                ac_finalizar_btn.setText(texto)
+            }
+        }
     /**
      * Cantidad de juegos formados hasta el momento. Solo puede haber un
      * máximo de dos juegos.
@@ -94,20 +103,10 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
                     DESELECCIONADO -> {
                         manoFragment.seleccionarCarta(origen, SELECCIONADO)
                         cartasSeleccionadas++
-                        if (acomodaCortador()) {
-                            ac_finalizar_btn.setText(R.string.ac_Finalizar)
-                        }
                     }
                     SELECCIONADO -> {
                         manoFragment.seleccionarCarta(origen, DESELECCIONADO)
                         cartasSeleccionadas--
-                        if (acomodaCortador()) {
-                            if (cartasSeleccionadas == 0) {
-                                ac_finalizar_btn.setText(R.string.ac_Cancelar)
-                            } else {
-                                ac_finalizar_btn.setText(R.string.ac_Finalizar)
-                            }
-                        }
                     }
                     else -> {
                         // Hacer nada
@@ -174,11 +173,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         manoFragment.limpiarSeleccion()
         juegosActuales = 0
         calcularPuntos()
-
         cartasSeleccionadas = 0
-        if (acomodaCortador()) {
-            ac_finalizar_btn.setText(R.string.ac_Cancelar)
-        }
     }
 
     /**
@@ -226,9 +221,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         setInformacionJugador()
         manoFragment.mostrarMano(partida.jugadores[jugadorActual].mano)
         manoFragment.limpiarSeleccion()
-        ac_finalizar_btn.setText(R.string.ac_Finalizar)
         cartasSeleccionadas = 0
-
     }
 
     /**
