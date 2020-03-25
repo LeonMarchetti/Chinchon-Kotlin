@@ -37,9 +37,11 @@ class ManoFragment : Fragment() {
         @JvmStatic
         fun newInstance() = ManoFragment().apply {}
 
-        /** Número de indice que indica que no hay ninguna carta seleccionada. */
-        const val CARTA_NOSELECT = -1
-
+        /**
+         * Clase que representa el estado de selección de una carta de la mano.
+         * Una carta puede estar no seleccionada (deseleccionada), seleccionada
+         * o formando parte de un juego.
+         */
         enum class EstadoSeleccion(var idRes: Int) {
             DESELECCIONADO(0),
             JUEGO_1(R.drawable.flag_blue),
@@ -65,33 +67,30 @@ class ManoFragment : Fragment() {
         for (index in 0..7) {
             val frameLayout = grillaCartas.getChildAt(index) as FrameLayout
             val imageView = frameLayout.getChildAt(0)
-            imageView.setOnClickListener(cartaClickListener)
-
-            imageView.setOnLongClickListener(cartaLongClickListener)
+            imageView.setOnTouchListener(cartaTouchListener)
             imageView.setOnDragListener(cartaDragListener)
         }
         return v
     }
 
     /**
-     * Click listener de las cartas de la mano. Llama al método
-     * `seleccionarCarta` de la actividad, para que esta decida que hacer con
-     * la carta seleccionada.
+     * Touch listener de una carta. Usa el índice que le corresponse para
+     * armar un item de datos para enviar a destino e inicia el dibujo de la
+     * sombre para el arrastre.
      */
-    private val cartaClickListener = View.OnClickListener { cartaImageView ->
-        val estaCarta = cartaImageView.tag.toString().toInt()
-        (activity as IManoFragment).seleccionarCarta(estaCarta)
-    }
-
-    private val cartaLongClickListener = View.OnLongClickListener { view ->
+    private val cartaTouchListener = View.OnTouchListener { view, _ ->
         val tag = view.tag as CharSequence
         val item = ClipData.Item(tag)
         val dragData = ClipData(tag, arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN), item)
         val myShadow = View.DragShadowBuilder(view)
         view.startDrag(dragData, myShadow, null, 0)
-        return@OnLongClickListener true
+        return@OnTouchListener true
     }
 
+    /**
+     * Drag listener de una carta. Para el evento "DROP" llama al método
+     * `arrastrarCarta` con los tag de carta origen y destino.
+     */
     private val cartaDragListener = View.OnDragListener { view, event ->
         when (event.action) {
             DragEvent.ACTION_DRAG_STARTED -> {

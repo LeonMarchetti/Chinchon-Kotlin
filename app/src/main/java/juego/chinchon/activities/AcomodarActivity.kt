@@ -25,6 +25,7 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         private const val CANTIDAD_CARTAS: Int = 7
     }
 
+    /** Índice del jugador actual. */
     private var jugadorActual = 0
     /**
      * Cantidad de cartas seleccionadas. Usado para cambiar el texto del botón
@@ -81,46 +82,47 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
 
     /**
      * Acción que se realiza al arrastrar una carta sobre otra en el fragmento.
-     * Se intercambia de lugar una carta por otra.
+     * Si se arrastra una carta sobre otra, entonces se cambian de lugar las
+     * cartas. Si se arrastra una carta sobre si misma, o si solamente se hace
+     * un toque sobre la carta, entonces la selecciona para tratar de formar un
+     * juego.
      */
     override fun arrastrarCarta(origen: Int, destino: Int) {
-        if (origen != destino) {
-            val mano = partida.jugadores[jugadorActual].mano
-            mano.swapCartas(origen, destino)
-            manoFragment.mostrarMano(mano)
-        }
-    }
-
-    /**
-     * Acción que se realiza al seleccionar una carta en el fragmento. Al
-     * jugador que corta se le permite volver a la partida y se lo indica al
-     * poner "Cancelar" como texto del botón "Finalizar".
-     */
-    override fun seleccionarCarta(i: Int) {
-        if (i in 0 until CANTIDAD_CARTAS) {
-            when (manoFragment.getEstadoSeleccion(i)) {
-                DESELECCIONADO -> {
-                    manoFragment.seleccionarCarta(i, SELECCIONADO)
-                    cartasSeleccionadas++
-                    if (acomodaCortador()) {
-                        ac_finalizar_btn.setText(R.string.ac_Finalizar)
-                    }
-                }
-                SELECCIONADO -> {
-                    manoFragment.seleccionarCarta(i, DESELECCIONADO)
-                    cartasSeleccionadas--
-                    if (acomodaCortador()) {
-                        if (cartasSeleccionadas == 0) {
-                            ac_finalizar_btn.setText(R.string.ac_Cancelar)
-                        } else {
+        if (origen == destino) {
+            if (origen in 0 until CANTIDAD_CARTAS) {
+                when (manoFragment.getEstadoSeleccion(origen)) {
+                    DESELECCIONADO -> {
+                        manoFragment.seleccionarCarta(origen, SELECCIONADO)
+                        cartasSeleccionadas++
+                        if (acomodaCortador()) {
                             ac_finalizar_btn.setText(R.string.ac_Finalizar)
                         }
                     }
-                }
-                else -> {
-                    // Hacer nada
+                    SELECCIONADO -> {
+                        manoFragment.seleccionarCarta(origen, DESELECCIONADO)
+                        cartasSeleccionadas--
+                        if (acomodaCortador()) {
+                            if (cartasSeleccionadas == 0) {
+                                ac_finalizar_btn.setText(R.string.ac_Cancelar)
+                            } else {
+                                ac_finalizar_btn.setText(R.string.ac_Finalizar)
+                            }
+                        }
+                    }
+                    else -> {
+                        // Hacer nada
+                    }
                 }
             }
+        } else { // origen != destino
+            val mano = partida.jugadores[jugadorActual].mano
+            mano.swapCartas(origen, destino)
+            manoFragment.mostrarMano(mano)
+
+            val estadoSeleccionOrigen = manoFragment.getEstadoSeleccion(origen)
+            val estadoSeleccionDestino = manoFragment.getEstadoSeleccion(destino)
+            manoFragment.seleccionarCarta(origen, estadoSeleccionDestino)
+            manoFragment.seleccionarCarta(destino, estadoSeleccionOrigen)
         }
     }
 
@@ -262,6 +264,10 @@ class AcomodarActivity : AppCompatActivity(), IManoFragment {
         }
     }
 
+    /**
+     * Devuelve un array booleano donde cada `true` representa una carta que
+     * forma parte de un juego (está acomodada).
+     */
     private fun cartasEmparejadas(): BooleanArray {
         return BooleanArray(CANTIDAD_CARTAS) { i ->
             manoFragment.getEstadoSeleccion(i) == JUEGO_1 ||

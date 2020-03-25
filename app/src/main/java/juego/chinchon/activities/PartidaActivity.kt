@@ -2,8 +2,12 @@ package juego.chinchon.activities
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.view.DragEvent
 import android.view.View
 import android.widget.*
 import com.example.leoam.chinchonkotlin.R
@@ -21,11 +25,9 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
     companion object {
         const val RC_CORTE = 1
         private const val RC_CAMBIOTURNO = 2
-        private const val CARTA_NOSELECT = -1
     }
 
-    private val manos = ArrayList<ManoFragment>()
-    private var cartaSeleccionada = CARTA_NOSELECT
+    private val listaManoFragment = ArrayList<ManoFragment>()
 
     private lateinit var partida: Partida
     private lateinit var rondaActual: Ronda
@@ -38,32 +40,18 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
     override fun arrastrarCarta(origen: Int, destino: Int) {
         if (origen != destino) {
             turnoActual.intercambiarCartas(origen, destino)
-            manos[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
+            listaManoFragment[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
         }
     }
 
     /**
-     * Al seleccionar una carta de la mano, si ya se había seleccionado otra
-     * entonces se intercambian de lugar.
-     *
-     * No responde si se selecciona la octava `ImageView` y se está en la fase
-     * de robo, donde el jugador todavía no tiene su octava carta.
+     * Inicializa la interfaz de la actividad. Realiza:
+     * * Inicia la primera ronda de la partida;
+     * * Instancia los fragmentos para las dos manos;
+     * * Muestra los datos de los dos jugadores;
+     * * Establece los listeners de eventos de los controles;
+     * * Establece la imagen del tope de la pila.
      */
-    override fun seleccionarCarta(i: Int) {
-        if (!(i == 7 && turnoActual.esFaseRobo())) {
-            val numJugador = rondaActual.jugadorActual
-            if (cartaSeleccionada == CARTA_NOSELECT) {
-                cartaSeleccionada = i
-                manos[numJugador].seleccionarCarta(cartaSeleccionada, ManoFragment.Companion.EstadoSeleccion.SELECCIONADO)
-            } else {
-                turnoActual.intercambiarCartas(cartaSeleccionada, i)
-                manos[numJugador].mostrarMano(turnoActual.jugador.mano)
-                manos[numJugador].seleccionarCarta(cartaSeleccionada, ManoFragment.Companion.EstadoSeleccion.DESELECCIONADO)
-                cartaSeleccionada = CARTA_NOSELECT
-            }
-        }
-    }
-
     public override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
         setContentView(R.layout.mesajuego)
@@ -79,7 +67,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 .beginTransaction()
                 .replace(R.id.containerMano1, manoFragment1)
                 .commit()
-        manos.add(manoFragment1)
+        listaManoFragment.add(manoFragment1)
         //endregion
 
         //region manoFragment2
@@ -89,7 +77,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 .replace(R.id.containerMano2, manoFragment2)
                 .hide(manoFragment2)
                 .commit()
-        manos.add(manoFragment2)
+        listaManoFragment.add(manoFragment2)
         //endregion
 
         //region TextViews
@@ -103,7 +91,8 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         //region configurar clickListeners
         mj_mazo.setOnClickListener(mazoClickListener)
         mj_pila.setOnClickListener(pilaClickListener)
-        mj_cortar_btn.setOnClickListener(cortarClickListener)
+        mj_pila.setOnDragListener(pilaDragListener)
+        mj_cortar_btn.setOnDragListener(cortarDragListener)
         //endregion
 
         setTopeMazo(rondaActual.pila, mj_pila, false)
@@ -115,16 +104,22 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
      */
     public override fun onStart() {
         super.onStart()
-        manos[0].mostrarMano(turnoActual.jugador.mano)
+        listaManoFragment[0].mostrarMano(turnoActual.jugador.mano)
     }
 
+    /**
+     * Click listener del mazo. Realiza una acción dependiendo de la fase del
+     * turno actual en que se encuentra la partida:
+     * * **`FaseTurno.ROBAR`**: Roba una carta del mazo.
+     * * **`FaseTurno.TIRAR`**: Muestra un diálogo donde ofrece al jugador
+     * actual a renunciar al juego, que luego pasa a `GanadorActivity`.
+     */
     private val mazoClickListener = View.OnClickListener {
         when (turnoActual.fase) {
             Turno.Companion.FaseTurno.ROBAR -> {
                 turnoActual.robarCartaMazo()
-                manos[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
+                listaManoFragment[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
                 setTopeMazo(rondaActual.mazo, mj_mazo, true)
-                cartaSeleccionada = ManoFragment.CARTA_NOSELECT
             }
             Turno.Companion.FaseTurno.TIRAR -> {
                 val builder = AlertDialog.Builder(this@PartidaActivity)
@@ -144,49 +139,125 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
         }
     }
 
+    /**
+     * Click listener de la pila. Si la fase del turno actual es
+     * `FaseTurno.ROBAR` y la pila no está vacía entonces roba una carta de la
+     * pila.
+     */
     private val pilaClickListener = View.OnClickListener {
-        when (turnoActual.fase) {
-            Turno.Companion.FaseTurno.ROBAR -> {
-                if (!rondaActual.pila.vacio()) {
-                    turnoActual.robarCartaPila()
-                    manos[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
-                    setTopeMazo(rondaActual.pila, mj_pila, false)
-                }
+        if (turnoActual.esFaseRobo() && !rondaActual.pila.vacio()) {
+            turnoActual.robarCartaPila()
+            listaManoFragment[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
+            setTopeMazo(rondaActual.pila, mj_pila, false)
+        }
+    }
+
+    /**
+     * Drag listener de la pila. Cuando el jugador arrastra una carta hacia la
+     * pila entonces se tira la carta de la mano a la pila y se sigue con el
+     * turno siguiente.
+     */
+    private val pilaDragListener = View.OnDragListener { view, event ->
+        when (event.action) {
+            DragEvent.ACTION_DRAG_STARTED -> {
+                true
             }
-            Turno.Companion.FaseTurno.TIRAR -> {
-                if (cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
-                    turnoActual.tirarCarta(cartaSeleccionada)
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                (view as ImageView).setColorFilter(ContextCompat.getColor(this, R.color.seleccion))
+                true
+            }
+            DragEvent.ACTION_DRAG_LOCATION -> {
+                true
+            }
+            DragEvent.ACTION_DRAG_EXITED -> {
+                (view as ImageView).clearColorFilter()
+                view.invalidate()
+                true
+            }
+            DragEvent.ACTION_DROP -> {
+                val item = event.clipData.getItemAt(0)
+                val dragData = item.text
+                (view as ImageView).clearColorFilter()
+                view.invalidate()
+                val tagOrigen: Int = Integer.parseInt(dragData.toString())
+
+                if (turnoActual.esFaseTirar()) {
+                    turnoActual.tirarCarta(tagOrigen)
+                    setTopeMazo(rondaActual.pila, mj_pila, false)
                     turnoActual = rondaActual.nuevoTurno()
 
                     val intent = Intent(this@PartidaActivity, CambioTurnoActivity::class.java)
                     intent.putExtra("PARTIDA", partida)
                     startActivityForResult(intent, RC_CAMBIOTURNO)
                 }
+                true
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                (view as ImageView).clearColorFilter()
+                view.invalidate()
+                true
+            }
+            else -> {
+                Log.d("Chinchon-Kotlin", "Evento desconocido")
+                false
             }
         }
-        manos[rondaActual.jugadorActual].limpiarSeleccion()
-        cartaSeleccionada = ManoFragment.CARTA_NOSELECT
     }
 
     /**
-     * Evento de click del botón "Cortar". Si el jugador que cortó hizo
-     * chinchón entonces lo declara el ganador, sino pasa a la fase de
-     * acomodación.
+     * Drag listener del botón de corte. Cuando un jugador arrastra una carta
+     * hacia este botón entonces se realiza el "corte", pasando a
+     * `AcomodarActivity` para acomodar las cartas. Si el jugador hizo chinchón
+     * entonces se pasa directamente a `GanadorActivity` para declarar al
+     * ganador.
      */
-    private val cortarClickListener = View.OnClickListener {
-        if (turnoActual.esFaseTirar() && cartaSeleccionada != ManoFragment.CARTA_NOSELECT) {
-            partida.cortar(cartaSeleccionada)
-            manos[partida.rondaActual.jugadorActual].limpiarSeleccion()
-            cartaSeleccionada = CARTA_NOSELECT
-            if (partida.hayGanador) {
-                val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
-                intent.putExtra("PARTIDA", partida)
-                finish()
-                startActivity(intent)
-            } else {
-                val intent = Intent(this@PartidaActivity, AcomodarActivity::class.java)
-                intent.putExtra("PARTIDA", partida)
-                startActivityForResult(intent, RC_CORTE)
+    private val cortarDragListener = View.OnDragListener { view, event ->
+        when (event.action) {
+            DragEvent.ACTION_DRAG_STARTED -> {
+                true
+            }
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                view.setBackgroundColor(Color.YELLOW)
+                true
+            }
+            DragEvent.ACTION_DRAG_LOCATION -> {
+                true
+            }
+            DragEvent.ACTION_DRAG_EXITED -> {
+                view.background = ContextCompat.getDrawable(this, android.R.drawable.btn_default)
+                view.invalidate()
+                true
+            }
+            DragEvent.ACTION_DROP -> {
+                val item = event.clipData.getItemAt(0)
+                val dragData = item.text
+                view.background = ContextCompat.getDrawable(this, android.R.drawable.btn_default)
+                view.invalidate()
+                val tagOrigen: Int = Integer.parseInt(dragData.toString())
+
+                if (turnoActual.esFaseTirar()) {
+                    partida.cortar(tagOrigen)
+                    if (partida.hayGanador) {
+                        val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
+                        intent.putExtra("PARTIDA", partida)
+                        finish()
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@PartidaActivity, AcomodarActivity::class.java)
+                        intent.putExtra("PARTIDA", partida)
+                        startActivityForResult(intent, RC_CORTE)
+                    }
+                }
+                true
+            }
+            DragEvent.ACTION_DRAG_ENDED -> {
+                view.background = ContextCompat.getDrawable(this, android.R.drawable.btn_default)
+                view.invalidate()
+                true
+            }
+            else -> {
+                Log.d("Chinchon-Kotlin", "Evento desconocido")
+                false
             }
         }
     }
@@ -248,13 +319,11 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
                         fragmentManager
                                 .beginTransaction()
-                                .show(manos[jugadorActual])
-                                .hide(manos[1 - jugadorActual])
+                                .show(listaManoFragment[jugadorActual])
+                                .hide(listaManoFragment[1 - jugadorActual])
                                 .commit()
 
-                        manos[jugadorActual].mostrarMano(partida.jugadores[jugadorActual].mano)
-                        manos[jugadorActual].limpiarSeleccion()
-                        cartaSeleccionada = ManoFragment.CARTA_NOSELECT
+                        listaManoFragment[jugadorActual].mostrarMano(partida.jugadores[jugadorActual].mano)
 
                         mostrarBotonCortar(false)
                     }
@@ -269,12 +338,10 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                 val jugadorActual = rondaActual.jugadorActual
                 fragmentManager
                         .beginTransaction()
-                        .show(manos[jugadorActual])
-                        .hide(manos[1 - jugadorActual])
+                        .show(listaManoFragment[jugadorActual])
+                        .hide(listaManoFragment[1 - jugadorActual])
                         .commit()
-                manos[jugadorActual].mostrarMano(partida.jugadores[jugadorActual].mano)
-                setTopeMazo(rondaActual.pila, mj_pila, false)
-                cartaSeleccionada = ManoFragment.CARTA_NOSELECT
+                listaManoFragment[jugadorActual].mostrarMano(partida.jugadores[jugadorActual].mano)
 
                 if (rondaActual.numeroTurno > 2) {
                     mostrarBotonCortar(true)
