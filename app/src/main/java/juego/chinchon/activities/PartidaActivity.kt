@@ -28,6 +28,11 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
     }
 
     private val listaManoFragment = ArrayList<ManoFragment>()
+    /**
+     * Indica si el jugador anterior robo de la pila. Luego, al comienzo del
+     * turno muestro el ícono sobre la pila.
+     */
+    private var roboPila: Boolean = false
 
     private lateinit var partida: Partida
     private lateinit var rondaActual: Ronda
@@ -149,6 +154,7 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
             turnoActual.robarCartaPila()
             listaManoFragment[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
             setTopeMazo(rondaActual.pila, mj_pila, false)
+            roboPila = true
         }
     }
 
@@ -313,6 +319,8 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
                         //region Actualizar imágenes de mazos
                         setTopeMazo(rondaActual.mazo, mj_mazo, true)
                         setTopeMazo(rondaActual.pila, mj_pila, false)
+                        roboPila = false
+                        mj_atencion_pila.visibility = View.GONE
                         //endregion
 
                         val jugadorActual = rondaActual.jugadorActual
@@ -345,6 +353,13 @@ class PartidaActivity : AppCompatActivity(), IManoFragment {
 
                 if (rondaActual.numeroTurno > 2) {
                     mostrarBotonCortar(true)
+                }
+
+                if (roboPila) {
+                    mj_atencion_pila.visibility = View.VISIBLE
+                    roboPila = false
+                } else {
+                    mj_atencion_pila.visibility = View.GONE
                 }
             }
         }

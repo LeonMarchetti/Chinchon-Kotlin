@@ -40,6 +40,7 @@
     <string name="mj_cartapila">Pila</string>
     <string name="mj_malcorte">¡No se puede cortar así!</string>
     <string name="mj_puntos">%1$d puntos.</string>
+    <string name="mj_atencion_pila">El jugador anterior robó de la pila</string>
 
     <string name="rj_continuar">Continuar</string>
     <string name="rj_hint1">Ingrese nombre y cantidad de puntos iniciales para cada jugador.</string>

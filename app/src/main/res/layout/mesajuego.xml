@@ -46,11 +46,24 @@
             android:text="@string/btn_cortar"
             android:visibility="invisible" />
 
-        <ImageView android:id="@+id/mj_pila"
-            android:layout_width="wrap_content"
+        <FrameLayout
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/carta" />
+            android:layout_width="wrap_content"
+            android:layout_alignParentEnd="true" >
+
+            <ImageView android:id="@+id/mj_pila"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/mj_cartapila" />
+
+            <ImageView
+                android:id="@+id/mj_atencion_pila"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/attention_blue"
+                android:contentDescription="@string/mj_atencion_pila"
+                android:visibility="gone" />
+        </FrameLayout>
 
     </RelativeLayout>
 
