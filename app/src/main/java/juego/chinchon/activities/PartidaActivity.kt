@@ -189,6 +189,7 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
 
                 if (turnoActual.esFaseTirar()) {
                     turnoActual.tirarCarta(tagOrigen)
+                    listaManoFragment[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
                     setTopeMazo(rondaActual.pila, mj_pila, false)
                     turnoActual = rondaActual.nuevoTurno()
 
