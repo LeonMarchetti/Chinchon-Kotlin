@@ -32,9 +32,10 @@
     <string name="g_puntos">con %1$d puntos</string>
     <string name="g_rondas">en %1$d rondas</string>
 
-    <string name="main_titulo">Chinchon Kotlin</string>
     <string name="main_comenzar">Comenzar partida</string>
+    <string name="main_info">Por Leonardo Marchetti</string>
     <string name="main_salir">Salir</string>
+    <string name="main_titulo">Chinchon Kotlin</string>
 
     <string name="mj_cambioturno">Próximo turno</string>
     <string name="mj_cartapila">Pila</string>
