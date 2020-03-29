@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
         //region Click listeners
         main_comenzar.setOnClickListener(comenzarClickListener)
+        main_ayuda.setOnClickListener(ayudaClickListener)
         main_salir.setOnClickListener(salirClickListener)
         //endregion
     }
@@ -25,6 +26,14 @@ class MainActivity : AppCompatActivity() {
      */
     private val comenzarClickListener = View.OnClickListener {
         val intent = Intent(this@MainActivity, RegistroJugadoresActivity::class.java)
+        startActivity(intent)
+    }
+
+    /**
+     * Click listener del botón "Ayuda". Cambia a la actividad "AyudaActivity".
+     */
+    private val ayudaClickListener = View.OnClickListener {
+        val intent = Intent(this@MainActivity, AyudaActivity::class.java)
         startActivity(intent)
     }
 

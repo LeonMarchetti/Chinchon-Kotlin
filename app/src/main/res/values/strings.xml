@@ -20,6 +20,34 @@
     <string name="ac_sumapuntos">Sumás %d, pasás a tener %d puntos.</string>
     <string name="ac_restapuntos">Restás 10, pasás a tener %d puntos.</string>
 
+    <string name="ay_titulo">Cómo jugar</string>
+    <string name="ay_cambioturno">
+        &#8226; Cuando se alterna entre los turnos de los jugadores se tapa la
+        pantalla del juego, para que ninguno de los jugadores vea las cartas
+        del otro en el traspaso.
+    </string>
+    <string name="ay_cortar">
+        &#8226; Para cortar hay que arrastrar la carta con la que se quiere
+        cortar al botón "Cortar".
+    </string>
+    <string name="ay_juego">
+        &#8226; Juegan los dos jugadores utilizando el mismo dispositivo. El
+        primer jugador juega con su mano arriba del mazo y de la pila y el
+        segundo abajo. Ambos jugadores se alternan para manejar sus cartas.
+    </string>
+    <string name="ay_mano">
+        &#8226; Para mover las cartas en la mano hay que arrastrarlas entre si.
+    </string>
+    <string name="ay_mazo">
+        &#8226; Para robar del mazo, hay que apretar el monte de la izquierda.
+        Para robar de la pila hay que apretar el monte de la derecha.
+    </string>
+    <string name="ay_pila">
+        &#8226; Para tirar una carta a la pila para terminar el turno hay que
+        arrastrar una carta de la mano al monte de la derecha.
+    </string>
+    <string name="ay_volver">Volver</string>
+
     <string name="ct_turno_de">Turno de %1$s</string>
 
     <string name="g_chinchon">con %1$d puntos y haciendo CHINCHÓN</string>
@@ -32,6 +60,7 @@
     <string name="g_puntos">con %1$d puntos</string>
     <string name="g_rondas">en %1$d rondas</string>
 
+    <string name="main_ayuda">Ayuda</string>
     <string name="main_comenzar">Comenzar partida</string>
     <string name="main_info">Por Leonardo Marchetti</string>
     <string name="main_salir">Salir</string>

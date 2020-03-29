@@ -18,6 +18,11 @@
         <item name="android:textColor">@color/texto</item>
     </style>
 
+    <style name="Boton">
+        <item name="android:background">@android:drawable/btn_default</item>
+        <item name="android:textColor">@color/texto_boton</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
