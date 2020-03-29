@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/ActivityTheme" >
+    style="@style/Actividad" >
 
     <FrameLayout android:id="@+id/containerMano1"
         android:layout_height="wrap_content"
@@ -14,16 +14,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/nombre_jugador_1"
-        android:textColor="@color/texto"
-        android:textSize="@dimen/mj_fontsize" />
+        style="@style/Texto" />
 
     <TextView android:id="@+id/mj_puntos_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/mj_puntos"
-        android:textColor="@color/texto"
-        android:textSize="@dimen/mj_fontsize" />
+        style="@style/Texto" />
 
     <RelativeLayout android:id="@+id/mj_mazos"
         android:layout_width="match_parent"
@@ -42,9 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:background="@android:drawable/btn_default"
             android:text="@string/btn_cortar"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            style="@style/Boton" />
 
         <FrameLayout
             android:layout_height="wrap_content"
@@ -72,16 +70,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/mj_puntos"
-        android:textColor="@color/texto"
-        android:textSize="@dimen/mj_fontsize" />
+        style="@style/Texto" />
 
     <TextView android:id="@+id/mj_nombrejugador_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/nombre_jugador_2"
-        android:textColor="@color/texto"
-        android:textSize="@dimen/mj_fontsize" />
+        style="@style/Texto" />
 
     <FrameLayout android:id="@+id/containerMano2"
         android:layout_height="wrap_content"

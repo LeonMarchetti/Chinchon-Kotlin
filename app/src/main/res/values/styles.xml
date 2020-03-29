@@ -10,12 +10,18 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="ActivityTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Actividad" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:background">@color/fondo</item>
     </style>
 
-    <style name="EditTextTheme">
+    <style name="Texto">
         <item name="android:textColor">@color/texto</item>
+        <item name="android:textSize">@dimen/texto</item>
+    </style>
+
+    <style name="Titulo">
+        <item name="android:textColor">@color/texto</item>
+        <item name="android:textSize">@dimen/titulo</item>
     </style>
 
     <style name="Boton">

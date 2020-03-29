@@ -31,10 +31,6 @@ class RegistroJugadoresActivity : AppCompatActivity() {
         } else {
             rj_jugador2.text.toString()
         }
-
-        /*if ((nombreJugador1 == "") or (nombreJugador2 == "")) {
-            rj_textview_1.visibility = TextView.VISIBLE
-        }*/
         //endregion
 
         //region puntos

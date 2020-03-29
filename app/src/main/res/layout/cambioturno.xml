@@ -3,15 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/ActivityTheme" >
+    style="@style/Actividad" >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/mj_cartapila"
-        android:textColor="@color/texto"
-        android:textSize="@dimen/mj_fontsize" />
+        style="@style/Texto" />
 
     <ImageView
         android:id="@+id/ct_carta"
@@ -26,16 +25,14 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/ct_turno_de"
-        android:textColor="@color/texto"
-        android:textSize="@dimen/mj_fontsize" />
+        style="@style/Texto" />
 
     <Button android:id="@+id/ct_boton"
-        android:background="@android:drawable/btn_default"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="@string/mj_cambioturno"
-        android:textSize="@dimen/mj_fontsize" />
+        style="@style/Boton" />
 
 </LinearLayout>

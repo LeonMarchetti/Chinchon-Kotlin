@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    style="@style/ActivityTheme" >
+    style="@style/Actividad" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -23,10 +23,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight=".30"
                 android:hint="@string/rj_jugador1"
-                android:textSize="@dimen/rj_fontsize"
                 android:autofillHints="name"
                 android:inputType="text"
-                style="@style/EditTextTheme" />
+                style="@style/Texto" />
 
             <EditText
                 android:id="@+id/rj_puntos1"
@@ -36,9 +35,8 @@
                 android:layout_weight=".70"
                 android:hint="@string/rj_hintpuntos"
                 android:inputType="number"
-                android:textSize="@dimen/rj_fontsize"
                 android:autofillHints="number"
-                style="@style/EditTextTheme" />
+                style="@style/Texto" />
 
         </LinearLayout>
 
@@ -55,10 +53,9 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight=".30"
                 android:hint="@string/rj_jugador2"
-                android:textSize="@dimen/rj_fontsize"
                 android:inputType="text"
                 android:autofillHints="name"
-                style="@style/EditTextTheme" />
+                style="@style/Texto" />
 
             <EditText
                 android:id="@+id/rj_puntos2"
@@ -68,9 +65,8 @@
                 android:layout_weight=".70"
                 android:hint="@string/rj_hintpuntos"
                 android:inputType="number"
-                android:textSize="@dimen/rj_fontsize"
                 android:autofillHints="number"
-                style="@style/EditTextTheme" />
+                style="@style/Texto" />
 
         </LinearLayout>
 
@@ -82,17 +78,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@android:drawable/btn_default"
-        android:text="@string/rj_continuar" />
-
-    <TextView
-        android:id="@+id/rj_textview_1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/texto"
-        android:visibility="gone" />
+        android:text="@string/rj_continuar"
+        style="@style/Boton" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -100,7 +87,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="@string/rj_hint1"
-        android:textColor="@color/texto" />
+        style="@style/Texto" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -108,7 +95,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="@string/rj_hint2"
-        android:textColor="@color/texto" />
+        style="@style/Texto" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -116,6 +103,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="@string/rj_hint3"
-        android:textColor="@color/texto" />
+        style="@style/Texto" />
 
 </LinearLayout>

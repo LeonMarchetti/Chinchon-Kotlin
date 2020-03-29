@@ -5,24 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/ActivityTheme" >
+    style="@style/Actividad" >
 
     <TextView android:id="@+id/ac_tv_nombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nombre_jugador_1"
-        android:textColor="@color/texto" />
+        style="@style/Texto" />
 
     <TextView android:id="@+id/ac_tv_corte"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/texto" />
+        style="@style/Texto" />
 
     <TextView android:id="@+id/ac_tv_puntos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/ac_sumapuntos"
-        android:textColor="@color/texto" />
+        style="@style/Texto" />
 
     <FrameLayout android:id="@+id/containerMano"
         android:layout_height="wrap_content"
@@ -35,31 +35,31 @@
         android:layout_height="match_parent">
 
         <Button android:id="@+id/ac_emparejar_btn"
-            android:background="@android:drawable/btn_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ac_Emparejar"
             app:layout_constraintBottom_toTopOf="@+id/ac_desarmar_btn"
-            tools:layout_editor_absoluteX="10dp" />
+            tools:layout_editor_absoluteX="10dp"
+            style="@style/Boton" />
 
         <Button
             android:id="@+id/ac_desarmar_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_default"
             android:enabled="false"
             android:text="@string/ac_Desarmar"
             app:layout_constraintBottom_toTopOf="@+id/ac_finalizar_btn"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            style="@style/Boton" />
 
         <Button
             android:id="@+id/ac_finalizar_btn"
-            android:background="@android:drawable/btn_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ac_Cancelar"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="10dp" />
+            tools:layout_editor_absoluteX="10dp"
+            style="@style/Boton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

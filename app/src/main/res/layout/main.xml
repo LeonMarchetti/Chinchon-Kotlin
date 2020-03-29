@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/ActivityTheme"
+    style="@style/Actividad"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
@@ -14,11 +14,10 @@
         android:layout_marginEnd="9dp"
         android:gravity="center"
         android:text="@string/main_titulo"
-        android:textColor="@color/texto"
-        android:textSize="@dimen/fuente_titulo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/Titulo" />
 
     <Button
         android:id="@+id/main_comenzar"
@@ -69,10 +68,10 @@
         android:layout_marginBottom="7dp"
         android:text="@string/main_info"
         android:textAlignment="viewStart"
-        android:textColor="@color/texto"
         app:layout_constraintBottom_toTopOf="@+id/main_salir"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Texto"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

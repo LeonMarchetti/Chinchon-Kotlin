@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/ActivityTheme" >
+    style="@style/Actividad" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,60 +14,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_felicitaciones"
-            android:textColor="@color/texto"
-            android:textSize="@dimen/g_normal_fontsize" />
+            style="@style/Texto" />
 
         <TextView
             android:id="@+id/g_tv_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_ganador"
-            android:textColor="@color/texto"
-            android:textSize="@dimen/g_normal_fontsize" />
+            style="@style/Texto" />
 
         <TextView
             android:id="@+id/g_tv_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_puntos"
-            android:textColor="@color/texto"
-            android:textSize="@dimen/g_normal_fontsize" />
+            style="@style/Texto" />
 
         <TextView
             android:id="@+id/g_tv_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_contra"
-            android:textColor="@color/texto"
-            android:textSize="@dimen/g_normal_fontsize" />
+            style="@style/Texto" />
 
         <TextView
             android:id="@+id/g_tv_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_puntos"
-            android:textColor="@color/texto"
-            android:textSize="@dimen/g_normal_fontsize" />
+            style="@style/Texto" />
 
         <TextView
             android:id="@+id/g_tv_6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/g_rondas"
-            android:textColor="@color/texto"
-            android:textSize="@dimen/g_normal_fontsize" />
+            style="@style/Texto" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/g_btn"
-        android:background="@android:drawable/btn_default"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/g_finalizar" />
+        android:text="@string/g_finalizar"
+        style="@style/Boton" />
 
 </RelativeLayout>
