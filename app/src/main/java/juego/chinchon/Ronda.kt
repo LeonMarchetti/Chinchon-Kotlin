@@ -1,6 +1,7 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 import kotlin.IllegalStateException
 
 /**
@@ -9,7 +10,7 @@ import kotlin.IllegalStateException
  *
  * @author LeonMarchetti
  */
-class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores: ArrayList<Jugador>): Serializable {
+class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores: ArrayList<Jugador>): Parcelable {
     var pila: Mazo
     var mazo: Mazo
     private var turnos: ArrayList<Turno>
@@ -111,5 +112,42 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
      */
     fun resumir() {
         turnoActual.resumir(cartaCorte)
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(), // numero
+            parcel.readInt(), // jugadorInicial
+            parcel.readArrayList(Jugador::class.java.classLoader) as ArrayList<Jugador>)
+    {
+        pila = parcel.readParcelable(Mazo::class.java.classLoader)!!
+        mazo = parcel.readParcelable(Mazo::class.java.classLoader)!!
+        jugadorActual = parcel.readInt()
+        cortador = parcel.readValue(Int::class.java.classLoader) as? Int
+        cartaCorte = parcel.readParcelable(Carta::class.java.classLoader)!!
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(numero)
+        parcel.writeInt(jugadorActual)
+        parcel.writeList(jugadores as List<*>?)
+        parcel.writeParcelable(pila, flags)
+        parcel.writeParcelable(mazo, flags)
+        parcel.writeInt(jugadorActual)
+        parcel.writeValue(cortador)
+        parcel.writeParcelable(cartaCorte, flags)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Ronda> {
+        override fun createFromParcel(parcel: Parcel): Ronda {
+            return Ronda(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Ronda?> {
+            return arrayOfNulls(size)
+        }
     }
 }

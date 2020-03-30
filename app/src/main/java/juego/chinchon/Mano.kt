@@ -1,6 +1,7 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 import java.util.*
 
 /**
@@ -9,9 +10,20 @@ import java.util.*
  * durante el propio turno.
  * @author LeoAM
  */
-class Mano internal constructor() : Serializable {
+class Mano(private val cartas: ArrayList<Carta> = ArrayList(8)) : Parcelable {
 
-    private val cartas: ArrayList<Carta> = ArrayList(8)
+    constructor(parcel: Parcel) : this(parcel.readArrayList(Carta::class.java.classLoader) as ArrayList<Carta>)
+
+    /**
+     * Flatten this object in to a Parcel.
+     *
+     * @param parcel The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     * May be 0 or [.PARCELABLE_WRITE_RETURN_VALUE].
+     */
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeList(cartas as List<*>?)
+    }
 
     override fun toString(): String {
         val primeraCarta = cartas[0]
@@ -210,5 +222,19 @@ class Mano internal constructor() : Serializable {
      */
     fun vaciar() {
         cartas.clear()
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Mano> {
+        override fun createFromParcel(parcel: Parcel): Mano {
+            return Mano(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Mano?> {
+            return Array(size) { Mano() }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 import java.lang.IllegalStateException
 
 /**
@@ -9,7 +10,7 @@ import java.lang.IllegalStateException
  *
  * @author LeonMarchetti
  */
-class Partida : Serializable {
+class Partida() : Parcelable {
     var jugadores: ArrayList<Jugador>
         private set
     var rondas: ArrayList<Ronda>
@@ -35,15 +36,6 @@ class Partida : Serializable {
      */
     var perdedores: ArrayList<Jugador>
         private set
-
-    companion object {
-        /** Estado de una partida. */
-        enum class Resultado {
-            GANADOR,
-            EMPATE,
-            EN_JUEGO
-        }
-    }
 
     init {
         jugadores = ArrayList()
@@ -156,5 +148,45 @@ class Partida : Serializable {
             }
         }
         return resultadoAcomodar
+    }
+
+    constructor(parcel: Parcel) : this() {
+        jugadorInicial = parcel.readInt()
+        jugadores = parcel.readArrayList(Jugador::class.java.classLoader) as ArrayList<Jugador>
+        rondas = parcel.readArrayList(Ronda::class.java.classLoader) as ArrayList<Ronda>
+        resultado = parcel.readSerializable() as Resultado
+        jugadorGanador = parcel.readParcelable(Jugador::class.java.classLoader)
+        chinchon = parcel.readInt() != 0
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(jugadorInicial)
+        parcel.writeList(jugadores as List<*>?)
+        parcel.writeList(rondas as List<*>?)
+        parcel.writeSerializable(resultado)
+        parcel.writeParcelable(jugadorGanador, flags)
+
+        parcel.writeInt(if (chinchon) { 1 } else { 0 })
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Partida> {
+        override fun createFromParcel(parcel: Parcel): Partida {
+            return Partida(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Partida?> {
+            return arrayOfNulls(size)
+        }
+
+        /** Estado de una partida. */
+        enum class Resultado {
+            GANADOR,
+            EMPATE,
+            EN_JUEGO
+        }
     }
 }

@@ -1,6 +1,7 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 import java.util.*
 
 /**
@@ -12,24 +13,23 @@ import java.util.*
  * @param vacio Indica si hay que construir el mazo vacío (para el pozo de descarte) o lleno (para el mazo principal).
  * @author LeoAM
  */
-class Mazo(vacio: Boolean): Serializable {
-    companion object {
-        private const val MAXCartas = 50
-    }
+class Mazo(vacio: Boolean): Parcelable {
 
-    private val cartas: ArrayList<Carta> = ArrayList()
+    private var cartas: ArrayList<Carta> = ArrayList()
 
     /**
      * Devuelve la cantidad de cartas en el mazo.
      * @return Devuelve la cantidad de cartas en el mazo.
      */
-    private var cantidad = 0
+    private val cantidad: Int
+        get() = cartas.size
+
+    constructor(parcel: Parcel) : this(true) {
+        cartas = parcel.readArrayList(Carta::class.java.classLoader) as ArrayList<Carta>
+    }
 
     init {
-        if (vacio) {
-            cantidad = 0
-        } else {
-            cantidad = MAXCartas
+        if (!vacio) {
             setCartas()
             mezclar()
         }
@@ -48,15 +48,15 @@ class Mazo(vacio: Boolean): Serializable {
                 cartas.add(Carta(j, p))
             }
         }
-        cartas.add(Carta(0, Palo.Comodin))
-        cartas.add(Carta(0, Palo.Comodin))
+        cartas.add(Carta(25, Palo.Comodin))
+        cartas.add(Carta(25, Palo.Comodin))
     }
 
     /**
      * Mezcla las cartas del mazo.
      */
     private fun mezclar() {
-        if (cantidad > 1) {
+        if (cantidad > 2) {
             val rdm = Random()
             var tmp: Carta
             var j: Int
@@ -75,7 +75,6 @@ class Mazo(vacio: Boolean): Serializable {
      * @return La carta robada.
      */
     fun robar(): Carta {
-        cantidad--
         return cartas.removeAt(0)
     }
 
@@ -96,7 +95,6 @@ class Mazo(vacio: Boolean): Serializable {
     fun colocar(c: Carta) {
         if (cantidad < MAXCartas) {
             cartas.add(0, c)
-            cantidad++
         }
     }
 
@@ -106,10 +104,9 @@ class Mazo(vacio: Boolean): Serializable {
      * @param m El mazo de donde se sacan las cartas.
      */
     fun volcar(m: Mazo) {
-        cantidad = m.cantidad
-        m.cantidad = 0
         for (i in 0 until cantidad) {
-            cartas.add(m.cartas.removeAt(0))
+            val carta = m.cartas.removeAt(0)
+            cartas.add(carta)
         }
         mezclar()
     }
@@ -155,5 +152,25 @@ class Mazo(vacio: Boolean): Serializable {
      */
     fun vacio(): Boolean {
         return cartas.isEmpty()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeList(cartas as List<*>?)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Mazo> {
+        override fun createFromParcel(parcel: Parcel): Mazo {
+            return Mazo(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Mazo?> {
+            return arrayOfNulls(size)
+        }
+
+        private const val MAXCartas = 50
     }
 }

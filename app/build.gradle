@@ -8,8 +8,8 @@ android {
         applicationId "com.example.leoam.chinchonkotlin"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 74
-        versionName "4.4"
+        versionCode 77
+        versionName "4.6.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -18,14 +18,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    /*flavorDimensions "version"
+    flavorDimensions "version"
     productFlavors {
         prueba {
             dimension "version"
             applicationIdSuffix ".prueba"
             versionNameSuffix "-prueba"
         }
-    }*/
+    }
 }
 
 dependencies {

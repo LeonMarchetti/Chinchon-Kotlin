@@ -1,27 +1,25 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 
 /**
  * Clase que representa el turno de un jugador.
  *
  * @author LeonMarchetti
  */
-class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Mazo, private val pila: Mazo): Serializable {
+class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Mazo, private val pila: Mazo): Parcelable {
     private lateinit var cartaPila: Carta
     private lateinit var cartaRobo: Carta
     var fase: FaseTurno
 
-    companion object {
-        /** Clase que representa la fase de un turno. */
-        enum class FaseTurno(private var denominacion: String) {
-            ROBAR("Robar"),
-            TIRAR("Tirar");
-
-            override fun toString(): String {
-                return denominacion
-            }
-        }
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readParcelable(Jugador::class.java.classLoader)!!,
+            parcel.readParcelable(Mazo::class.java.classLoader)!!,
+            parcel.readParcelable(Mazo::class.java.classLoader)!!) {
+        cartaPila = parcel.readParcelable(Carta::class.java.classLoader)!!
+        cartaRobo = parcel.readParcelable(Carta::class.java.classLoader)!!
     }
 
     init {
@@ -115,5 +113,38 @@ class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Ma
             throw IllegalStateException("Solo se puede cortar durante la fase de \"tirar\"")
         }
         jugador.mano.addCarta(carta)
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(numero)
+        parcel.writeParcelable(jugador, flags)
+        parcel.writeParcelable(mazo, flags)
+        parcel.writeParcelable(pila, flags)
+        parcel.writeParcelable(cartaPila, flags)
+        parcel.writeParcelable(cartaRobo, flags)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Turno> {
+        override fun createFromParcel(parcel: Parcel): Turno {
+            return Turno(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Turno?> {
+            return arrayOfNulls(size)
+        }
+
+        /** Clase que representa la fase de un turno. */
+        enum class FaseTurno(private var denominacion: String) {
+            ROBAR("Robar"),
+            TIRAR("Tirar");
+
+            override fun toString(): String {
+                return denominacion
+            }
+        }
     }
 }

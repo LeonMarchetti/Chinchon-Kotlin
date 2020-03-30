@@ -1,12 +1,13 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 
 /**
  * Clase Jugador, representa a un jugador que participa en el juego.
  * @author LeoAM
  */
-class Jugador(val nombre: String) : Serializable {
+class Jugador(val nombre: String) : Parcelable {
 
     /**
      * @param nombre Nombre del jugador
@@ -16,16 +17,15 @@ class Jugador(val nombre: String) : Serializable {
         this.puntos = puntos
     }
 
-    companion object {
-        /** Máxima cantidad de puntos que un jugador puede tener: */
-        private const val MAX_PUNTOS: Int = 100
+    constructor(parcel: Parcel) : this(parcel.readString()!!) {
+        mano = parcel.readParcelable(Mano::class.java.classLoader)!!
     }
 
     /**
      * Devuelve las cartas (la mano) del jugador
      * @return La mano con las cartas del jugador.
      */
-    val mano: Mano = Mano()
+    var mano: Mano = Mano()
 
     /**
      * Devuelve el puntaje del jugador.
@@ -67,6 +67,20 @@ class Jugador(val nombre: String) : Serializable {
         return "$nombre ($puntos puntos)"
     }
 
+    /**
+     * Describe the kinds of special objects contained in this Parcelable
+     * instance's marshaled representation. For example, if the object will
+     * include a file descriptor in the output of [.writeToParcel],
+     * the return value of this method must include the
+     * [.CONTENTS_FILE_DESCRIPTOR] bit.
+     *
+     * @return a bitmask indicating the set of special object types marshaled
+     * by this Parcelable object instance.
+     */
+    override fun describeContents(): Int {
+        return 0
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
@@ -76,7 +90,32 @@ class Jugador(val nombre: String) : Serializable {
         return this.nombre == other.nombre
     }
 
+    /**
+     * Flatten this object in to a Parcel.
+     *
+     * @param parcel The Parcel in which the object should be written.
+     * @param flags Additional flags about how the object should be written.
+     * May be 0 or [.PARCELABLE_WRITE_RETURN_VALUE].
+     */
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(nombre)
+        parcel.writeParcelable(mano, flags)
+    }
+
     override fun hashCode(): Int {
         return nombre.hashCode()
+    }
+
+    companion object CREATOR : Parcelable.Creator<Jugador> {
+        override fun createFromParcel(parcel: Parcel): Jugador {
+            return Jugador(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Jugador?> {
+            return arrayOfNulls(size)
+        }
+
+        /** Máxima cantidad de puntos que un jugador puede tener: */
+        private const val MAX_PUNTOS: Int = 100
     }
 }
