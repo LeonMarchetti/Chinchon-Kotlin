@@ -59,6 +59,7 @@ class Partida() : Parcelable {
      */
     fun nuevaRonda(): Ronda {
         val ronda = Ronda(rondas.size + 1, jugadorInicial, jugadores)
+        ronda.iniciar()
         jugadorInicial = (jugadorInicial + 1) % jugadores.size
         rondas.add(ronda)
         return ronda

@@ -3,7 +3,6 @@ package juego.chinchon.activities
 import androidx.fragment.app.FragmentActivity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.leoam.chinchonkotlin.R
@@ -144,7 +143,6 @@ class AcomodarActivity : FragmentActivity(), IManoFragment {
         }
 
         val indices = tmpListaIndices.toIntArray()
-
         if (partida.rondaActual.formanJuego(jugadorActual, indices)) {
             val estadoSeleccionJuego = when(juegosActuales) {
                 0 -> JUEGO_1
@@ -248,9 +246,6 @@ class AcomodarActivity : FragmentActivity(), IManoFragment {
      */
     private fun setInformacionJugador() {
         val jugador = partida.jugadores[jugadorActual]
-
-        val mano = jugador.mano
-        Log.d("Chinchon-Kotlin", "Mano: $mano")
 
         ac_tv_nombre.text = getString(R.string.ac_nombre, jugador.nombre, jugador.puntos)
 

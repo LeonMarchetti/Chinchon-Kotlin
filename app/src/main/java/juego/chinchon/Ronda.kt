@@ -10,11 +10,11 @@ import kotlin.IllegalStateException
  *
  * @author LeonMarchetti
  */
-class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores: ArrayList<Jugador>): Parcelable {
-    var pila: Mazo
-    var mazo: Mazo
-    private var turnos: ArrayList<Turno>
-    var jugadorActual: Int
+class Ronda(private val numero: Int, var jugadorInicial: Int, private val jugadores: ArrayList<Jugador>): Parcelable {
+    lateinit var pila: Mazo
+    lateinit var mazo: Mazo
+    private lateinit var turnos: ArrayList<Turno>
+    var jugadorActual: Int = 0
     private val turnoActual: Turno
         get() = turnos.last()
     val numeroTurno: Int
@@ -27,7 +27,14 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
      */
     private var cartaCorte: Carta? = null
 
-    init {
+    /**
+     * Inicializa la ronda, configurando:
+     * * El mazo completo, y con las cartas repartidas a los jugadores;
+     * * La pila, como un mazo vacío;
+     * * La lista de turnos vacía;
+     * * El número del primer jugador.
+     */
+    fun iniciar() {
         mazo = Mazo(false)
         pila = Mazo(true)
         mazo.repartir(jugadores)
@@ -130,6 +137,7 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
         parcel.writeInt(numero)
         parcel.writeInt(jugadorActual)
         parcel.writeList(jugadores as List<*>?)
+
         parcel.writeParcelable(pila, flags)
         parcel.writeParcelable(mazo, flags)
         parcel.writeInt(jugadorActual)
