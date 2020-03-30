@@ -25,7 +25,7 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
      * memoria por si se cancela el corte y hay que volver a agregarla a la
      * mano.
      */
-    private lateinit var cartaCorte: Carta
+    private var cartaCorte: Carta? = null
 
     init {
         mazo = Mazo(false)
@@ -111,7 +111,7 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
      * actual.
      */
     fun resumir() {
-        turnoActual.resumir(cartaCorte)
+        turnoActual.resumir(cartaCorte!!)
     }
 
     constructor(parcel: Parcel) : this(
@@ -123,7 +123,7 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
         mazo = parcel.readParcelable(Mazo::class.java.classLoader)!!
         jugadorActual = parcel.readInt()
         cortador = parcel.readValue(Int::class.java.classLoader) as? Int
-        cartaCorte = parcel.readParcelable(Carta::class.java.classLoader)!!
+        cartaCorte = parcel.readParcelable(Carta::class.java.classLoader)
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

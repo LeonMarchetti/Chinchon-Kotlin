@@ -28,6 +28,9 @@ class Carta(val valor: Int, val palo: Palo): Comparable<Carta>, Parcelable {
     }
 
     override fun toString(): String {
+        if (palo == Palo.Comodin) {
+            return "Comodín"
+        }
         return "$valor de $palo"
     }
 

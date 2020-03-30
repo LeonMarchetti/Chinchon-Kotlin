@@ -61,7 +61,7 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
         super.onCreate(icicle)
         setContentView(R.layout.mesajuego)
 
-        partida = intent.getSerializableExtra("PARTIDA") as Partida
+        partida = intent.getParcelableExtra("PARTIDA") as Partida
 
         rondaActual = partida.nuevaRonda()
         turnoActual = rondaActual.nuevoTurno()
@@ -121,12 +121,12 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
      */
     private val mazoClickListener = View.OnClickListener {
         when (turnoActual.fase) {
-            Turno.Companion.FaseTurno.ROBAR -> {
+            Turno.CREATOR.FaseTurno.ROBAR -> {
                 turnoActual.robarCartaMazo()
                 listaManoFragment[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
                 setTopeMazo(rondaActual.mazo, mj_mazo, true)
             }
-            Turno.Companion.FaseTurno.TIRAR -> {
+            Turno.CREATOR.FaseTurno.TIRAR -> {
                 val builder = AlertDialog.Builder(this@PartidaActivity)
                 builder
                         .setMessage("¿Desea renunciar?")
@@ -187,6 +187,7 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
                 view.invalidate()
                 val tagOrigen: Int = Integer.parseInt(dragData.toString())
 
+                //region Tirar carta a la pila
                 if (turnoActual.esFaseTirar()) {
                     turnoActual.tirarCarta(tagOrigen)
                     listaManoFragment[rondaActual.jugadorActual].mostrarMano(turnoActual.jugador.mano)
@@ -197,6 +198,7 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
                     intent.putExtra("PARTIDA", partida)
                     startActivityForResult(intent, RC_CAMBIOTURNO)
                 }
+                //endregion
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
@@ -242,6 +244,7 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
                 view.invalidate()
                 val tagOrigen: Int = Integer.parseInt(dragData.toString())
 
+                //region Cortar
                 if (turnoActual.esFaseTirar()) {
                     partida.cortar(tagOrigen)
                     if (partida.hayGanador) {
@@ -255,6 +258,7 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
                         startActivityForResult(intent, RC_CORTE)
                     }
                 }
+                //endregion
                 true
             }
             DragEvent.ACTION_DRAG_ENDED -> {
@@ -298,9 +302,9 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
         when (requestCode) {
             RC_CORTE -> {
                 when (resultCode) {
-                    // Se cortó bien, ronda nueva
+                    //region Ronda nueva
                     1 -> {
-                        partida = data!!.getSerializableExtra("PARTIDA") as Partida
+                        partida = data!!.getParcelableExtra("PARTIDA") as Partida
 
                         if (partida.hayGanador) {
                             val intent = Intent(this@PartidaActivity, GanadorActivity::class.java)
@@ -336,14 +340,19 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
 
                         mostrarBotonCortar(false)
                     }
-                    // Se cortó mal, se sigue el turno.
+                    //endregion
+                    //region Resumir turno
                     2 -> {
                         partida.resumir()
+                        val jugadorActual = rondaActual.jugadorActual
+                        listaManoFragment[jugadorActual].mostrarMano(partida.jugadores[jugadorActual].mano)
                         Toast.makeText(this, getText(R.string.mj_malcorte), Toast.LENGTH_SHORT).show()
                     }
+                    //endregion
                 }
             }
             RC_CAMBIOTURNO -> {
+                //region Turno nuevo
                 val jugadorActual = rondaActual.jugadorActual
                 supportFragmentManager
                         .beginTransaction()
@@ -362,6 +371,7 @@ class PartidaActivity : FragmentActivity(), IManoFragment {
                 } else {
                     mj_atencion_pila.visibility = View.GONE
                 }
+                //endregion
             }
         }
     }

@@ -8,8 +8,8 @@ android {
         applicationId "com.example.leoam.chinchonkotlin"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 77
-        versionName "4.6.1"
+        versionCode 78
+        versionName "4.6.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
