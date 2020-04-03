@@ -11,17 +11,17 @@ import java.lang.IllegalStateException
  * @author LeonMarchetti
  */
 class Partida() : Parcelable {
-    var jugadores: ArrayList<Jugador>
+    lateinit var jugadores: ArrayList<Jugador>
         private set
-    var rondas: ArrayList<Ronda>
+    lateinit var rondas: ArrayList<Ronda>
         private set
     val rondaActual: Ronda
         get() = rondas.last()
-    var resultado: Resultado
+    lateinit var resultado: Resultado
         private set
-    var jugadorGanador: Jugador?
+    var jugadorGanador: Jugador? = null
         private set
-    var chinchon: Boolean
+    var chinchon: Boolean = false
         private set
     val hayGanador: Boolean
         get() = resultado == Resultado.GANADOR
@@ -29,15 +29,15 @@ class Partida() : Parcelable {
      * Determina el jugador inicial de una ronda. Para la primer ronda se elije
      * al primer jugador ingresado a la partida.
      */
-    private var jugadorInicial: Int
+    private var jugadorInicial: Int = 0
     /**
      * Lista de jugadores que perdieron en la partida. Se actualiza con las
      * llamadas a `cortar`, `renunciar` y `acomodar`.
      */
-    var perdedores: ArrayList<Jugador>
+    lateinit var perdedores: ArrayList<Jugador>
         private set
 
-    init {
+    fun iniciar() {
         jugadores = ArrayList()
         rondas = ArrayList()
         resultado = Resultado.EN_JUEGO
@@ -121,8 +121,8 @@ class Partida() : Parcelable {
     }
 
     /**
-     * Fase de acomodación de la ronda actual. Verifica si alguien alcanzó los
-     * 100 puntos como resultado.
+     * Fase de acomodación de la ronda actual. Verifica si alguien perdió como
+     * resultado.
      *
      * @return Si el jugador que acomodó las cartas es el cortador.
      */
@@ -153,10 +153,19 @@ class Partida() : Parcelable {
 
     constructor(parcel: Parcel) : this() {
         jugadorInicial = parcel.readInt()
+        @Suppress("UNCHECKED_CAST")
         jugadores = parcel.readArrayList(Jugador::class.java.classLoader) as ArrayList<Jugador>
+
+        @Suppress("UNCHECKED_CAST")
         rondas = parcel.readArrayList(Ronda::class.java.classLoader) as ArrayList<Ronda>
+        rondas.forEach { ronda ->
+            ronda.jugadores = jugadores
+        }
+
         resultado = parcel.readSerializable() as Resultado
         jugadorGanador = parcel.readParcelable(Jugador::class.java.classLoader)
+        @Suppress("UNCHECKED_CAST")
+        perdedores = parcel.readArrayList(Jugador::class.java.classLoader) as ArrayList<Jugador>
         chinchon = parcel.readInt() != 0
     }
 
@@ -166,7 +175,7 @@ class Partida() : Parcelable {
         parcel.writeList(rondas as List<*>?)
         parcel.writeSerializable(resultado)
         parcel.writeParcelable(jugadorGanador, flags)
-
+        parcel.writeList(perdedores as List<*>?)
         parcel.writeInt(if (chinchon) { 1 } else { 0 })
     }
 

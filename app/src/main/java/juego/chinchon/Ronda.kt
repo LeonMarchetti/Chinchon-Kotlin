@@ -10,7 +10,7 @@ import kotlin.IllegalStateException
  *
  * @author LeonMarchetti
  */
-class Ronda(private val numero: Int, var jugadorInicial: Int, private val jugadores: ArrayList<Jugador>): Parcelable {
+class Ronda(private val numero: Int, private var jugadorInicial: Int, var jugadores: ArrayList<Jugador>): Parcelable {
     lateinit var pila: Mazo
     lateinit var mazo: Mazo
     private lateinit var turnos: ArrayList<Turno>
@@ -120,7 +120,7 @@ class Ronda(private val numero: Int, var jugadorInicial: Int, private val jugado
     fun resumir() {
         turnoActual.resumir(cartaCorte!!)
     }
-
+    @Suppress("UNCHECKED_CAST")
     constructor(parcel: Parcel) : this(
             parcel.readInt(), // numero
             parcel.readInt(), // jugadorInicial

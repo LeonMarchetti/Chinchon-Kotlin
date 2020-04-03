@@ -17,10 +17,6 @@ class Jugador(val nombre: String) : Parcelable {
         this.puntos = puntos
     }
 
-    constructor(parcel: Parcel) : this(parcel.readString()!!) {
-        mano = parcel.readParcelable(Mano::class.java.classLoader)!!
-    }
-
     /**
      * Devuelve las cartas (la mano) del jugador
      * @return La mano con las cartas del jugador.
@@ -90,6 +86,10 @@ class Jugador(val nombre: String) : Parcelable {
         return this.nombre == other.nombre
     }
 
+    constructor(parcel: Parcel) : this(parcel.readString()!!, parcel.readInt()) {
+        mano = parcel.readParcelable(Mano::class.java.classLoader)!!
+    }
+
     /**
      * Flatten this object in to a Parcel.
      *
@@ -99,6 +99,7 @@ class Jugador(val nombre: String) : Parcelable {
      */
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(nombre)
+        parcel.writeInt(puntos)
         parcel.writeParcelable(mano, flags)
     }
 
