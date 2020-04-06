@@ -8,8 +8,8 @@ android {
         applicationId "com.example.leoam.chinchonkotlin"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 80
-        versionName "4.6.4"
+        versionCode 81
+        versionName "4.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -19,13 +19,13 @@ android {
         }
     }
     flavorDimensions "version"
-    productFlavors {
+    /*productFlavors {
         prueba {
             dimension "version"
             applicationIdSuffix ".prueba"
             versionNameSuffix "-prueba"
         }
-    }
+    }*/
 }
 
 dependencies {

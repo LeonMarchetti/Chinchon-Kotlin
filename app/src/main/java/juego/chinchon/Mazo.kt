@@ -24,6 +24,7 @@ class Mazo(vacio: Boolean): Parcelable {
     private val cantidad: Int
         get() = cartas.size
 
+    @Suppress("UNCHECKED_CAST")
     constructor(parcel: Parcel) : this(true) {
         cartas = parcel.readArrayList(Carta::class.java.classLoader) as ArrayList<Carta>
     }

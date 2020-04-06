@@ -12,6 +12,7 @@ import java.util.*
  */
 class Mano(private val cartas: ArrayList<Carta> = ArrayList(8)) : Parcelable {
 
+    @Suppress("UNCHECKED_CAST")
     constructor(parcel: Parcel) : this(parcel.readArrayList(Carta::class.java.classLoader) as ArrayList<Carta>)
 
     /**
