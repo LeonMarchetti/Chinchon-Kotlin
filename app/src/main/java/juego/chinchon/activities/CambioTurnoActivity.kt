@@ -25,7 +25,7 @@ class CambioTurnoActivity : AppCompatActivity() {
         super.onCreate(icicle)
         this.setContentView(R.layout.cambioturno)
 
-        val partida = intent.getSerializableExtra("PARTIDA") as Partida
+        val partida = intent.getParcelableExtra("PARTIDA") as Partida
 
         ct_boton.setOnClickListener(continuarClickListener)
 

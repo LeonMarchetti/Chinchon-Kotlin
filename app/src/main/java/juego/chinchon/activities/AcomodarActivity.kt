@@ -62,7 +62,7 @@ class AcomodarActivity : FragmentActivity(), IManoFragment {
         super.onCreate(icicle)
         setContentView(R.layout.acomodacion)
 
-        partida = intent.getSerializableExtra("PARTIDA") as Partida
+        partida = intent.getParcelableExtra("PARTIDA") as Partida
 
         ac_emparejar_btn.setOnClickListener(emparejarClickListener)
         ac_desarmar_btn.setOnClickListener(desarmarClickListener)
@@ -143,7 +143,6 @@ class AcomodarActivity : FragmentActivity(), IManoFragment {
         }
 
         val indices = tmpListaIndices.toIntArray()
-
         if (partida.rondaActual.formanJuego(jugadorActual, indices)) {
             val estadoSeleccionJuego = when(juegosActuales) {
                 0 -> JUEGO_1

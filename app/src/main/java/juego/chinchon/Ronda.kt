@@ -1,6 +1,7 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 import kotlin.IllegalStateException
 
 /**
@@ -9,11 +10,11 @@ import kotlin.IllegalStateException
  *
  * @author LeonMarchetti
  */
-class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores: ArrayList<Jugador>): Serializable {
-    var pila: Mazo
-    var mazo: Mazo
-    private var turnos: ArrayList<Turno>
-    var jugadorActual: Int
+class Ronda(private val numero: Int, private var jugadorInicial: Int, internal var jugadores: ArrayList<Jugador>): Parcelable {
+    lateinit var pila: Mazo
+    lateinit var mazo: Mazo
+    internal lateinit var turnos: ArrayList<Turno>
+    var jugadorActual: Int = 0
     private val turnoActual: Turno
         get() = turnos.last()
     val numeroTurno: Int
@@ -24,9 +25,16 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
      * memoria por si se cancela el corte y hay que volver a agregarla a la
      * mano.
      */
-    private lateinit var cartaCorte: Carta
+    private var cartaCorte: Carta? = null
 
-    init {
+    /**
+     * Inicializa la ronda, configurando:
+     * * El mazo completo, y con las cartas repartidas a los jugadores;
+     * * La pila, como un mazo vacío;
+     * * La lista de turnos vacía;
+     * * El número del primer jugador.
+     */
+    fun iniciar() {
         mazo = Mazo(false)
         pila = Mazo(true)
         mazo.repartir(jugadores)
@@ -110,6 +118,46 @@ class Ronda(private val numero: Int, jugadorInicial: Int, private val jugadores:
      * actual.
      */
     fun resumir() {
-        turnoActual.resumir(cartaCorte)
+        turnoActual.resumir(cartaCorte!!)
+    }
+    @Suppress("UNCHECKED_CAST")
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(), // numero
+            parcel.readInt(), // jugadorInicial
+            parcel.readArrayList(Jugador::class.java.classLoader) as ArrayList<Jugador>)
+    {
+        pila = parcel.readParcelable(Mazo::class.java.classLoader)!!
+        mazo = parcel.readParcelable(Mazo::class.java.classLoader)!!
+        turnos = parcel.readArrayList(Turno::class.java.classLoader) as ArrayList<Turno>
+        jugadorActual = parcel.readInt()
+        cortador = parcel.readValue(Int::class.java.classLoader) as? Int
+        cartaCorte = parcel.readParcelable(Carta::class.java.classLoader)
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(numero)
+        parcel.writeInt(jugadorActual)
+        parcel.writeList(jugadores as List<*>?)
+
+        parcel.writeParcelable(pila, flags)
+        parcel.writeParcelable(mazo, flags)
+        parcel.writeList(turnos as List<*>)
+        parcel.writeInt(jugadorActual)
+        parcel.writeValue(cortador)
+        parcel.writeParcelable(cartaCorte, flags)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Ronda> {
+        override fun createFromParcel(parcel: Parcel): Ronda {
+            return Ronda(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Ronda?> {
+            return arrayOfNulls(size)
+        }
     }
 }

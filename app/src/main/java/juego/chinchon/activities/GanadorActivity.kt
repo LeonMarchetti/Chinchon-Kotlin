@@ -26,9 +26,9 @@ class GanadorActivity : AppCompatActivity() {
 
         g_btn.setOnClickListener(finalizarClickListener)
 
-        val partida = intent.getSerializableExtra("PARTIDA") as Partida
+        val partida = intent.getParcelableExtra("PARTIDA") as Partida
         when (partida.resultado) {
-            Partida.Companion.Resultado.GANADOR -> {
+            Partida.CREATOR.Resultado.GANADOR -> {
                 //region ganador
                 g_tv_1.text = getString(R.string.g_felicitaciones)
                 g_tv_2.text = getString(R.string.g_ganador, partida.jugadorGanador?.nombre)
@@ -47,14 +47,14 @@ class GanadorActivity : AppCompatActivity() {
                 g_tv_2.textSize = resources.getDimension(R.dimen.g_winner_fontsize)
                 g_tv_3.textSize = resources.getDimension(R.dimen.g_winner_fontsize)
             }
-            Partida.Companion.Resultado.EMPATE -> {
+            Partida.CREATOR.Resultado.EMPATE -> {
                 g_tv_1.text = getString(R.string.g_empate)
                 g_tv_2.text = getString(R.string.g_jugador, partida.jugadores[0].nombre)
                 g_tv_3.text = getString(R.string.g_puntos, partida.jugadores[0].puntos)
                 g_tv_4.text = getString(R.string.g_jugador, partida.jugadores[1].nombre)
                 g_tv_5.text = getString(R.string.g_puntos, partida.jugadores[1].puntos)
             }
-            Partida.Companion.Resultado.EN_JUEGO -> {
+            Partida.CREATOR.Resultado.EN_JUEGO -> {
                 throw IllegalStateException("No se puede llegar a esta pantalla si se está todavía en juego.")
             }
         }

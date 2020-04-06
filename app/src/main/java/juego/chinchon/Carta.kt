@@ -1,29 +1,16 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 
 /**
  * Clase Carta, representa una carta, de la baraja española.
+ *
+ * @property valor Valor de la carta a crear.
+ * @property palo Palo de la carta.
  * @author LeoAM
  */
-class Carta
-/**
- * Constructor para la clase Carta, pasando valor y palo.
- * @param v Valor de la carta a crear.
- * @param p Palo de la carta.
- */ internal constructor(v: Int, p: Palo) : Comparable<Carta>, Serializable {
-    /**
-     * Devuelve el valor numérico de la carta.
-     * @return El valor numérico de la carta.
-     */
-    val valor: Int
-
-    /**
-     * Devuelve el "palo" de la carta (Espada, Basto, Oro o Copa)
-     * @return El palo de la carta.
-     */
-    val palo: Palo = p
-
+class Carta(val valor: Int, val palo: Palo): Comparable<Carta>, Parcelable {
     /**
      * Método que devuelve el nombre del archivo que almacena la imagen para
      * esta carta. Se genera cuando se crea el objeto.
@@ -31,12 +18,19 @@ class Carta
      */
     val imagePath: String
 
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readSerializable() as Palo
+    )
+
     init {
-        valor = if (v in 1..12) { v } else { VALORCOMODIN }
         imagePath = if (palo == Palo.Comodin) { palo.paloPath } else { palo.paloPath + "_" + valor + "s" }
     }
 
     override fun toString(): String {
+        if (palo == Palo.Comodin) {
+            return "Comodín"
+        }
         return "$valor de $palo"
     }
 
@@ -44,7 +38,22 @@ class Carta
         return valor - other.valor
     }
 
-    companion object {
-        private const val VALORCOMODIN = 25
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(valor)
+        parcel.writeSerializable(palo)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Carta> {
+        override fun createFromParcel(parcel: Parcel): Carta {
+            return Carta(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Carta?> {
+            return arrayOfNulls(size)
+        }
     }
 }

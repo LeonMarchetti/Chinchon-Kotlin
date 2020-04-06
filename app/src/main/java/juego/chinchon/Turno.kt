@@ -1,28 +1,17 @@
 package juego.chinchon
 
-import java.io.Serializable
+import android.os.Parcel
+import android.os.Parcelable
 
 /**
  * Clase que representa el turno de un jugador.
  *
  * @author LeonMarchetti
  */
-class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Mazo, private val pila: Mazo): Serializable {
-    private lateinit var cartaPila: Carta
-    private lateinit var cartaRobo: Carta
+class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Mazo, private val pila: Mazo): Parcelable {
+    private var cartaPila: Carta? = null
+    private var cartaRobo: Carta? = null
     var fase: FaseTurno
-
-    companion object {
-        /** Clase que representa la fase de un turno. */
-        enum class FaseTurno(private var denominacion: String) {
-            ROBAR("Robar"),
-            TIRAR("Tirar");
-
-            override fun toString(): String {
-                return denominacion
-            }
-        }
-    }
 
     init {
         fase = FaseTurno.ROBAR
@@ -30,10 +19,11 @@ class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Ma
 
     /**
      * Representación textual de este turno, que consiste en
-     * `"Turno n°$numero - $nombreJugador"`.
+     * `"Turno n°$numero - $nombreJugador - $cartaPila"`, siendo `cartaPila` la
+     * carta que tiró el jugador para terminar el turno.
      */
     override fun toString(): String {
-        return "Turno n°$numero - ${jugador.nombre}"
+        return "Turno n°$numero - ${jugador.nombre} - {$cartaPila}"
     }
 
     /** Comprueba que el turno está en la fase de robar. */
@@ -60,7 +50,7 @@ class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Ma
             mazo.volcar(pila)
         }
         cartaRobo = mazo.robar()
-        jugador.mano.addCarta(cartaRobo)
+        jugador.mano.addCarta(cartaRobo!!)
         fase = FaseTurno.TIRAR
     }
 
@@ -77,7 +67,7 @@ class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Ma
             throw IllegalStateException("No se puede robar de una pila vacía.")
         }
         cartaRobo = pila.robar()
-        jugador.mano.addCarta(cartaRobo)
+        jugador.mano.addCarta(cartaRobo!!)
         fase = FaseTurno.TIRAR
     }
 
@@ -93,7 +83,7 @@ class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Ma
             throw IllegalStateException("Solo se puede tirar una carta durante la fase de \"tirar\"")
         }
         cartaPila = jugador.mano.tirarCarta(i)
-        pila.colocar(cartaPila)
+        pila.colocar(cartaPila!!)
     }
 
     /** Corta, tirando una carta de la mano del jugador. */
@@ -115,5 +105,47 @@ class Turno (private val numero: Int, val jugador: Jugador, private val mazo: Ma
             throw IllegalStateException("Solo se puede cortar durante la fase de \"tirar\"")
         }
         jugador.mano.addCarta(carta)
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readInt(),
+            parcel.readParcelable(Jugador::class.java.classLoader)!!,
+            parcel.readParcelable(Mazo::class.java.classLoader)!!,
+            parcel.readParcelable(Mazo::class.java.classLoader)!!) {
+        cartaPila = parcel.readParcelable(Carta::class.java.classLoader)
+        cartaRobo = parcel.readParcelable(Carta::class.java.classLoader)
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(numero)
+        parcel.writeParcelable(jugador, flags)
+        parcel.writeParcelable(mazo, flags)
+        parcel.writeParcelable(pila, flags)
+        parcel.writeParcelable(cartaPila, flags)
+        parcel.writeParcelable(cartaRobo, flags)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Turno> {
+        override fun createFromParcel(parcel: Parcel): Turno {
+            return Turno(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Turno?> {
+            return arrayOfNulls(size)
+        }
+
+        /** Clase que representa la fase de un turno. */
+        enum class FaseTurno(private var denominacion: String) {
+            ROBAR("Robar"),
+            TIRAR("Tirar");
+
+            override fun toString(): String {
+                return denominacion
+            }
+        }
     }
 }

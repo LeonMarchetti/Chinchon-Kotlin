@@ -42,6 +42,7 @@ class RegistroJugadoresActivity : AppCompatActivity() {
         //endregion
 
         val partida = Partida()
+        partida.iniciar()
         partida.nuevoJugador(nombreJugador1, puntos1)
         partida.nuevoJugador(nombreJugador2, puntos2)
 
