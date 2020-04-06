@@ -10,10 +10,10 @@ import kotlin.IllegalStateException
  *
  * @author LeonMarchetti
  */
-class Ronda(private val numero: Int, private var jugadorInicial: Int, var jugadores: ArrayList<Jugador>): Parcelable {
+class Ronda(private val numero: Int, private var jugadorInicial: Int, internal var jugadores: ArrayList<Jugador>): Parcelable {
     lateinit var pila: Mazo
     lateinit var mazo: Mazo
-    private lateinit var turnos: ArrayList<Turno>
+    internal lateinit var turnos: ArrayList<Turno>
     var jugadorActual: Int = 0
     private val turnoActual: Turno
         get() = turnos.last()
@@ -128,6 +128,7 @@ class Ronda(private val numero: Int, private var jugadorInicial: Int, var jugado
     {
         pila = parcel.readParcelable(Mazo::class.java.classLoader)!!
         mazo = parcel.readParcelable(Mazo::class.java.classLoader)!!
+        turnos = parcel.readArrayList(Turno::class.java.classLoader) as ArrayList<Turno>
         jugadorActual = parcel.readInt()
         cortador = parcel.readValue(Int::class.java.classLoader) as? Int
         cartaCorte = parcel.readParcelable(Carta::class.java.classLoader)
@@ -140,6 +141,7 @@ class Ronda(private val numero: Int, private var jugadorInicial: Int, var jugado
 
         parcel.writeParcelable(pila, flags)
         parcel.writeParcelable(mazo, flags)
+        parcel.writeList(turnos as List<*>)
         parcel.writeInt(jugadorActual)
         parcel.writeValue(cortador)
         parcel.writeParcelable(cartaCorte, flags)
