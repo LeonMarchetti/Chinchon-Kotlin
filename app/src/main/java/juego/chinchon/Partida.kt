@@ -158,8 +158,8 @@ class Partida() : Parcelable {
 
         @Suppress("UNCHECKED_CAST")
         rondas = parcel.readArrayList(Ronda::class.java.classLoader) as ArrayList<Ronda>
-        rondas.forEach { ronda ->
-            ronda.jugadores = jugadores
+        if (rondas.size > 0) {
+            rondas.last().jugadores = jugadores
         }
 
         resultado = parcel.readSerializable() as Resultado
